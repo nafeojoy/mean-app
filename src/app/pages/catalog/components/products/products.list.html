@@ -1,0 +1,157 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" *ngIf="authManager.canAdd">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <div class="card-body">
+                            <div class="card border-primary col-md-12">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            Search Product
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="pull-right">
+                                                <h5>Total {{totalItems}} items</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form (ngSubmit)="searchProduct(searchCriterion)">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="book_name">Book Name:</label>
+                                                    <input name="book_name" type="text" [(ngModel)]="searchCriterion.book_name" class="form-control" placeholder="Book Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="import_id">Import id:</label>
+                                                    <input name="import_id" type="number" [(ngModel)]="searchCriterion.import_id" class="form-control" placeholder="Import Id">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="author_name">Author Name:</label>
+                                                    <input name="author_name" type="text" [(ngModel)]="searchCriterion.author_name" class="form-control" placeholder="Author Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="publisher_name">Publisher Name:</label>
+                                                    <input name="publisher_name" type="text" [(ngModel)]="searchCriterion.publisher_name" class="form-control" placeholder="Publisher Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="category_name">Category Name:</label>
+                                                    <input name="category_name" type="text" [(ngModel)]="searchCriterion.category_name" class="form-control" placeholder="Category Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="seo_url">Product Seo:</label>
+                                                    <input name="seo_url" type="text" [(ngModel)]="searchCriterion.seo_url" class="form-control" placeholder="Seo Url">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="name">Discount Range:</label>
+                                                <div class="form-group row">
+                                                    <div class="col-md-6">
+                                                        <input name="from" type="number" [(ngModel)]="searchCriterion.discount_from" class="form-control" placeholder="Discount From">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input name="to" type="number" [(ngModel)]="searchCriterion.discount_to" class="form-control" placeholder="Discount To">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="name">Price Range:</label>
+                                                <div class="form-group row">
+                                                    <div class="col-md-6">
+                                                        <input name="from" type="number" [(ngModel)]="searchCriterion.price_from" class="form-control" placeholder="Price From">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input name="to" type="number" [(ngModel)]="searchCriterion.price_to" class="form-control" placeholder="Price To">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <spinner *ngIf="res_pending_dwln" [tickness]="1" [size]="20"></spinner>
+                                                <br>
+                                                <a *ngIf="is_download_able" class="btn btn-warning" (click)="dataDownload()">Download Result</a>
+                                                <a class="btn btn-danger" (click)="reset()">Reset</a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="pull-right">
+                                                    <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                                    <button [disabled]="res_pending" type="submit" class="btn btn-primary">Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th class="table-id">Id</th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Stock Avl.</th>
+                                            <th>Print Avl.</th>
+                                            <th>Publish Date</th>
+                                            <th>Price</th>
+                                            <th>Discount</th>
+                                            <th>Publisher</th>
+                                            <th>Last Updated By</th>
+                                            <th *ngIf="authManager.canEdit">Edit</th>
+                                            <th>Update Image</th>
+                                            <th>Download Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let product of products; let i = index">
+                                            <td>{{product.import_id}}</td>
+                                            <td>
+                                                <img style="width: 50px;height: 48px;border-radius: 57%;border-style: none;" src="https://d1jpltibqvso3j.cloudfront.net{{product.sngImage}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+                                                <!-- <img style="width: 50px;height: 48px;border-radius: 57%;border-style: none;" src="assets/img/theme/book-no-photo.jpg" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt=""> -->
+                                            </td>
+                                            <td>{{product.name}}</td>
+                                            <td>{{product.is_out_of_stock? "NO": "YES"}}</td>
+                                            <td>{{product.is_out_of_print? "NO": "YES"}}</td>
+                                            <td>{{product.published_at | date: "dd MMM-yyyy"}}</td>
+                                            <td>{{product.price}} TK</td>
+                                            <td>{{product.discount_rate? product.discount_rate.toFixed(1): 0}}%</td>
+                                            <td>
+                                                <p *ngIf="product.publisher">{{product.publisher.name}}</p>
+                                            </td>
+                                            <td>
+                                                {{product.updated_by}}
+                                            </td>
+                                            <td *ngIf="authManager.canEdit">
+                                                <a (click)="set(product)" [routerLink]="['edit',product._id]" class="btn btn-success">Edit</a>
+                                            </td>
+                                            <td>
+                                                <a [routerLink]="['../product-image/edit',product._id]" class="btn btn-warning">Image Update</a>
+                                            </td>
+                                            <td>
+                                                <a (click)="downloadImage(product)" class="btn btn-danger">Download Image</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+                            </pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

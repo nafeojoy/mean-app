@@ -1,0 +1,37 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <ba-card title="Edit Order Status" baCardClass="with-scroll">
+                <form [formGroup]="form" (ngSubmit)="editOrderStatus()">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [inputValue]="order_status_name" [type]="'text'" [name]="'name'"
+                            [label]="'Name'" [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <multi-language-input [parentGroup]="form.controls['description']" [inputValue]="order_status_description" [type]="'textarea'"
+                            [name]="'description'" [label]="'Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="prinit_inprocess">Print Inprocess</label>
+                        <ui-switch name="prinit_inprocess" class="form-control" [formControl]="form.controls['prinit_inprocess']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="send_message">Send Message</label>
+                        <ui-switch name="send_message" class="form-control" [formControl]="form.controls['send_message']"></ui-switch>
+                    </div>
+                    <div *ngIf="form.controls['send_message'].value" class="form-group">
+                        <label for="message_text">Message Text</label>
+                        <textarea name="message_text" class="form-control" [formControl]="form.controls['message_text']"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']"></ui-switch>
+                    </div>
+                    <button [disabled]="!form.valid" type="submit" class="btn btn-warning">Edit Order Status</button>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+</div>

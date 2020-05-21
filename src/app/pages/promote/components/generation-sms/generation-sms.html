@@ -1,0 +1,70 @@
+<div class="col-md-6">
+    <ba-card title="Send Promotional SMS" baCardClass="with-scroll">
+        <form (ngSubmit)="GenerateSms(sms_generation)">
+
+            <div class="form_group">
+                <input type="checkbox" (change)="toggle()" checked>
+                <span>Bulk SMS </span>
+            </div>
+            <br>
+            <div *ngIf="!isBulkUnChecked" class="form-group">
+                <label for="phone_numberS">Choose .CSV file from your directory...<span style="color: red">*</span> </label>
+                <div>
+                    <input type="file" name="myfile" (change)="onFileSelect($event.target)" accept=".csv" required/>
+                    <!-- <input type="submit" class="btn btn-default"> -->
+                </div>
+            </div>
+            <br>
+            <div *ngIf="isBulkUnChecked" class="form-group">
+                <label for="phone_number">Phone No</label>
+                <div>
+                    <input name="phone_number" type="text" class="form-control" [(ngModel)]="sms_generation.phone_numbers" placeholder="Phone No"
+                        required>
+                </div>
+            </div>
+            <div class="form_group" style="width: 100%;">
+                <span>Select SMS Type </span>
+                <select name="sms_type" style="width: 100%" name="sms_type" class="form-control" [(ngModel)]="selectedStatus" (ngModelChange)="getSelectedPromo($event)">
+                    <option *ngFor="let status of sms_type" [ngValue]="status">{{status}}</option>
+                </select>
+            </div>
+
+            <br>
+
+            <div *ngIf="selectedStatus == 'Promo'" class="form-group">
+                <label for="country-name" class="control-label">
+                    Search Promo Code:
+                </label>
+                <div style="width:50%">
+                    <search-typeahead [clearField]="isClear" [items]="promoList" (dataLoader)="getPromos($event)" (selectedLoader)="getSelectedPromo($event)"></search-typeahead>
+                    <div *ngIf='promoId' style="float: right">
+                        <p>Selected Promo Code:
+                            <span style="color: green; font-weight: bold">{{promoId}}</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <div class="form_group" style="width: 100%;">
+                <span>Select Message Template: </span>
+                <select name="temp_msg" style="width: 100%" name="status" class="form-control" [(ngModel)]="selectedMsg" (ngModelChange)="selectMsg($event)">
+                    <option *ngFor="let temp_msg of message_template" [ngValue]="temp_msg">{{temp_msg.template_name}}</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="message_text">Message Text<span style="color: red">*</span> </label>
+                <textarea name="message_text" type="text" class="form-control" [(ngModel)]="sms_generation.message_text" placeholder="Message Text"
+                    required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="schedule_time">Schedule Time</label>
+                <input name="schedule_time" type="date" class="form-control" [(ngModel)]="sms_generation.schedule_time" placeholder="Schedule Time">
+            </div>
+            <div class="row">
+                <button type="submit" style="margin-right: 2%; float: right" class="col-md-2 btn btn-default">Generate</button>
+            </div>
+        </form>
+    </ba-card>
+</div>

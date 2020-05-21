@@ -1,0 +1,198 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <h4>Search <span style="font-size: 9px;">(with order No.)</span>&nbsp;:</h4>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" [(ngModel)]="searctText" (ngModelChange)="searchOrderNo$.next($event)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <h5>Purchase Status</h5>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8">
+                                    <table>
+                                        <tr>
+                                            <td>Book Order Value</td>
+                                            <td>:</td>
+                                            <td>{{total_order_value?.toFixed(2)}} (Tk.)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Available Book Value</td>
+                                            <td>:</td>
+                                            <td>{{total_available?.toFixed(2)}} (Tk.)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Not Available Book Value</td>
+                                            <td>:</td>
+                                            <td>{{need_purchase?.toFixed(2)}} (Tk.)</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 hint">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="print-out"></div>
+                                        <span>Print Out</span>
+                                    </td>
+                                    <td>
+                                        <div class="stock-out"></div>
+                                        <span>Stock Out</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="delay"></div>
+                                        <span>Delay</span>
+                                    </td>
+                                    <td>
+                                        <div class="no-action"></div>
+                                        <span>No Action</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="avbl"></div>
+                                        <span>Available</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="horizontal-scroll">
+                        <table *ngIf="orders.length>0" width="100%" class="table table-border" style="font-size: 13px;">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th width="1%" class="table-id">SL#</th>
+                                    <th width="7%" style="text-align:left">Order At</th>
+                                    <th width="8%" style="text-align:left">Order No</th>
+                                    <th width="30%" style="text-align:left">Books</th>
+                                    <th width="15%" style="text-align:left">Authors</th>
+                                    <th width="15%">Publishers</th>
+                                    <th width="5%">Required Qty</th>
+                                    <th width="5%">Available</th>
+                                    <th width="5%">Sell Price</th>
+                                    <th width="5%">Action</th>
+                                    <th width="5%">Delay</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders; let j=index">
+                                    <td>{{ (currentPage - 1) * 10 + (j + 1)}}</td>
+                                    <td style="text-align:left">{{order._id.order_at | date:'dd MMM-yyyy'}}</td>
+                                    <td style="text-align:left">{{order._id.order_no}}</td>
+                                    <td colspan="8">
+                                        <table width="100%" style="font-size: 13px;">
+                                            <tr *ngFor="let product of order.products; let k=index">
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="35%" style="text-align:left; padding: 0px;border-top: 0px;">
+                                                    {{product.name}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="20%" style="text-align:left;padding: 0px; border-top: 0px;">
+                                                    {{product.author}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="20%" style="padding: 0px; border-top: 0px;">
+                                                    {{product.publisher}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px; border-top: 0px;">
+                                                    {{product.required_qty}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                    {{product.stock_qty?product.stock_qty:0}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                    {{product.sales_price}}
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                    <i class="fa fa-external-link action-icon" (click)="onActionClick(order._id.order_no, product)"></i>
+                                                </td>
+                                                <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                    {{product.info_delayed}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 *ngIf="!wait && orders.length<1">Order not found</h4>
+                        <h4 *ngIf="wait && orders.length<1">Please wait, Loading....</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #actionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="actionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="print-section">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>Update Purchase Status</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="close pull-right" aria-label="Close" (click)="actionModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="widgets">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="is_enabled">Out of Stock</label>
+                                    <ui-switch name="is_out_of_stock" class="form-control" [(ngModel)]="status.is_out_of_stock"></ui-switch>
+                                </div>
+                                <div class="form-group">
+                                    <label for="is_out_of_print">Out of Print</label>
+                                    <ui-switch name="is_out_of_print" class="form-control" [(ngModel)]="status.is_out_of_print"></ui-switch>
+                                </div>
+                                <div class="form-group">
+                                    <label for="is_info_delay">Info Delay</label>
+                                    <ui-switch name="is_info_delay" class="form-control" [(ngModel)]="status.is_info_delay"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="arrives_in_stock">Arrives In</label>
+                                    <input type="number" name="arrives_in_stock" class="form-control" [(ngModel)]="status.arrives_in_stock">
+                                </div>
+                                <div class="form-group">
+                                    <br><br><br><br><br><br>
+                                </div>
+                                <div class="form-group">
+                                    <label for="is_enabled">Delay for</label>
+                                    <input type="number" name="info_delayed" class="form-control" [(ngModel)]="status.info_delayed">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_enabled">Comment <span style="color:red;">*</span></label>
+                            <textarea name="comment" class="form-control" [(ngModel)]="status.comment"></textarea>
+                        </div>
+                        <div>
+                            <button [disabled]="res_pending" class="btn btn-primary" (click)="submit()">Submit</button>
+                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

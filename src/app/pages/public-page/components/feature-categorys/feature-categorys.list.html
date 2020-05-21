@@ -1,0 +1,72 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Categorys List</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dnd-draggable [dragEnabled]="true" *ngFor="let categorys of categorys; let i=index" [dragData]="categorys">
+                  <td>{{ (currentPage - 1) * 10 + (i + 1)}}</td>
+                  <td><img src="{{categorys.image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt=""></td>
+                  <td>{{categorys.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;"
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage()">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Featured Categorys</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="panel panel-info" dnd-droppable class="panel panel-info" (onDropSuccess)="addToFeatured($event)" class="panel panel-info">
+            <div class="panel-body scroll-list">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="black-muted-bg">
+                    <th class="table-id">#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody dnd-sortable-container [sortableData]="droppedCategorys">
+                  <tr *ngFor="let categorys of droppedCategorys; let i=index" dnd-sortable [sortableIndex]="i">
+                    <td>{{i + 1}}</td>
+                    <td><img src="{{categorys.image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt=""></td>
+                    <td>{{categorys.name}}</td>
+                    <td style="float: right;" (click)="remove(categorys, i)">x</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngFor="let alert of alerts">
+            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+          </div>
+          <button class="btn btn-default btn-pos" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

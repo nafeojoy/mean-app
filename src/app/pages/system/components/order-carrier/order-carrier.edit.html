@@ -1,0 +1,60 @@
+<div class="alert_messages_chart">
+    <div *ngFor="let alert of alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+</div>
+<div class="widgets">
+    <div class="row">
+        <form style="margin-top: 21px" (ngSubmit)="updateOrderCarrier()" class="form-horizontal">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ba-card title="Edit OrderCarrier" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 control-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" [(ngModel)]="orderCarrier.name" class="form-control" id="name" placeholder="OrderCarrier Name">
+                            <span *ngIf="isSubmited && !orderCarrier.name" style="color: red;">OrderCarrier name is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-4 control-label">Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="address" [(ngModel)]="orderCarrier.address" class="form-control" id="name" placeholder="Address">
+                            <span *ngIf="isSubmited && !orderCarrier.address" style="color: red;">Address is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-4 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" name="email" [(ngModel)]="orderCarrier.email" class="form-control" id="email" placeholder="Email">
+                            <span *ngIf="isSubmited && !orderCarrier.email" style="color: red;">Email is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cell" class="col-sm-4 control-label">phone</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="cell" [(ngModel)]="orderCarrier.phone" class="form-control" id="cell" placeholder="Phone">
+                            <span *ngIf="isSubmited && !orderCarrier.phone" style="color: red;">Phone is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_enabled" class="col-sm-4 control-label">Is Enabled</label>
+                        <div class="col-sm-8">
+                            <ui-switch name="is_enabled" class="form-control" [(ngModel)]="orderCarrier.is_enabled"></ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button [disabled]="isDisabled" type="submit" class="btn btn-warning">Save</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <a (click)="back()" style="text-align: right; display: block; padding-top: 11px; cursor:pointer">
+                                <i class="fa fa-reply"></i> Back To List </a>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </form>
+    </div>
+</div>

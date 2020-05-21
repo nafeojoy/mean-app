@@ -1,0 +1,21 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <ba-card title="Add Offer" baCardClass="with-scroll">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input name="name" type="text" class="form-control" [(ngModel)]="newOffer.name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <ba-card title="Picture Uploader" baCardClass="with-scroll">
+                            <ba-picture-uploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="imageUploaded($event)"></ba-picture-uploader>
+                        </ba-card>
+                    </div>
+                    <button type="submit" class="btn btn-warning" (click)="addOffer()">Add Offer</button>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+@import '../../../../sass/conf';
+
+.shop-menu {display:inline-block;padding-left: 10px; padding-right: 2px; cursor: pointer;}
+.shop-menu:last-child { padding-right: 0;}
+.shop-menu a:not([href]) {color: $primary-color !important; font-family: $font-family; font-size: 13px; font-weight: 500; 
+                   padding: 0 14px 0 0;  margin-top: 2px; margin-left:-6px;}
+.shop-menu a i{margin-right:3px;}
+.shop-menu a:not([href]):hover { background: none;}
+
+.purchase_history{
+    float: left; padding: 10px; color: black;
+    &:hover{
+        color: #1361b1;
+        transform: scale(1.1);
+        transition: .5s;
+    }
+}

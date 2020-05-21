@@ -1,0 +1,170 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <!--<ng2-slim-loading-bar></ng2-slim-loading-bar>-->
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title" *ngIf="authManager.canAdd">
+            <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <input #searchInput type="text" class="form-control" placeholder="Search by name" (keyup)="search($event.target.value)">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th style="text-align: center">No Of Book</th>
+                  
+                  <th>Date of Birth</th>
+                  <th>Occupation</th>
+                  <th>Nationality</th>
+                  <th>View</th>
+                  <th *ngIf="authManager.canEdit">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let author of authors | async; let i=index">
+                  <td>{{ (currentPage - 1) * itemsPerPage + (i + 1)}}</td>
+                  <td>
+                    <img style="width: 50px;height: 48px;border-radius: 57%;border-style: none;" src="{{author.sngImage}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+                  </td>
+                  <td>{{author.name}}</td>
+                  <td *ngIf="author.book_list" style="text-align: center">{{author.book_list.length}}</td>
+
+                  <td>{{author.birth_at | date:'dd MMM-yyyy'}}</td>
+                  <td>{{author.occupation}}</td>
+                  <td>{{author.nationality}}</td>
+                  <td>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#viewModal" (click)="view(author)">View</button>
+                  </td>
+                  <td *ngIf="authManager.canEdit">
+                    <a (click)="set(author)" [routerLink]="['edit',author._id]" class="btn btn-success">Edit</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems | async" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true"
+              (pageChanged)="pageChanged($event)">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Start View Modal -->
+<div class="modal fade" id="viewModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Detail of Author</h4>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">{{selectedAuthor.name}}</h4>
+            <h6 class="card-subtitle">
+              {{selectedAuthor.birth_at | date: 'dd MMM-yyyy'}} - {{selectedAuthor.died_at | date: 'dd MMM-yyyy'}}
+            </h6>
+          </div>
+          <div class="clearfix"></div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="author_img">
+                <img src="{{selectedAuthor.image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="Card image">
+              </div>
+              <div class="card-block">
+                <div class=row>
+                  <div class="col-md-6">
+                    <p class="titile_author">Occupation :</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titile_author">{{selectedAuthor.occupation}}</p>
+                  </div>
+                </div>
+                <div class=row>
+                  <div class="col-md-6">
+                    <p class="titile_author">Nationality :</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titile_author">{{selectedAuthor.nationality}}</p>
+                  </div>
+                </div>
+                <div class=row>
+                  <div class="col-md-6">
+                    <p class="titile_author">Place of Birth :</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="titile_author">{{selectedAuthor.birth_place}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <p>
+                {{selectedAuthor.description}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Notable Award</h4>
+            <table class="table table-striped tbl-style">
+              <thead>
+                <tr>
+                  <th>Award Name</th>
+                  <th>Awarded Date</th>
+                  <th>Awarded Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let award of selectedAuthor.notable_awards">
+                  <td>{{award.title}}</td>
+                  <td>{{award.date | date: 'dd MMM-yyyy'}}</td>
+                  <td>{{award.reason}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove-circle"></span> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End View Modal -->
+
+
+
+<!-- Start Delete Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Author</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure to delete?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal" (click)="delete()">Yes</button>
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Delete Modal -->

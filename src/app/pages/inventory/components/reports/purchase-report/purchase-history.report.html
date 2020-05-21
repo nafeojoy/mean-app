@@ -1,0 +1,312 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Purchase History Report" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 type-block">
+                            <h4>Purchase Date:</h4>
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <label>
+                                <h4>Purchase Mode:</h4>
+                            </label>
+                            <br>
+                            <label>Cash:</label>
+                            <label class="form-check-inline">
+                                <input class="form-radio" type="radio" name="mode" value="Cash"
+                                    [(ngModel)]="filter.mode">
+                            </label>
+                            <label>Credit:</label>
+                            <label class="form-check-inline">
+                                <input class="form-radio" type="radio" name="mode" value="Credit"
+                                    [(ngModel)]="filter.mode">
+                            </label>
+                            <label>All:</label>
+                            <label class="form-check-inline">
+                                <input class="form-radio" type="radio" name="mode" value="All"
+                                    [(ngModel)]="filter.mode">
+                            </label>
+                            <br>
+                            <div class="row" style="margin-bottom:10px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-6">
+                                    <div *ngFor="let alert of alerts">
+                                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                        </alert>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="button_all">
+                                        <span class="filter_button">
+                                            <button *ngIf="report_data.length>0" class="btn btn-warning"
+                                                (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending"
+                                                class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row  report_header">
+                            <div class="col-md-12">
+                                <table width="100%" tyle="font-size: 10px">
+                                    <tr>
+                                        <td width="33%">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                        </td>
+                                        <td width="33%">
+                                            <h4>Purchase Report</h4>
+                                        </td>
+                                        <td width="33%">
+                                            {{filter.mode=='All'? 'Cash & Credit': filter.mode}} Purchases
+                                            <br> ({{other_report_data.date_range.from | date:'dd/MM/yy'}}-{{other_report_data.date_range.to | date:'dd/MM/yy'}})
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="horizontal-scroll" *ngIf="report_data.length>0">
+                            <table width="100%" class="table table-border" style="font-size: 10px;">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="1%" class="table-id">SL#</th>
+                                        <th width="2%" style="text-align:left">No</th>
+                                        <th width="8%" style="text-align:left">At</th>
+                                        <th width="25%" style="text-align:left">Book Name</th>
+                                        <th width="20%" style="text-align:left">Supplier</th>
+                                        <th width="5%">Unit Price</th>
+                                        <th width="3%">Qty</th>
+                                        <th width="5%">Total Price</th>
+                                        <th width="4%">Net</th>
+                                        <th width="9%">Courier</th>
+                                        <th width="4%">Conveyance</th>
+                                        <th width="4%">Total</th>
+                                        <th width="10%">Purchase By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index" style="font-size: 15px;">
+                                        <td width="1%">{{j+1}}</td>
+                                        <td width="2%" style="text-align:left">{{item._id}}</td>
+                                        <td width="8%" style="text-align:left">{{item.purchase_at | date:'dd MMM-yyyy'}}</td>
+                                        <td width="25%" colspan="5">
+                                            <table width="100%" style="font-size: 15px;">
+                                                <tr *ngFor="let book of item.books; let k=index">
+                                                    <td width="35%" style="text-align:left; padding: 0px;border-top: 0px;">
+                                                        {{book.name}}-{{book.import_id}}</td>
+                                                    <td width="25%" style="text-align:left;padding: 0px; border-top: 0px;">
+                                                        {{book.supplier}}</td>
+                                                    <td width="5%" style="padding: 0px; border-top: 0px;">
+                                                        {{book.price}}</td>
+                                                    <td width="5%" style="padding: 0px; border-top: 0px;">
+                                                        {{book.quantity}}</td>
+                                                    <td width="5%" style="padding: 0px;border-top: 0px;">{{book.total}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td width="4%">{{item.net_amount.toFixed(2)}}</td>
+                                        <td width="5%">{{item.courier_charge}}</td>
+                                        <td width="4%">{{item.convenience}}</td>
+                                        <td width="4%">{{item.purchase_cost.toFixed(2)}}</td>
+                                        <td width="10%">{{item.purchased_by}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table width="100%" style="font-size: 10px;">
+                                <tbody>
+                                    <tr>
+                                        <td width="20%">Total Book value.</td>
+                                        <td>:&nbsp;&nbsp;</td>
+                                        <td width="25%">{{total_obj.book_value}}</td>
+                                        <td width="55%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Total Book Qty</td>
+                                        <td>:&nbsp;&nbsp;</td>
+                                        <td width="25%">{{total_obj.book_qty}}</td>
+                                        <td width="55%"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Total Conveyance</td>
+                                        <td>:&nbsp;&nbsp;</td>
+                                        <td width="25%">{{total_obj.convenience}}</td>
+                                        <td width="55%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Total Courier</td>
+                                        <td>:&nbsp;&nbsp;</td>
+                                        <td width="25%">{{total_obj.courier}}</td>
+                                        <td width="55%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="45%" colspan="3">
+                                            ........................................................................................................................................
+                                        </td>
+                                        <td width="55%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Summary</td>
+                                        <td>:&nbsp;&nbsp;</td>
+                                        <td width="25%">{{total_obj.summary}}</td>
+                                        <td width="55%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <br>
+                            <table width="100%" style="font-size: 10px;">
+                                <tr>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Printed By</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Accounts</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Audit</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Approved By</p>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="divFooter">
+                            <table width="100%" style="font-size: 10px;">
+                                <tr>
+                                    <td width="33%">
+                                        Print Job No. &nbsp; : &nbsp; {{other_report_data.print_job_number}}
+                                    </td>
+                                    <td width="33%">
+                                        Printed By &nbsp; : &nbsp; {{other_report_data.user}}
+                                    </td>
+                                    <td width="33%">
+                                        Print Time &nbsp; : &nbsp; {{other_report_data.print_date | date: 'dd MMM-yyyy hh:mm a'}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div bsModal #purchaseDetailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="purchaseDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="print-section">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>Purchase Detail</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="close pull-right" aria-label="Close" (click)="purchaseDetailModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="widgets">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="horizontal-scroll">
+                                    <h5>Purchase Type</h5>
+                                    <p>{{purchaseDetailData.general_purchase? "General Purchased": "Purchased from Order"}}
+                                    </p>
+                                    <h5>Remark</h5>
+                                    <p>{{purchaseDetailData.remark && purchaseDetailData.remark!=""? purchaseDetailData.remark:
+                                        "No remark saved."}}</p>
+                                    <div *ngIf="!purchaseDetailData.general_purchase">
+                                        <h5>Order & Items</h5>
+                                        <table width="100%" class="table table-hover">
+                                            <thead>
+                                                <tr class="black-muted-bg">
+                                                    <th width="1%" class="table-id">SL#</th>
+                                                    <th width="10%" style="text-align:left">Customer Order No</th>
+                                                    <th width="50%" style="text-align:left">Book Name</th>
+                                                    <th width="29%" style="text-align:left">Publisher</th>
+                                                    <th width="5%">Purchase Price</th>
+                                                    <th width="5%">Sales Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of purchaseDetailData.items; let j=index">
+                                                    <td>{{j+1}}</td>
+                                                    <td>{{item.order_no}}</td>
+                                                    <td colspan="4">
+                                                        <table width="100%">
+                                                            <tr *ngFor="let book of item.books; let k=index">
+                                                                <td width="1%">{{k+1}}</td>
+                                                                <td width="50%" style="text-align: left;">
+                                                                    {{book.name}}
+                                                                </td>
+                                                                <td width="29%" style="padding: 0px; border-top: 0px;">
+                                                                    {{book.publisher}}</td>
+                                                                <td width="10%" style="padding: 0px; border-top: 0px;">
+                                                                    {{book.purchase_price}}</td>
+                                                                <td width="10%" style="padding: 0px;border-top: 0px;">
+                                                                    {{book.sales_price}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

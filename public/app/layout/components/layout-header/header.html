@@ -1,0 +1,483 @@
+<style>
+    .menu-2-list-color li a {
+        border: 1px solid #428bca;
+        padding: 5px;
+        color: #000000;
+        border-radius: 5px;
+    }
+
+    #info li a:focus {
+        background-color: #cadef4;
+    }
+
+    .m-st {
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    .top_menu ul li a {
+        color: #000000;
+        margin-left: -5px;
+    }
+
+    #menu_2 ul li a {
+        color: #000000;
+        margin-left: 5px;
+    }
+
+    .navbar {
+        /* overflow: hidden; */
+        background-color: rgba(19, 97, 177, 0.95);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        min-height: 40px !important;
+    }
+
+    .navbar2 {
+        overflow: hidden;
+        /* background-color: rgba(19, 97, 177, 0.95); */
+        position: fixed;
+        top: 0;
+        width: 100%;
+        /* position: fixed; */
+        /* z-index: -1; */
+        top: 40px;
+        /* width: 110%; */
+        background-color: #fff;
+        right: 0;
+        /* padding-left: 10%; */
+        left: 0;
+    }
+
+    .twitter {
+        font: normal normal 10px Arial;
+        text-align: center;
+        color: #998578;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .twitter {
+        color: #000000;
+        text-decoration: none;
+        display: block;
+        padding: 14px;
+        -webkit-transition: all .25s ease;
+        -moz-transition: all .25s ease;
+        -ms-transition: all .25s ease;
+        -o-transition: all .25s ease;
+        transition: all .25s ease;
+    }
+
+    .twitter:hover {
+        color: #FF7D6D;
+        text-decoration: none;
+    }
+
+    .fl-fl {
+        background: #1361B3;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        padding: 4px;
+        width: 190px;
+        position: fixed;
+        left: -150px;
+        z-index: 1000;
+        font: normal normal 10px Arial;
+        -webkit-transition: all .25s ease;
+        -moz-transition: all .25s ease;
+        -ms-transition: all .25s ease;
+        -o-transition: all .25s ease;
+        transition: all .25s ease;
+    }
+
+
+    .fl-fl:hover {
+        left: 0;
+    }
+
+    .fl-fl a {
+        color: #fff !important;
+        text-decoration: none;
+        text-align: center;
+        line-height: 43px!important;
+        vertical-align: top!important;
+    }
+
+    .f2-f2 {
+        height: 86px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 4px;
+        width: 65px;
+        position: fixed;
+        right: 0;
+        /* right: -85px; */
+        /* z-index: 1000; */
+        padding-left: 8px;
+        font: normal normal 10px Arial;
+        -webkit-transition: all .25s ease;
+        -moz-transition: all .25s ease;
+        -ms-transition: all .25s ease;
+        -o-transition: all .25s ease;
+        transition: all .25s ease;
+    }
+
+    .f3-f3 {
+        height: 50px;
+
+        letter-spacing: 1px;
+        padding: 5px;
+        width: 198px;
+        position: fixed;
+        right: -5px;
+        /* z-index: 1000; */
+    }
+
+    .f2-f2 a {
+        color: #fff !important;
+        text-decoration: none;
+        text-align: center;
+        line-height: 15px!important;
+        vertical-align: top!important;
+    }
+
+    /* .f2-f2:hover {
+        right: 0;
+    } */
+
+    .float-fb {
+        top: 160px;
+    }
+
+    .float-tw {
+        top: 215px;
+    }
+
+    .float-yt {
+        top: 270px;
+    }
+
+    .float-gp {
+        top: 325px;
+    }
+
+    .float-contact {
+        top: 215px;
+    }
+
+    .float-cart {
+        top: 140px;
+        z-index: 3;
+        background-color: #1361B3;
+        cursor: pointer;
+        text-align: center;
+        box-shadow: #302c30 -1px 0px 14px 0px;
+        /* transition: .90s; */
+    }
+
+    #profile_check {
+        text-align: center;
+        border: 1px solid #958a8a;
+        width: 140px;
+        padding: 5px 5px;
+        float: left;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-right: 25px !important;
+        margin-top: 10px !important;
+
+    }
+
+    #inner1 {
+        float: right;
+    }
+
+    #inner2 {
+        float: right;
+        clear: right;
+    }
+
+    .top_menu ul li a {
+        transition: all 400ms ease-in;
+        font-size: 12px !important;
+    }
+
+    .top_menu ul li a:hover {
+        color: #000000 !important;
+        transition: all 400ms ease-in;
+    }
+
+    .navbar-nav>li>a {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    /* Floating Social Media Bar Style Ends Here */
+</style>
+<header id="header">
+
+    <div class="header_top navbar navbar-fixed-top " style="z-index: 3; height: 40px ">
+
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col-md-2" style="padding: 15px; width: 14%">
+
+                    <span style="color: #fff; font-size: 14px; white-space: nowrap">
+                        <i class="fa fa-phone fa-10" style="color: #fff;"></i> {{'contact_no' | translate}}</span>
+
+                </div> -->
+                <!-- <div class="col-md-1">
+                    <div class="top_menu" style="float: left; ">
+                        <ul class="nav navbar-nav" style="position: fixed; z-index: 3">
+                            <li class="dropdown menu-large">
+                                <a [routerLink]="['/category-books/boimela-2018']" style="color: white; text-transform: uppercase;">
+                                    {{ 'Boimela 2018' | translate }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-6">
+                    <div class="top_menu" style="float: left; margin: 0px 0% auto;">
+                        <ul class="nav navbar-nav" style="position: fixed; z-index: 3; margin-left: 25px; height: 40px">
+
+                            <!-- <li (click)="emitChange('category-books', 'book')" class="dropdown menu-large">
+                                <a [routerLink]="['/category-books/book']" style="color: white; text-transform: uppercase;">
+                                    {{ 'All Books' | translate }}
+                                </a>
+                            </li> -->
+                            <li class="dropdown menu-large">
+                                <a id='parent' href="#" on-mouseover="over('Category')" (mouseleave)="leave('Category')" style="color: white; ">
+                                    {{ 'Categories' | translate }}
+                                    <i class="fa fa-caret-down angle_icon" style="margin-left: 2px; margin-top: 2px;"></i>
+                                    <span id='child' *ngIf="show && item=='Category'">
+                                        <top-menu-list class="menu_details" [items]="categories" (itemSelectEvent)="itemSelected($event)" loadUrl="categories" nextRoute="category-books"></top-menu-list>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="dropdown menu-large">
+                                <a href="#" on-mouseover="over('Author')" (mouseleave)="leave('Author')" style="color: white; ">
+                                    {{ 'Authors' | translate }}
+                                    <i class="fa fa-caret-down angle_icon" style="margin-top: 2px;margin-left: 2px"></i>
+                                    <span *ngIf="show && item=='Author'" class="menu_details">
+                                        <top-menu-list [items]="authors" (itemSelectEvent)="itemSelected($event)" loadUrl="authors" nextRoute="author-books"></top-menu-list>
+                                    </span>
+                                    <!-- <span>
+                                        <top-menu-list [items]="authors" (itemSelectEvent)="itemSelected($event)" loadUrl="authors" nextRoute="author-books"></top-menu-list>
+                                    </span> -->
+                                </a>
+                            </li>
+                            <li class="dropdown menu-large">
+                                <a href="#" on-mouseover="over('Publisher')" (mouseleave)="leave('Publisher')" style="color: white;">
+                                    {{ 'Publishers' | translate }}
+                                    <i class="fa fa-caret-down angle_icon" style="margin-top: 2px;margin-left: 2px"></i>
+                                    <!-- <span>
+                                        <top-menu-list [items]="publishers" (itemSelectEvent)="itemSelected($event)" loadUrl="publishers" nextRoute="publisher-books"></top-menu-list>
+                                    </span> -->
+                                    <span *ngIf="show && item=='Publisher'" class="menu_details">
+                                        <top-menu-list [items]="publishers" (itemSelectEvent)="itemSelected($event)" loadUrl="publishers" nextRoute="publisher-books"></top-menu-list>
+                                    </span>
+
+                                </a>
+                            </li>
+                            <li (click)="emitChange('category-books', 'boimela-2018')" class="dropdown menu-large" style="background-color: #038d6a; border-right:.2px solid white">
+                                <a [routerLink]="['/category-books/boimela-2018']" style="color: rgb(255, 255, 255);  font-weight: 500; font-size: 15px">
+                                    {{ 'Boimela 2018' | translate }}
+                                </a>
+                            </li>
+                            <li (click)="emitChange('category-books', 'islamic')" class="dropdown menu-large" style="background-color: #038d6a">
+                                <a [routerLink]="['/category-books/islamic']" style="color: rgb(255, 255, 255);  font-weight: 500; font-size: 15px">
+                                    {{ 'Islamic Books' | translate }}
+                                </a>
+                            </li>
+                            <!-- <li class="dropdown menu-large" >
+                                <a [routerLink]="['info/contact-us']" style="color: white; text-transform: uppercase;">
+                                    {{'Contact Us' | translate}}
+                                </a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- <div class="top_menu" style="float: left; ">
+                        <ul class="nav navbar-nav" style="position: fixed; z-index: 2">
+                            <li class="dropdown menu-large">
+                                <a [routerLink]="['info/contact-us']" style="color: white; text-transform: uppercase;">
+                                    {{'Contact Us' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                    <div class="col-md-2" style="padding: 10px; width: 14%">
+
+                        <span style="color: #fff; font-size: 14px; white-space: nowrap">
+                            <i class="fa fa-phone fa-10" style="color: #fff;"></i> {{'contact_no' | translate}}</span>
+
+                    </div>
+                    <app-language></app-language>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="header_top navbar2  navbar-fixed-top" style="z-index: 2; box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 4px -1px;">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="logo">
+                        <a [routerLink]="['']" style="width: 160px;text-align: center; 
+                                        height: 40px;
+                                        height: auto;">
+                            <img src="{{logo_url}}" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-7" style="margin-left: 20px; margin-top: 10px;">
+                    <app-search></app-search>
+                </div>
+
+                <div class="col-md-3 dropdown_h">
+
+                    <div id="wrapper" style="width: 100%; z-index: 3; width: 230px;">
+                        <app-signup id="inner1"></app-signup>
+                        <app-login id="inner2"></app-login>
+                    </div>
+                    <div *ngIf="profile_check && mobWidth>1098" id="profile_check">
+                        <span style="color: #000000">{{ 'Profile Details' | translate }}
+                            <i class="fa fa-caret-down fa-6"></i>
+                        </span>
+                    </div>
+
+                    <div *ngIf="profile_check && mobWidth<=1098" id="profile_check" style="margin-left: 50px">
+                        <span style="color: #000000">{{ 'Profile Details' | translate }}
+                            <i class="fa fa-caret-down fa-6"></i>
+                        </span>
+                    </div>
+
+
+                    <div *ngIf='mobWidth>1098' class="dropdown_h-content">
+                        <user></user>
+                    </div>
+
+                    <div *ngIf='mobWidth<=1098' class="dropdown_h-content" style="margin-left: 50px">
+                        <user></user>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+
+<section class="border-bottom" style="margin-top: 40px" id="fixed_bar" (window:scroll)="onWindowScroll($event)">
+
+
+    <!-- Socail Media Buttons Float Left -->
+
+    <div *ngIf="mobWidth>1098">
+        <div class="fl-fl float-fb">
+            <a href="https://www.facebook.com/MyBoiBazar/" target="_blank"> Like us!</a>
+            <i class="fa fa-facebook social-media-button"></i>
+
+        </div>
+        <div class="fl-fl float-tw">
+            <a href="https://twitter.com/myboibazar" target="_blank">Follow us!</a>
+            <i class="fa fa-twitter social-media-button"></i>
+        </div>
+        <div class="fl-fl float-yt">
+            <a href="https://www.youtube.com/channel/UCYqvw2_4CqjYC_CdOEr_3uQ" target="_blank">Subscribe us!</a>
+            <i class="fa fa-youtube social-media-button"></i>
+        </div>
+        <div class="fl-fl float-gp">
+            <a href="https://plus.google.com/109139666657902762570" target="_blank">Recommend us!</a>
+            <i class="fa fa-google-plus social-media-button"></i>
+        </div>
+        <div class="f2-f2 float-cart">
+            <cart-count></cart-count>
+        </div>
+        <div>
+            <div *ngIf="showTop" id="bottom_up" style="display: block;opacity: 1;" (click)="go_top()">
+                <i class="fa fa-angle-up"></i>
+            </div>
+        </div>
+
+    </div>
+    <div *ngIf="mobWidth<=1098">
+        <div class="fl-fl float-fb" style="width: 175px;">
+            <a href="https://www.facebook.com/MyBoiBazar/" target="_blank">facebook!</a>
+            <i class="fa fa-angle-right social-media-button-small"></i>
+        </div>
+        <div class="fl-fl float-tw" style="width: 175px;">
+            <a href="https://twitter.com/myboibazar" target="_blank">Twitter!</a>
+            <i class="fa fa-angle-right social-media-button-small"></i>
+        </div>
+        <div class="fl-fl float-yt" style="width: 175px;">
+            <a href="https://www.youtube.com/channel/UCYqvw2_4CqjYC_CdOEr_3uQ" target="_blank">YouTube!</a>
+            <i class="fa fa-angle-right social-media-button-small"></i>
+        </div>
+        <div class="fl-fl float-gp" style="width: 175px;">
+            <a href="https://plus.google.com/109139666657902762570" target="_blank">Google Plus!</a>
+            <i class="fa fa-angle-right social-media-button-small"></i>
+        </div>
+        <div class="f2-f2 float-cart">
+            <cart-count></cart-count>
+        </div>
+        <div>
+            <div *ngIf="showTop" id="bottom_up" style="display: block;opacity: 1;" (click)="go_top()">
+                <i class="fa fa-angle-up"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <div class="container" style="background-color: #fff; ">
+        <div class="header-middle">
+            <div class="header-middle middle_header_section " style=" margin-top: 10px;
+            margin-bottom: 2px;">
+                <div class="row navbar-fixed-top" style=" top: 50px; background-color: white; z-index: 1;  ">
+                    <div class="col-md-3">
+                        <div class="logo">
+                            <a [routerLink]="['']" style="width: 160px;text-align: center; 
+                            height: 40px;
+                            height: auto;">
+                                <img src="{{logo_url}}" alt="" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <app-search></app-search>
+                    </div>
+
+                    <div class="col-md-2 dropdown_h" style=" margin-top: 10px; text-align: right; float: right">
+
+                        <div style="float: right;margin-top: 7px;width: 98%;">
+                            <app-signup></app-signup>
+                            <app-login></app-login>
+                        </div>
+
+                        <div id="profile_check" *ngIf="profile_check" style="margin-right: 25px;">
+                            <span>{{ 'Profile Details' | translate }}
+                                <i class="fa fa-caret-down fa-6"></i>
+                            </span>
+                        </div>
+
+                        <div class="dropdown_h-content">
+                            <user></user>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</section>

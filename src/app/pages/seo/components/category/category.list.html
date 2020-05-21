@@ -1,0 +1,42 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <input #searchInput type="text" class="form-control" placeholder="Search by name" (keyup)="search($event.target.value)">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th *ngIf="authManager.canEdit">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of categorys | async; let i = index">
+                  <td>{{ (currentPage - 1) * itemsPerPage + (i + 1)}}</td>
+                  <td>
+                    <img src="{{category.sngImage}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+                  </td>
+                  <td>{{category.name}}</td>
+
+                  <td *ngIf="authManager.canEdit">
+                    <a (click)="set(category)" [routerLink]="['edit',category._id]" class="btn btn-success">Edit</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems | async" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true"
+              (pageChanged)="pageChanged($event)">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

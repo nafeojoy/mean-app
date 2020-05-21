@@ -1,0 +1,21 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <ba-card title="Add PromotionalImage" baCardClass="with-scroll">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Active</label>
+                        <ui-switch class="form-control" name="is_enabled" [(ngModel)]="promotionalImage.is_enabled"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <ba-card title="Picture Uploader" baCardClass="with-scroll">
+                            <ba-picture-uploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (onUploadCompleted)="imageUploaded($event)"></ba-picture-uploader>
+                        </ba-card>
+                    </div>
+                    <button type="submit" class="btn btn-warning" (click)="updatePromotionalImage()">Update PromotionalImage</button>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+</div>

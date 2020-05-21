@@ -1,0 +1,50 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-tab">
+                    <a class="breadcrumb-item" href="#">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                    <a class="breadcrumb-item">Categories</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 padding-right busy-loading">
+                <div class="category-tab_" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true,minDuration: 200}">
+                    <div class="tab-content">
+                        <div class="tab-pane_" *ngFor="let category of categories; let i = index">
+                            <div class="col-12 col-sm-3" style="min-block-size: 250px">
+                                <a (click)="getSelectedProduct(category.seo_url)">
+                                    <div class="thumbnail" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20"
+                                        style="margin-left: auto; margin-right: auto; max-height: 282px;">
+
+                                        <img src="{{category.featured_item}}" onError="this.src='assets/images/category-no-photo.png'" alt="" />
+
+                                        <div class="caption">
+                                            <h4 class="group inner list-group-item-heading" style="white-space: nowrap; overflow: hidden;width: 110px;">
+                                                <div>
+                                                    <p style="text-align: center; "> {{category.name}}</p>
+                                                </div>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,75 @@
+<div class="widgets">
+    <div class="row">
+        <form style="margin-top: 21px" (ngSubmit)="createChartOfAccount()" class="form-horizontal">
+            <div class="col-md-6">
+                <ba-card title="Select Parent" baCardClass="with-scroll">
+                    <div class="tree-ul">
+                        <tree-root [nodes]="nodes" [focused]="true" [options]="options" class="tree"
+                            (onFocus)="onEvent($event)"></tree-root>
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="Create New" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="parent" class="col-sm-2 control-label">Parent</label>
+                        <div class="col-sm-10">
+                            <input [disabled]="selectedParent.name" type="text" name="parent"
+                                [(ngModel)]="selectedParent.name" class="form-control" id="parent" placeholder="Parent"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="account_code" class="col-sm-2 control-label">Account Code</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="account_code" [(ngModel)]="chartOfAccount.account_code"
+                                class="form-control" placeholder="Account Code" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 control-label">Account Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" [(ngModel)]="chartOfAccount.name" class="form-control"
+                                placeholder="Account Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="voucher_type" class="col-sm-2 control-label">Voucher Type</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="voucher_type" [(ngModel)]="chartOfAccount.voucher_type">
+                                <option *ngFor="let voucher_type of voucher_types" [value]="voucher_type.value">
+                                    {{voucher_type.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="note" class="col-sm-2 control-label">Note</label>
+                        <div class="col-sm-10">
+                            <textarea  name="note" [(ngModel)]="chartOfAccount.note"
+                                class="form-control" placeholder="Note..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_enabled" class="col-sm-2 control-label">Is Enabled</label>
+                        <div class="col-sm-2">
+                            <ui-switch name="is_enabled" class="form-control" [(ngModel)]="chartOfAccount.is_enabled">
+                            </ui-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div *ngFor="let alert of alerts">
+                                <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <button style="float:right" type="submit" class="btn btn-warning">Save</button>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,366 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <h3>Orders</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="order_no">Order No.:</label>
+                                <input name="order_no" type="text" [(ngModel)]="searchObj.order_no" class="form-control" placeholder="Order No.">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" (click)="search()">Search</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-warning" (click)="reset()">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="order_no">Date Range:</label>
+                            <br>
+                            <i class="fa fa-calendar range-calender" (click)="vst.toggle()" [attr.aria-expanded]="vst.isOpen"></i>
+                            <input type="text" placeholder="Choose Date Range" class="form-control date-picker" [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker" bsDaterangepicker>
+                            <h4 style="color:#1361b1">{{resMessage}}</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Pending Dispatch</h4>
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th style="text-align: left;">Age</th>
+                                        <th style="text-align:center">Order Count</th>
+                                        <th>Show</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let result of result_set['Confirmed']">
+                                        <td style="text-align:left">
+                                            {{result._id}} {{result._id==1?'Day':'Days'}} {{result._id==7?'+':''}}
+                                        </td>
+                                        <td style="text-align:center">
+                                            {{result.count}}
+                                        </td>
+                                        <td>
+                                            <button class="detail" (click)="showDetail(result.orders)">Detail</button>
+                                            <!-- <span class="detail" (click)="showDetail(result.orders)">Detail</span> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="horizontal-scroll" *ngIf="orders.length>0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Order at</th>
+                                    <th>Order No</th>
+                                    <th>Name</th>
+                                    <th>Payable Amount</th>
+                                    <th>Paid</th>
+                                    <th>Due Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders; let i=index" (dblclick)="rowSelected(order, i)">
+                                    <td>
+                                        {{ (currentPage - 1) * 10 + (i + 1)}}
+                                    </td>
+                                    <td>
+                                        {{order.order_at | date:'dd MMM-yyyy'}} At {{order.order_at | date:'h:mma'}}
+                                    </td>
+
+                                    <td [ngClass]="order.stock_availibility==1 || order.stock_availibility==2?'dispatchable': order.stock_availibility==3?'partial-dispatchable':'not-dispatchable'">
+                                        {{order.order_no}}
+                                    </td>
+                                    <td [ngClass]="order.stock_availibility==1 || order.stock_availibility==2?'dispatchable': order.stock_availibility==3?'partial-dispatchable':'not-dispatchable'">
+                                        {{order.delivery_address?.contact_name}}
+                                    </td>
+                                    <td style="border-left: 2px solid white;" [ngClass]="order.stock_availibility==1?'dispatchable': order.stock_availibility==3 || order.stock_availibility==2?'partial-dispatchable':'not-dispatchable'">
+                                        {{order.payable_amount}}</td>
+                                    <td [ngClass]="order.stock_availibility==1?'dispatchable': order.stock_availibility==3 || order.stock_availibility==2?'partial-dispatchable':'not-dispatchable'">
+                                        {{order.payment_collection?.total_paid}}</td>
+                                    <td [ngClass]="order.stock_availibility==1?'dispatchable': order.stock_availibility==3 || order.stock_availibility==2?'partial-dispatchable':'not-dispatchable'">
+                                        {{order.payable_amount-order.payment_collection.total_paid}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage(currentPage)">
+                        </pagination>
+                    </div>
+                    <div *ngIf="waiting">
+                        <h3>Please wait, loading...</h3>
+                    </div>
+                    <div *ngIf="!waiting && orders.length==0">
+                        <h3>No data found.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div bsModal #orderViewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="oredrViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" (click)="cancel()">&times;</button>
+                <h4 class="modal-title">Order No. {{selectedOrder.order_no}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4 style="color:#1361b1">{{resMessage}}</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <button *ngIf="selectedOrder.stock_availibility==2 || selectedOrder.stock_availibility==1" [disabled]="res_pending" class="btn btn-success" style="float:right" (click)="dispatch()">Send to
+                            Dispatch</button>
+                        <button *ngIf="selectedOrder.stock_availibility==3" [disabled]="res_pending" class="btn btn-warning" style="float:right" (click)="splitOrder()">Split Order for Available
+                            Item</button>
+                        <h4 *ngIf="selectedOrder.stock_availibility==0" style="color:red">No item is available to dispatch
+                        </h4>
+                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="clearfix"></div>
+                <h2 *ngIf="selectedOrder.is_partially_processed">This order is processing partially</h2>
+                <div *ngIf="isSplited" class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Splited Order
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group row">
+                                        <label for="shipping_charge" class="col-md-4 control-label"> Select
+                                            Carrier:</label>
+                                        <div class="col-md-8">
+                                            <select [(ngModel)]="splitedOrder.carrier_id" class="form-control" name="carrier_name" id="carrier_name">
+                                                <option *ngFor="let carry of carriers" [ngValue]="carry._id">
+                                                    {{carry.name}}
+                                                </option>
+                                            </select>
+                                            <span *ngIf="(isSubmitted && !splitedOrder.carrier_id)" style="color: red">Carrier Name is required!</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="shipping_charge" class="col-md-4 control-label"> Shipping
+                                            Charge(TK.): </label>
+                                        <div class="col-md-8">
+                                            <input type="number" [(ngModel)]="splitedOrder.delivery_charge" class="form-control" name="shipping_charge" id="shipping_charge" placeholder="Shipping Charge">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="discount" class="col-md-4 control-label"> Discount(TK.): </label>
+                                        <div class="col-md-8">
+                                            <input type="number" [(ngModel)]="splitedOrder.discount" class="form-control" name="discount" placeholder="Discount">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="wrapping_charge" class="col-md-4 control-label"> Wrapping
+                                            Charge(TK.): </label>
+                                        <div class="col-md-8">
+                                            <input type="number" [(ngModel)]="splitedOrder.wrapping_charge" class="form-control" name="wrapping_charge" placeholder="Wrapping Charge">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="wrapping_charge" class="col-md-4 control-label"></label>
+                                        <div class="col-md-8">
+                                            <h5>Total Cost: {{splitedOrder.total_price+splitedOrder.delivery_charge+splitedOrder.wrapping_charge-splitedOrder.discount}} TK.
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                                <h4>Items</h4>
+                                <div class="horizontal-scroll info-table">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SL#</th>
+                                                <th> Product Name </th>
+                                                <th> Publisher Name </th>
+                                                <th> Qty </th>
+                                                <th> Unit Price </th>
+                                                <th>Total Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="product-body">
+                                            <tr *ngFor="let item of splitedOrder.products; let i=index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.publisher}}</td>
+                                                <td>{{item.quantity}}</td>
+                                                <td>{{item.price}}</td>
+                                                <td>BDT {{item.price * item.quantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="color:#0275d8">{{resMessage}}</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button [disabled]="res_pending" (click)="saveNewOrder()" class="btn btn-warning pull-right">Save &
+                                            Dispatch</button>
+                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div *ngIf="!isSplited" class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Customer Info
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="horizontal-scroll info-table">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.contact_name}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mobile</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.phone_number}}
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="selectedOrder.created_by && selectedOrder.created_by.email">
+                                                <td>Email</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.created_by?.email}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!isSplited" class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Order Items
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="horizontal-scroll">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SL#</th>
+                                                <th> Product Name </th>
+                                                <th> Publisher Name </th>
+                                                <th> Req. QTY </th>
+                                                <th> Stk. QTY </th>
+                                                <th> Unit Price </th>
+                                                <th>Total Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="product-body">
+                                            <tr *ngFor="let item of selectedOrder.products; let i=index">
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{i+1}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{item.name}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{item.publisher?.name}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{item.quantity}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{item.stock_qty}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    {{item.price}}</td>
+                                                <td [ngClass]="item.stock_qty>=item.quantity?'dispatchable': item.stock_qty>0?'partial-dispatchable':'not-dispatchable'">
+                                                    BDT {{item.price * item.quantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="selectedOrder.is_partially_processed" class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Parent Order Items
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="horizontal-scroll">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SL#</th>
+                                                <th> Product Name </th>
+                                                <th> Publisher Name </th>
+                                                <th> Required </th>
+                                                <th> Processed </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="product-body">
+                                            <tr *ngFor="let item of selectedOrder.act_product; let i=index">
+                                                <td>{{i+1}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.publisher?.name}}</td>
+                                                <td>{{item.act_quantity}}</td>
+                                                <td>{{item.processed}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

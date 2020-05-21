@@ -1,0 +1,71 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                            </div>
+                            <div class="col-md-8">
+                                Chart Of Account
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tree-ul">
+                        <tree-root [nodes]="nodes" [focused]="true" [options]="options" class="tree"
+                            (onFocus)="onEvent($event)"></tree-root>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="isShowDetail">
+            <ba-card title="Detail Info" baCardClass="with-scroll">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 control-label">Account Name:</label>
+                    <div class="col-sm-10">
+                        {{detail.name}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="account_code" class="col-sm-2 control-label">Account Code:</label>
+                    <div class="col-sm-10">
+                        {{detail.account_code}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="voucher_type" class="col-sm-2 control-label">Voucher Type:</label>
+                    <div class="col-sm-10">
+                        {{detail.voucher_type}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="parent" class="col-sm-2 control-label">Parent Account:</label>
+                    <div class="col-sm-10">
+                        {{detail.parent? detail.parent.name: 'Root'}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="is_enabled" class="col-sm-2 control-label">Active:</label>
+                    <div class="col-sm-10">
+                        {{detail.is_enabled? 'Yes': 'No'}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="note" class="col-sm-2 control-label">Note:</label>
+                    <div class="col-sm-10">
+                        {{detail.note}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <button *ngIf="detail.parent" [routerLink]="['edit', detail._id]" type="button" class="btn btn-primary">Edit</button>
+                    </div>
+                </div>
+            </ba-card>
+        </div>
+    </div>
+</div>

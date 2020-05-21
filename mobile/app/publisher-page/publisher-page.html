@@ -1,0 +1,175 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="book-details-section-area-all">
+                    <div class="book-details-section">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="details-images-area">
+                                    <div class="details-images-21">
+                                        <img src="{{publisher.image}}" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="details-description-22">
+                                    <div class="details-title-23">
+                                        <h3> {{publisher.name}} </h3>
+                                    </div>
+                                    <div class="details-title-24">
+                                        <div class="details-author">
+                                            <h3> Contact Information </h3>
+                                        </div>
+                                        <div class="details-ratings">
+                                            <p *ngIf="publisher.address">Address: {{publisher.address}}</p>
+                                            <p *ngIf="publisher.phone">Phone: {{publisher.phone}}</p>
+                                            <p *ngIf="publisher.email">Email: {{publisher.email}}</p>
+                                            <p *ngIf="publisher.website">Website: {{publisher.website}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="delivery-policy" align="center">
+                                    <span style=" padding-right: 10px;">
+                                        <a href="#">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                    </span>
+                                    <span style=" padding-right: 10px;">
+                                        <a href="#">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                    </span>
+                                    <span style=" padding-right: 10px;">
+                                        <a href="#">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </span>
+                                    <span style=" padding-right: 10px;">
+                                        <a href="#">
+                                            <i class="fa fa-google-plus"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- book specification start -->
+
+
+                <div class="book-details-section-area-all">
+                    <!-- /book Author -->
+                    <div class="book-specification-section">
+                        <div class="book-details-section">
+                            <h2 align="center"> Books </h2>
+                        </div>
+                    </div>
+                    <div class="book-details-section-inline">
+                        <div class="row">
+                            <div class="col-md-2" *ngFor="let book of books">
+                                <div class="image-box" (click)="viewDetail(book)">
+                                    <img src="{{book.image}}" class="img-responsive">
+                                </div>
+                                <div class="">
+                                    <p align="center">Name: {{book.name}} </p>
+                                    <p align="center">Price: {{book.price}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button (click)="showTextArea()" class="btn btn-success" style="float: right;">
+                    <span>
+                        <i class="fa fa-file-text"></i> Write a Review</span>
+                </button>
+                <h3 [hidden]="showMessage">{{message}}</h3>
+                <div class="row" [hidden]="!showReviewBox">
+                    <div class="review-area-full">
+                        <textarea [(ngModel)]="review.speech" name="" id="" cols="95" rows="10"></textarea>
+                        <button class="btn btn-default" style="margin-top: 21px; float: right; margin-right: 14px;" (click)="save()">Submit</button>
+                    </div>
+                </div>
+                <div class="book-details-section-area-all">
+                    <!-- /Customer review -->
+                    <div class="book-specification-section">
+                        <div class="book-details-section">
+                            <h2> Comments </h2>
+                        </div>
+                    </div>
+
+                    <div class="book-details-section-inline">
+                        <div class="row" *ngFor="let review of prevReviews">
+                            <div class="review-area-full">
+                                <div class="col-md-2">
+                                    <div class="review-user-img">
+                                        <img src="{{publisher.image}}" class="img-responsive">
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="review-description">
+                                        <div class="review-user-name">
+                                            <p> By
+                                                <span> {{review.first_name}} {{review.last_name}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="review-date">
+                                            <span>{{review.review_at | date: 'dd MMM-yyyy'}}</span>
+                                        </div>
+                                        <div class="review-ratings">
+                                            <span>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-o">
+                                                </i>
+                                                <i class="fa fa-star-half-o"></i>
+                                            </span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="review-text">
+                                            <p>
+                                                {{review.review_speech}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /customer review -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <!--  breadcrumb start here  -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-tab">
+                    <a class="breadcrumb-item" href="#">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                    <a class="breadcrumb-item" href="#"> Anubad </a>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                    <a class="breadcrumb-item" href="#"> Title of the book </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--  breadcrumb end here  -->

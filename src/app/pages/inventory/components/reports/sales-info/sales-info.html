@@ -1,0 +1,267 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Sales Summary" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 type-block">
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="report_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning">
+                                                Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <table class="table-print">
+                                    <tr>
+                                        <td class="payment-head-img">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                        </td>
+                                        <td>
+                                            <h4>Sales Report</h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll sales-summary">
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th colspan="4" width="40%" style="text-align: center; background-color: #5bc0de; color: white;">
+                                            Detailes
+                                        </th>
+                                        <th width="32%" colspan="3" style="text-align: center; background-color: #2e368f; color: white;">
+                                            Delevery & Promotion
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #5cb85c; color: white;">
+                                            Inv. Val
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #ed7878; color: white;">
+                                            Transaction
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #90b900; color: white;">
+                                            Carrier
+                                        </th>
+                                        <th  width="4%" rowspan="2" style="text-align: center; background-color: #2e368f; color: white;">
+                                            Return
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #0275d8; color: white;">
+                                            Total
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #ed7878; color: white;">
+                                            Recieved
+                                        </th>
+                                        <th width="4%" rowspan="2" style="text-align: center; background-color: #5bc0de; color: white;">
+                                            Due
+                                        </th>
+                                    </tr>
+                                    <tr class="black-muted-bg">
+                                        <th style="background-color: #5bc0dea1;">Date</th>
+                                        <th style="background-color: #5bc0dea1;">Order</th>
+                                        <th style="background-color: #5bc0dea1;">Book Qty</th>
+                                        <th style="background-color: #5bc0dea1;">Total</th>
+                                        <th style="background-color: #1a2273f0;">Discount</th>
+                                        <th style="background-color: #1a2273f0;">Delevery</th>
+                                        <th style="background-color: #1a2273f0;">Wrapping</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index" (dblclick)="rowSelected(item._id)">
+                                        <td style="text-align: left;">{{item.order_at | date: 'dd MMM-yyyy'}}</td>
+                                        <td style="text-align: center;">{{item.total_order}}</td>
+                                        <td style="text-align: center;">{{item.total_book}}</td>
+                                        <td style="text-align: center;">{{item.total_price}}</td>
+                                        <td style="text-align: center;">{{item.discount}}</td>
+                                        <td style="text-align: center;">{{item.delivery_charge}}</td>
+                                        <td style="text-align: center;">{{item.wrapping_charge}}</td>
+                                        <td style="text-align: center;">{{item.payable_amount}}</td>
+                                        <td style="text-align: center;">{{item.transaction_cost.toFixed(2)}}</td>
+                                        <td style="text-align: center;">{{item.carrier_cost}}</td>
+                                        <td style="text-align: center;">0</td>
+                                        <td style="text-align: center;">{{(item.transaction_cost+item.carrier_cost).toFixed(2)}}</td>
+                                        <td style="text-align: center;">{{item.recieved_amount}}</td>
+                                        <td style="text-align: center;">{{item.payable_amount-item.recieved_amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="20%">Total Book: {{total.book}}</th>
+                                        <th width="20%">Total Sales: {{total.sales}} Tk.</th>
+                                        <th width="30%">Total Received: {{total.received}} Tk.</th>
+                                        <th width="30%">Due: {{total.due}} Tk.</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #salesdetailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="csalesdetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width: 1400px;">
+        <div class="modal-content">
+            <div id="print-section">
+                <div class="modal-header">
+                    <button class="btn btn-warning" (click)="printDetail()">Print</button>
+                    <button class="close" aria-label="Close" (click)="salesdetailModal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="widgets" id="detail-print-section">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="row  report_header">
+                                    <div class="col-md-12">
+                                        <table width="100%" tyle="font-size: 10px">
+                                            <tr>
+                                                <td width="33%">
+                                                    <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                                </td>
+                                                <td width="33%">
+                                                    <h4>Sales Detail</h4>
+                                                </td>
+                                                <td width="33%">
+                                                    Detail On: {{selectedDateStr}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="horizontal-scroll sales-order-detail">
+                                    <table width="100%" class="table table-hover">
+                                        <thead>
+                                            <tr class="black-muted-bg">
+                                                <th rowspan="2" style="text-align: left" width="1%" class="table-id">SL#</th>
+                                                <th rowspan="2" style="text-align: left" width="4%" style="text-align:left">Order No</th>
+                                                <th colspan="4" width="65%">
+                                                    Books
+                                                </th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Net</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Delivery</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Discount</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Wrapping</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Payable</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Carrier</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Transaction</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Total</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Paid</th>
+                                                <th rowspan="2" style="text-align: center" width="3%">Due</th>
+                                            </tr>
+                                            <tr style="background-color: #8080807d;">
+                                                <th style="text-align: left;" width="55%">Name</th>
+                                                <th style="text-align: center" width="3%">Price</th>
+                                                <th style="text-align: center" width="3%">Qty</th>
+                                                <th style="text-align: center" width="3%">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of report_detail_data; let j=index">
+                                                <td>{{j+1}}</td>
+                                                <td>{{item.order_no}}</td>
+                                                <td colspan="4">
+                                                    <table width="100%" class="order-detail">
+                                                        <tr *ngFor="let book of item.products; let k=index">
+                                                            <td style="text-align: left;" width="76%">
+                                                                {{k+1}})&nbsp;{{book.name}}
+                                                            </td>
+                                                            <td style="text-align: center" width="8%">{{book.price}}</td>
+                                                            <td style="text-align: center" width="8%">{{book.quantity}}</td>
+                                                            <td style="text-align: center" width="8%">
+                                                                {{book.price * book.quantity}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td style="text-align: center">{{item.total_price}}</td>
+                                                <td style="text-align: center">{{item.delivery_charge}}</td>
+                                                <td style="text-align: center">{{item.discount}}</td>
+                                                <td style="text-align: center">{{item.wrapping_charge}}</td>
+                                                <td style="text-align: center">{{item.payable_amount}}</td>
+                                                <td style="text-align: center">{{item.payment_collection.carrier_cost}}</td>
+                                                <td style="text-align: center">{{item.payment_collection.transaction_cost?item.payment_collection.transaction_cost.toFixed(2):0}}</td>
+                                                <td style="text-align: center">{{item.payable_amount-item.payment_collection.carrier_cost-(item.payment_collection.transaction_cost?item.payment_collection.transaction_cost.toFixed(2):0)}}</td>
+                                                <td style="text-align: center">{{item.payment_collection.total_paid}}</td>
+                                                <td style="text-align: center">{{item.payable_amount-item.payment_collection.total_paid}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <b>Summary</b>
+                                                </td>
+                                                <td colspan="2">
+                                                    <b>Book: </b>{{sales_summary.total_book}} 
+                                                </td>
+                                                <td colspan="2">
+                                                    <b>Order: </b>{{sales_summary.total_order}} 
+                                                </td>
+                                                <td colspan="2">
+                                                    <b>Payable: </b>{{sales_summary.total_payable}} Tk.
+                                                </td>
+                                                <td colspan="3">
+                                                    <b>Paid: </b>{{sales_summary.total_paid}} Tk.
+                                                </td>
+                                                <td colspan="3">
+                                                   <b>Due: </b>{{sales_summary.total_due}} Tk.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

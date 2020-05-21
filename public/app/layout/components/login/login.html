@@ -1,0 +1,123 @@
+
+<div class="header_right_44" [hidden]="authService.isLoggedIn()">
+    <div class="shop-menu">
+        <div class="trans">
+            <span class="loginHeader" (click)="openModal()">
+                <i class="fa fa-lock"></i> {{'Sign in/up' | translate}} </span>
+            <br>
+            <span class="loginHeader" [routerLink]="['/contents/purchase-list']">
+                <i class="fa fa-map-marker"></i> {{'Order Tracker' | translate}} </span>
+        </div>
+    </div>
+</div>
+
+<!-- login modal start here  -->
+<div bsModal #loginModal="bs-modal" (onHidden)="onHidden()" class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog " role="document ">
+        <div class="modal-content ">
+            <div class="modal-header login-header ">
+                <button type="button" (click)="loginModal.hide()" class="close" data-dismiss="modal " aria-label="Close ">
+                    <span aria-hidden="true ">&times;</span>
+                </button>
+
+                <div class="signin-logo">
+                    <a [routerLink]="['']" style="width: 160px;text-align: center; 
+                            height: 40px;
+                            height: auto;">
+                        <img src="{{logo_url}}" alt="" />
+                    </a>
+                </div>
+            </div>
+            <div class="modal-body ">
+                <div class="row ">
+                    <div class="col-md-12 ">
+                        <div class="login-title">
+                            <h3> {{'Sign In' | translate}} </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div *ngIf="!show_code_submit_part" class="col-md-6 ">
+                        <form class="form-inline " (ngSubmit)="signIn(subscriber)">
+                            <div class="form-group-defult">
+                                <input [(ngModel)]="subscriber.EmailOrUserName" (ngModelChange)="validate('EmailOrUserName')" name="nameoremail" type="text "
+                                    class="form-control " id="inputEmail3" placeholder="{{'Phone, Email or Username' | translate}}" required>
+                                <!-- <span *ngIf="!subscriber.EmailOrUserName" class="help-block sub-little-text ">Phone/Email is required</span> -->
+                            </div>
+
+                            <div class="form-group-defult">
+                                <input [(ngModel)]="subscriber.signInPassword" (ngModelChange)="validate('signInPassword')" name="password" type="password"
+                                    class="form-control" id="inputPassword3" placeholder="{{'Password' | translate}}" required>
+                                <span *ngIf="validation.signInPassword?.required_error" class="help-block sub-little-text ">{{'Password is required' | translate}}</span>
+                                <span *ngIf="validation.signInPassword?.length_error" class="help-block sub-little-text">{{'Password should be minimum 6 characters' | translate}}</span>
+                            </div>
+
+                            <div class="margintop20 marginbuttom10 ">
+                                <button type="submit" [disabled]="!subscriber.EmailOrUserName || !subscriber.signInPassword || validation.signInPassword?.length_error"
+                                    class="btn btn-default sign-button "> {{'Sign In' | translate}} </button>
+                                <p style="color: red; ">{{signInMessage}}</p>
+                            </div>
+                        </form>
+
+                        <div *ngIf="show_phone_resend_part" class="forgot margintop10 marginbuttom10 ">
+                            <button class="btn btn-default" (click)="viewResend()">{{'Resend' | translate}}</button>
+                        </div>
+
+                        <div class="forgot margintop10 marginbuttom10 ">
+                            <a (click)="loginModal.hide()" [routerLink]="['./subscriber/password-forget/']"> {{'Forgot your password?' | translate}} </a>
+                        </div>
+                    </div>
+                    <div *ngIf="show_code_submit_part" class="col-md-6">
+                        <form class="form-inline " (ngSubmit)="verifyPhone(subscriber)">
+                            <div class="form-group-defult">
+                                <input [(ngModel)]="vrification.code" type="text" class="form-control" name="code" id="code" placeholder="Code" required>
+                                <span *ngIf="vrification.code && vrification.code?.length<6" class="help-block sub-little-text ">{{'Invalid Code' | translate}}</span>
+                            </div>
+                            <div class="form-group-defult">
+                                <label for="resend_code">{{'Did not recieve code?' | translate}}</label>
+                                <a class="sinup-success" (click)="resendCode()">
+                                    <span *ngIf="can_resend" class="hand_cursor">{{'Resend Code' | translate}}</span>
+                                    <span *ngIf="!can_resend" class="hand_cursor">Wait {{wait_timer}} Sec.</span>
+                                </a>
+                            </div>
+                            <div class="margintop20 marginbuttom10 ">
+                                <button type="submit" [disabled]="!vrification.code || vrification.code?.length<6" class="form-control btn btn-default sign-button">
+                                    {{'Send Code' | translate}} </button>
+                            </div>
+                            <div *ngIf="successVreify" class="form-group-defult">
+                                <p style="color:green">
+                                    {{signInMessage}}
+                                    <button class="btn btn-default" style="font-size:10px;" (click)="showSignIn()">{{'Sign in' | translate}}</button>
+                                </p>
+                            </div>
+                            <div *ngIf="!successVreify" class="form-group-defult">
+                                <p style="color:red">
+                                    {{signInMessage}}
+                                    <button class="btn btn-default" style="font-size:10px;" (click)="showSignIn()">{{'Back' | translate}}</button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-6 separetor ">
+                        <div class="social-login ">
+                            <facebook-login></facebook-login>
+                            <br>
+                            <br>
+                            <br>
+                            <!-- <google-login type="login"></google-login> -->
+                            <div>
+                                <p>{{'Dont have an account?' | translate}}
+                                    <a class="hand_cursor" (click)="showSignupModal()"> {{'New Account' | translate}} </a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer footer-deafult-modal "></div>
+        </div>
+    </div>
+</div>
+<!-- login modal end here -->

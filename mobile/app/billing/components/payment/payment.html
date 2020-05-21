@@ -1,0 +1,177 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="payment-header">
+                    <h1> {{'Payment Method' | translate}} </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="continue-shipping">
+                    <p>
+                        <i class="fa fa-angle-left"></i>
+                        <a [routerLink]="['../shipping']"> {{'Back' | translate}} </a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div *ngFor="let alert of alerts">
+                    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="payment-area">
+                    <div class="types-of-payment">
+                        <table class="nav nav-tabs payment-tab">
+                            <tr>
+                                <td width="25%" class="active" href="#cashondelivery" data-toggle="tab">
+                                    <span> {{'Cash On Delivery' | translate}} </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="cashondelivery">
+                            <div class="online_payment">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="how-to-pay">
+                                            <p> {{'How to Pay' | translate}} : </p>
+                                        </div>
+                                        <div class="online-discription">
+                                            <p> {{'Click on "Confirm Order".' | translate}}</p>
+                                            <p> {{'Your order will be placed immediately.' | translate}} </p>
+                                            <p> {{'You will get the parcel of happiness within 3-5 working days(in Dhaka).' |
+                                                translate}}
+                                            </p>
+                                            <p> {{'After receiving the parcel, pay to the delivery man' | translate}}. </p>
+                                            <p> {{'Return Policy Notice' | translate}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-4">
+                                        <div class="online-payment-11">
+                                            <h3> {{'Cash On Delivery' | translate}} </h3>
+                                        </div>
+                                        <div class="online-payment-type">
+                                            <p> {{'Pay with cash after receiving your order' | translate}} </p>
+                                        </div>
+                                        <div class="payment-paddingtopbottom">
+                                            <span class="payable-text">{{'Your Payable amount' | translate}} :</span>
+                                            <span class="payable-amount" style="white-space: nowrap"> {{payment_data.total | priceConvert}} </span>
+                                        </div>
+                                        <div class="online-payment-terms">
+                                            <span class="check_box">
+                                                <input type="checkbox" [(ngModel)]="isAgree" id="checkbox1_1_3">
+                                            </span>
+                                            <span class="terms_condition">{{'I agree to start' | translate}}
+                                                <a class="terms-policy" (click)="showModaldata('terms-of-use')">
+                                                    <b>{{'Terms of Uses' | translate}} </b>
+                                                </a> {{'&' | translate}}
+                                                <a class="terms-policy" (click)="showModaldata('privacy-policy')">
+                                                    <b>{{'Privacy Policies' | translate}} </b>
+                                                </a>{{'I agree to end' | translate}} </span>
+                                        </div>
+                                        <div class="payment-paddingtopbottom">
+                                            <h5>Payment Methods:</h5>
+                                            <select [disabled]="!isAgree" name="city" class="form-control" [(ngModel)]="pMethod.method">
+                                                <option *ngFor="let method of pMethods" [ngValue]="method.val">
+                                                    {{method.name}}
+                                                </option>
+                                            </select>
+                                            <br>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>&nbsp;&nbsp;
+                                            <span *ngIf="res_pending">Please Wait...</span>
+                                            <button [disabled]="!isAgree || res_pending" type="submit" class="btn btn-default confirm-order-button" (click)="saveOrder(isAgree)">
+                                                {{'Confirm Order' | translate}} </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-payment-section" style="margin-top: 200px;">
+                        <div class="payment-option" style="border-top: 1px solid #ddd;">
+                            <div class="row" style="padding-bottom: 15px;" >
+                                <div class="col-md-4">
+                                    <div class="payment-title-option">
+                                        <h2 style="text-align: center; margin: 5px">{{'payment_option' | translate}} </h2>
+                                    </div>
+                                </div>
+                                <div class="col-md-8" >
+                                    <div class="payment-method">
+                                        <ul>
+                                            <li>
+                                                <img alt="pizza" src="{{staticImageBaseUrl}}ico_1.png">
+                                            </li>
+                                            <li>
+                                                <img alt="bkash" src="{{staticImageBaseUrl}}ico_2.png">
+                                            </li>
+                                            <li>
+                                                <img alt="mastercard" src="{{staticImageBaseUrl}}ico_3.png">
+                                            </li>
+                                            <li>
+                                                <img alt="visa" src="{{staticImageBaseUrl}}ico_4.png">
+                                            </li>
+                                            <!-- <li>
+                                                <img alt="paypal" src="{{staticImageBaseUrl}}ico_5.jpg">
+                                            </li> -->
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <order-summary (setPayableAmount)="getPayableAmount($event)"></order-summary>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="continue-shopping">
+                    <p>
+                        <i class="fa fa-angle-left"></i>
+                        <a [routerLink]="['../shipping']"> {{'Back' | translate}} </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div bsModal #termsPolicyModal="bs-modal" (onHidden)="onHidden()" class="modal fade myModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="termsPolicyModal.hide()" data-dismiss="modal">&times;</button>
+                <h4>{{content_object?.title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div [innerHTML]="content_object?.content"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<div *ngFor="let language of languages; let i = index" [formGroup]="parentGroup" class="input-container">
+    <div [ngSwitch]="type" [ngClass]="{'has-error': (!parentGroup.controls[language.code].valid && parentGroup.controls[language.code].touched)}">
+        <input *ngSwitchCase="'text'" type="text" class="form-control" formControlName="{{language.code}}" placeholder="{{label}} ({{language.name}})"
+        />
+        <textarea *ngSwitchCase="'textarea'" class="form-control" formControlName="{{language.code}}" placeholder="{{label}} ({{language.name}})"></textarea>
+        <ckeditor *ngSwitchCase="'ckeditor'" class="form-control" formControlName="{{language.code}}" ></ckeditor>
+    </div>
+
+    <span *ngIf="parentGroup.controls[language.code].hasError('required') && parentGroup.controls[language.code].touched" class="help-block sub-little-text">{{label}} ({{language.name}}) is required</span>
+</div>

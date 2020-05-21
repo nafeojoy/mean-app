@@ -1,0 +1,91 @@
+<style>
+    .default-content img {
+        width: 100%;
+        height: auto;
+    }
+
+    .default-content p, .default-content span  {
+        white-space: normal;
+        font-family: 'sans-serif' !important;
+        font-size: 14px !important;
+        color: black;
+    }
+    
+
+    .fixed-container-article img {
+        width: 100%;
+        height: auto;
+    }
+
+
+    .default-content {
+        text-align: justify;
+        height: 118px;
+        overflow: hidden;
+    }
+
+    .fixed-container-article {
+        height: 75px;
+        width: 150px;
+        overflow: hidden;
+        margin-top: 10%;
+    }
+</style>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr class="cart_menu">
+                                <td width="5%"> </td>
+                                <td class="image" width="8%">Title</td>
+                                <td class="quantity" width="20%">Articles</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let articlesObject of articles; let i=index">
+                                <td class="item-no"> {{i+1}} </td>
+                                <td class="cart_product">
+                                    <h5 style="max-width: 150px; white-space: normal;">{{articlesObject.title}}</h5>
+                                    <div *ngIf="articlesObject.image" class="fixed-container-article">
+                                        <img src="/image/article/{{articlesObject.image}}" alt="" />
+
+                                    </div>
+                                    <p>Created At: {{articlesObject.created_at | date: 'dd MMM-yyyy'}}</p>
+                                </td>
+                                <td style="height: 145px; overflow: hidden; vertical-align: middle">
+                                    <div>
+                                        <!-- <div class="default-content" [innerHTML]="articlesObject.content"></div> -->
+
+                                        <a target="_blank" [routerLink]="['../../page',articlesObject.content_url]">
+                                            <span style="text-decoration: underline;">Go To The Article</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="view_more">
+                    <nav aria-label="Page navigation">
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;"
+                            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true"
+                            (click)="setPage()">
+                        </pagination>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

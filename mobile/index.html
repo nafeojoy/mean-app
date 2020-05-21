@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+
+    <meta name="description" content="<%= htmlWebpackPlugin.options.metadata.description %>">
+
+    <% if (webpackConfig.htmlElements.headTags) { %>
+        <!-- Configured Head Tags  -->
+        <%= webpackConfig.htmlElements.headTags %>
+            <% } %>
+
+                <!-- base url -->
+                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+
+                <script>
+                    (function (i, s, o, g, r, a, m) {
+                        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                            (i[r].q = i[r].q || []).push(arguments)
+                        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+                    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+                    ga('create', 'UA-97330823-1', 'auto');
+                    ga('send', 'pageview');
+
+                </script>
+</head>
+
+<body>
+    <app>
+        <style>
+            app {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+
+
+                text-transform: uppercase;
+                font-family: 'Times New Roman', Times, serif;
+
+                font-size: 2em;
+                text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            body {
+                background: #ffffff;
+                margin: 0;
+                padding: 0;
+            }
+
+            @keyframes dots {
+                50% {
+                    transform: translateY(-.4rem);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .d {
+                animation: dots 1.5s ease-out infinite;
+                color: rgb(32, 98, 175);
+            }
+
+            .d-2 {
+                animation-delay: .5s;
+
+
+            }
+
+            .d-3 {
+                animation-delay: 1s;
+
+
+            }
+
+            .d-4 {
+                animation-delay: 1.5s;
+                color: #8B008B !important;
+
+            }
+
+            .d-5 {
+                animation-delay: 2s;
+                color: #8B008B !important;
+            }
+
+            .d-6 {
+                animation-delay: 2.5s;
+                color: #8B008B !important;
+
+            }
+
+            .d-7 {
+                animation-delay: 3s;
+                color: #8B008B !important;
+
+            }
+
+            .d-8 {
+                animation-delay: 3.5s;
+                color: #8B008B!important;
+
+            }
+        </style>
+        <!-- <img class="d" src="assets/images/logo_bn.png"> -->
+
+        <span class="d">B</span>
+        <span class="d d-2">O</span>
+        <span class="d d-3">I</span>
+        <span class="d d-4">B</span>
+        <span class="d d-5">A</span>
+        <span class="d d-6">Z</span>
+        <span class="d d-7">A</span>
+        <span class="d d-8">R</span>
+    </app>
+
+    <!-- Webpack Dev Server reload -->
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+        <script src="/webpack-dev-server.js"></script>
+        <% } %>
+
+            <!-- social login scripts -->
+            <script type="text/javascript" src="/assets/js/fb_sdk.js"></script>
+            <!--<script src="https://apis.google.com/js/platform.js" async defer></script>-->
+            <script src="https://apis.google.com/js/platform.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.2.2/web-animations.min.js"></script>
+
+</body>
+
+</html>

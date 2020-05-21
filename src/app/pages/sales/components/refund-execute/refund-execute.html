@@ -1,0 +1,252 @@
+<div class="row" *ngIf='selectedRefund._id'>
+    <div baCardBlur class="animated fadeIn card with-scroll col-md-12">
+        <div class="card-header clearfix">
+            <div class="card-title">
+                Refund Execute
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="horizontal-scroll info-table">
+                <form #refundExecuteForm="ngForm" (ngSubmit)="refundExecute(refund_info)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="payer_name" class="col-md-4 control-label"> Payer Name * :</label>
+                                <div class="col-md-8">
+                                    <input name="payer_name" [(ngModel)]="refund_info.payer_name" class="form-control" placeholder="Your Name" required>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="gateway_id" class="col-md-4 control-label">Payment Type *:</label>
+                                <div class="col-md-8">
+                                    <select [(ngModel)]="selectedPaymentType" class="form-control" name="payment_type" id="payment_type" required>
+                                        <option *ngFor="let payment_type of payment_types" [ngValue]="payment_type">
+                                            {{payment_type}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="executed_at" class="col-md-4 control-label"> Execution Date :</label>
+                                <div class="col-md-8">
+                                    <input type="date" name="executed_at" [(ngModel)]="refund_info.executed_at" class="form-control" required>
+
+                                </div>
+                            </div>
+
+                            <br><br> <label id="responseMsg">{{responseMessage}}</label>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row" *ngIf="selectedPaymentType == 'via SSL'">
+                                <label for="ssl_ref_id" class="col-md-4 control-label"> SSL Reference ID * :</label>
+                                <div class="col-md-8">
+                                    <input name="ssl_ref_id" [(ngModel)]="refund_info.ssl_ref_id" class="form-control" placeholder="SSL Reference ID" required>
+
+                                </div>
+                            </div>
+
+                            <div *ngIf="selectedPaymentType == 'via bKash'">
+                                <div class="form-group row">
+                                    <label for="ssl_ref_id" class="col-md-4 control-label"> bKash Transaction ID *
+                                        :</label>
+                                    <div class="col-md-8">
+                                        <input name="bkash_tran_id" [(ngModel)]="refund_info.bkash_tran_id" class="form-control" placeholder="bKash Transaction ID" required>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="customer_mobile" class="col-md-4 control-label"> bKash From No *
+                                        :</label>
+                                    <div class="col-md-8">
+                                        <input type="number" name="bkash_from_no" [(ngModel)]="refund_info.bkash_from_no" class="form-control" placeholder="bKash From No" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="customer_mobile" class="col-md-4 control-label"> bKash To No *
+                                        :</label>
+                                    <div class="col-md-8">
+                                        <input type="number" name="bkash_to_no" [(ngModel)]="refund_info.bkash_to_no" class="form-control" placeholder="bKash To No" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedPaymentType">
+                                <!-- <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner> -->
+                                <button class="btn btn-default">Submit</button>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<br>
+<br>
+<br>
+
+
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Refund Report" baCardClass="with-scroll">
+                    <div class="row">
+
+                        <div class="col-md-8 type-block">
+                            <div class="form-group row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-4">
+                                        <label for="employee" class="control-label">Not Refunded</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ba-checkbox [(ngModel)]="filter.not_executed" [ngModelOptions]="{standalone: true}" (change)="changeType('not_executed')">
+                                        </ba-checkbox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-4">
+                                        <label for="employee" class="control-label "> Refunded</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ba-checkbox [(ngModel)]="filter.executed" [ngModelOptions]="{standalone: true}" (change)="changeType('executed')"></ba-checkbox>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-4">
+                                        <label for="employee" class="control-label ">All</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ba-checkbox [(ngModel)]="filter.all_request" [ngModelOptions]="{standalone: true}" (change)="changeType('all_request')">
+                                        </ba-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="repost_data.length>0" class="btn btn-success"
+                                                (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending"
+                                                class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="repost_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <table class="table-print">
+                                    <tr>
+                                        <td class="payment-head-img">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                        </td>
+                                        <td>
+                                            <h4>Refund Summary</h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="4%" class="table-id">SL#</th>
+                                        <th width="15%" class="no-display" style="text-align:left">Request Date</th>
+                                        <th width="15%" style="text-align:left">Refund Date</th>
+
+                                        <th width="22%" style="text-align:center">Order No</th>
+                                        <th width="15%" style="text-align:center">Refund Reason</th>
+                                        <th width="10%" style="text-align:center">Refund Amount</th>
+                                        <th width="15%" style="text-align:center">Customer Number</th>
+                                        <th width="20%" style="text-align:center">Comment</th>
+                                        <th width="5%" class="no-display"></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let refund of repost_data; let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td class="no-display" style="text-align:left">{{refund.requested_at | date:'dd MMM-yyyy'}}</td>
+                                        <td *ngIf="refund.executed_at" style="text-align:left">{{refund.executed_at | date:'dd MMM-yyyy'}}</td>
+                                        <td *ngIf="!refund.executed_at" style="text-align:left">{{'N/A'}}</td>
+                                        <td style="text-align:center">{{refund.order_no}}</td>
+
+                                        <td style="text-align:center">{{refund.refund_reason}}</td>
+                                        <td style="text-align:center">{{refund.refund_amount}}</td>
+                                        <td style="text-align:center">{{refund.customer_mobile}}</td>
+                                        <td style="text-align:center">{{refund.refund_comment}}</td>
+
+                                        <td *ngIf="!refund.payer_name" class="align-right no-display">
+                                            <button class="btn btn-success" (click)="getRefund(refund._id)">Select to execute</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,312 @@
+<div class="alert_messages_chart">
+    <div *ngFor="let alert of alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+</div>
+
+<div class="widgets">
+    <form (ngSubmit)="getData()" class="form-horizontal form-head-padding">
+        <div class="row">
+            <div class="offset-md-2 col-md-8">
+                <ba-card title="Visiting History">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="row_store" class="col-sm-1 control-label feild-title">From</label>
+                            <div class="col-sm-4">
+                                <aro-datepicker name="from_date" (dateLoader)="getFromDate($event)" [aroModel]="from_date"></aro-datepicker>
+                            </div>
+                            <label for="row_store" class="col-sm-1 control-label feild-title">To:</label>
+                            <div class="col-sm-4">
+                                <aro-datepicker name="to_date" (dateLoader)="getToDate($event)" [aroModel]="to_date"></aro-datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-sm-8">
+                                <div class="button_all" style="text-align: right; float: right;">
+                                    <span class="filter_button">
+                                        <button type="submit" [disabled]="res_pending" class="btn btn-warning">
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="15"></spinner>&nbsp;&nbsp; Show
+                                        </button>
+                                    </span>
+                                    <span>
+                                        <span (click)="reset()" class="btn btn-warning">Reset</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report Results -->
+
+                    <div class="row" *ngIf="visitors.length>0">
+                        <div class="col-lg-12 col-md-12">
+                            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                <div class="card-header clearfix">
+                                    <div class="card-title">
+                                        Total Visited: {{total_visited}} &nbsp;&nbsp;&nbsp; Total Visitor: {{totalItems}}
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="horizontal-scroll">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr class="black-muted-bg">
+                                                    <th class="table-id">#</th>
+                                                    <th>SL</th>
+                                                    <th>IP Used</th>
+                                                    <th>Total Visited</th>
+                                                    <th>History</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let visitor of visitors; let i=index">
+                                                    <td>{{(i + 1)}}</td>
+                                                    <td>Vsitor: {{(i + 1)}}</td>
+                                                    <td>{{visitor.total_ip_used}}</td>
+                                                    <td>{{visitor.total_visited}}</td>
+                                                    <td>
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <th>Address</th>
+                                                                <th>Visited</th>
+                                                            </thead>
+                                                            <tr *ngFor="let ip of visitor.history">
+                                                                <td>{{ip.ip}}</td>
+                                                                <td>{{ip.ip_num}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <section>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <div class="view_more">
+                                                            <nav aria-label="Page navigation">
+                                                                <pagination name="paging" [boundaryLinks]="false" [totalItems]="totalItems" [maxSize]="5" [(ngModel)]="currentPage" class="pagination-sm"
+                                                                    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                                                                    lastText="&raquo;" (numPages)="numPages = $event" (click)="setPage(currentPage)"></pagination>
+                                                            </nav>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- pop up modal section -->
+<!-- <div class="modal fade" id="viewModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Info</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="profile_images">
+                                    <div class="images">
+                                        <img [src]="profileImages" class="img-responsive img-thumbnail">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="85%" colspan="4" style="text-align:left;">
+                                            <h3>{{users?.first_name}} {{users?.last_name}}</h3>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td width="30%">DIN :</td>
+                                        <td width="25%">{{users?.din_no}}</td>
+                                        <td width="20%">CID :</td>
+                                        <td width="25%">{{users?.local?.username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Sponsor/CID :</td>
+                                        <td width="25%">{{users?.sponsor_id}}</td>
+                                        <td width="20%">Upline/CID :</td>
+                                        <td width="25%">{{users?.parent}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Current Position :</td>
+                                        <td width="25%">{{current_position?.name}}</td>
+                                        <td width="20%">Joining Date :</td>
+                                        <td width="25%">{{users?.created_at | date: 'dd MMM-yyyy'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Total Left Earn:</td>
+                                        <td width="25%">{{users?.total_left_point}} (PV)</td>
+                                        <td width="20%">Total Right Earn:</td>
+                                        <td width="25%">{{users?.total_right_point}} (PV) </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="30%">Matching Count:</td>
+                                        <td width="25%">{{users?.total_matching}}</td>
+                                        <td width="20%">Total Achievement :</td>
+                                        <td width="25%">{{total_earning}} (BDT)</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Remaining Left Point:</td>
+                                        <td width="25%">{{users?.left_point}} (PV)</td>
+                                        <td width="20%">Withdrawals Amount:</td>
+                                        <td width="25%">{{total_withdrawals}} (BDT)</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%">Remaining Right Point:</td>
+                                        <td width="25%">{{users?.right_point}} (PV)</td>
+                                        <td width="20%">Current Due (BDT):</td>
+                                        <td width="25%"><b>{{total_earning-total_withdrawals}} </b></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <tabset #staticTabs>
+                            <tab heading="Basic Info">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td width="30%">Father Name:</td>
+                                            <td width="60%">{{users?.father_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Mother Name:</td>
+                                            <td width="60%">{{users?.mother_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Spouse Name:</td>
+                                            <td width="60%">{{users?.spouse_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Trade License :</td>
+                                            <td width="60%">{{users?.trade_license}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Email :</td>
+                                            <td width="60%">{{users?.local?.email}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Phone No :</td>
+                                            <td width="60%">{{users?.phone_no}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">National ID :</td>
+                                            <td width="60%">{{users?.national_id}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Date Of Birth :</td>
+                                            <td width="60%">{{users?.date_of_birth | date: 'dd MMM-yyyy'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Blood Group :</td>
+                                            <td width="60%">{{users?.blood_group}}</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </tab>
+
+                            <tab heading="Nominee">
+
+                                <div class="row">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td width="30%">Name :</td>
+                                                <td width="60%">{{users?.nominee?.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%">Father Name :</td>
+                                                <td width="60%">{{users?.nominee?.father_name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%">Address :</td>
+                                                <td width="60%">{{users?.nominee?.address}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%">Date Of Birth :</td>
+                                                <td width="60%">{{users?.nominee?.date_of_birth | date: 'dd MMM-yyyy'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%">Relationship :</td>
+                                                <td width="60%">{{users?.nominee?.relationship}}</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+
+
+                            </tab>
+                            <tab heading="Product Order">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">NO.</th>
+                                            <th width="30%">Code</th>
+                                            <th width="40%">Product Name</th>
+                                            <th width="15%">PV</th>
+                                            <th width="15%">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let history of product_history; let i = index;">
+                                            <td>{{i+1}}</td>
+                                            <td>{{history?.code}}</td>
+                                            <td>{{history?.name}}</td>
+                                            <td>{{history?.PV}}</td>
+                                            <td>{{history?.trade_price? history?.trade_price: 'Free'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="align-right"><b>Total Price</b></td>
+                                            <td><b>{{total_price}} Tk.</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->

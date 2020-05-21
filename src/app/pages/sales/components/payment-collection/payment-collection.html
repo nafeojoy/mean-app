@@ -1,0 +1,596 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Payment Collection
+                    </div>
+                </div>
+                <div class="card-body">
+                    <tabset type="pills">
+                        <tab heading="Collect From Customer" id="tab1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form (ngSubmit)="getSearchOrder()">
+                                        <div class="form-group row">
+                                            <label for="carrier_name" class="col-md-2 control-label"> Order No: </label>
+                                            <div class="col-md-6">
+                                                <input type="number" name="carrier_name" class="form-control" [(ngModel)]="requested_orderno">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div *ngFor="let alert of alerts">
+                                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                        </alert>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="selectedOrder._id">
+                                <div class="col-md-6">
+                                    <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                        <div class="card-header clearfix">
+                                            <div class="card-title">
+                                                Order Charges
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="horizontal-scroll info-table">
+                                                <table class="table table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align:left;">Item Price</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.total_price}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Delivery Charge</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.delivery_charge}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Wrapping Charge</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.wrapping_charge}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Discount</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.discount}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                <b>Payble Amount</b>
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <b>
+                                                                    {{selectedOrder.total_price+selectedOrder.delivery_charge+selectedOrder.wrapping_charge-selectedOrder.discount}}
+                                                                    Tk.
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                Paid Amount
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.payment_collection?.total_paid}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                <b>Due Amount</b>
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <b>
+                                                                    {{selectedOrder.payable_amount-selectedOrder.payment_collection.total_paid}}
+                                                                    Tk.
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                        <div class="card-header clearfix">
+                                            <div class="card-title">
+                                                Required Data
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="horizontal-scroll info-table">
+                                                <form>
+                                                    <div class="form-group row">
+                                                        <label for="carrier_name" class="col-md-4 control-label"> Select
+                                                            Carrier: </label>
+                                                        <div class="col-md-8">
+                                                            <select [(ngModel)]="cust_pay_info.carrier_id" class="form-control" name="carrier_name" id="carrier_name">
+                                                                <option *ngFor="let carry of carriers"
+                                                                    [ngValue]="carry._id">
+                                                                    {{carry.name}}
+                                                                </option>
+                                                            </select>
+                                                            <span *ngIf="submitted && !cust_pay_info.carrier_id" style="color: red">Carrier name is required!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="gateway_id" class="col-md-4 control-label"> Payment
+                                                            Gateway : </label>
+                                                        <div class="col-md-8">
+                                                            <select [(ngModel)]="cust_pay_info.gateway_id" class="form-control" name="gateway_id" id="gateway_id">
+                                                                <option *ngFor="let gateway of payementGatewayes"
+                                                                    [ngValue]="gateway._id">
+                                                                    {{gateway.name}}
+                                                                </option>
+                                                            </select>
+                                                            <span *ngIf="submitted && !cust_pay_info.gateway_id" style="color: red">Payment gateway required!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="pay_amount" class="col-md-4 control-label"> Pay
+                                                            Amount : </label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" name="pay_amount" [(ngModel)]="cust_pay_info.pay_amount" class="form-control" placeholder="Pay Amount">
+                                                            <span *ngIf="submitted && !cust_pay_info.pay_amount" style="color: red">Pay amount required!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="transaction_cost" class="col-md-4 control-label"> Transaction Cost* : </label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" name="transaction_cost" [(ngModel)]="cust_pay_info.transaction_cost" class="form-control" placeholder="Transaction Cost">
+                                                            <span *ngIf="submitted && !cust_pay_info.transaction_cost" style="color: red">Transaction Cost required!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="transaction_id" class="col-md-4 control-label"> Transaction ID* : </label>
+                                                        <div class="col-md-8">
+                                                            <input name="transaction_id" [(ngModel)]="cust_pay_info.transaction_id" class="form-control" placeholder="Transaction ID">
+                                                            <span *ngIf="submitted && !cust_pay_info.transaction_id" style="color: red">Transaction ID required!</span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="transaction_date" class="col-md-4 control-label"> Transaction Date* :</label>
+                                                        <div class="col-md-8">
+                                                            <input type="date" name="transaction_date" [(ngModel)]="cust_pay_info.transaction_date" class="form-control" required>
+                                                            <span *ngIf="submitted && !cust_pay_info.transaction_date" style="color: red">Transaction Date required!</span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="transaction_comment" class="col-md-4 control-label">
+                                                            Comment :</label>
+                                                        <div class="col-md-8">
+                                                            <textarea name="transaction_comment" [(ngModel)]="cust_pay_info.transaction_comment" class="form-control" placeholder="Comment" required>
+                                                                </textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="tax_amount" class="col-md-4 control-label"> Tax
+                                                            Amount : </label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" name="tax_amount" [(ngModel)]="cust_pay_info.tax_amount" class="form-control" placeholder="Tax Amount">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20">
+                                                        </spinner>
+                                                        <button [disabled]="res_pending" (click)="collectCustomerPayment()" class="btn btn-default">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Collect From Carrier" id="tab2">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="carrier_name" class="control-label"> Select Carrier:
+                                            </label>
+                                            <select [(ngModel)]="carrier.carrier_id" class="form-control" name="carrier_name" id="carrier_name" (ngModelChange)="onCourierChange()">
+                                                <option *ngFor="let carry of carriers" [ngValue]="carry._id">
+                                                    {{carry.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="row" *ngIf="carrier.carrier_id">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="collection-file" class="custom-file-upload">
+                                                        Choose File
+                                                    </label>
+                                                    <input type="file" id="collection-file" name="collection-file" (change)="onFileSelect($event)" accept=".xlsx">
+                                                    <!-- <label class="file">
+                                                        
+                                                        <span class="file-custom"></span>
+                                                    </label> -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right;">
+                                                <button class="btn btn-success" (click)="downloadExcel()">Download
+                                                    Excel</button>
+                                            </div>
+                                        </div>
+                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        <button *ngIf="excel_collection.length>0" [disabled]="res_pending" type="button" class="btn btn-warning" (click)="uploadExcelData()">Submit</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div *ngFor="let alert of alerts">
+                                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                        </alert>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div *ngIf="excel_collection.length>0" class="horizontal-scroll">
+                                <table class="table table-hover collection-table">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th>Deposit Date</th>
+                                            <th>Order No</th>
+                                            <th>Challan Amount</th>
+                                            <th>Sales Discount</th>
+                                            <th>Return Amount</th>
+                                            <th>Net Sales Amount</th>
+                                            <th>Packing Cost</th>
+                                            <th>Delivery Charge</th>
+                                            <th>Total Amount</th>
+                                            <th>Courier Charge</th>
+                                            <th>Courier Charge(Adv)</th>
+                                            <th>Return Charge</th>
+                                            <th>Collection Charge</th>
+                                            <th>bKash</th>
+                                            <th>SSL</th>
+                                            <th>bKash Change</th>
+                                            <th>SSl Change</th>
+                                            <th>Deposit To Bank</th>
+                                            <th>Cash</th>
+                                            <th>Promotion</th>
+                                            <!-- <th>Balance</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let collection of excel_collection; let i=index">
+                                            <td>{{collection.deposit_date}}</td>
+                                            <td>{{collection.order_no}}</td>
+                                            <td>{{collection.challan_amount}}</td>
+                                            <td>{{collection.sales_discount}}</td>
+                                            <td>{{collection.return_amount}}</td>
+                                            <td>{{collection.net_sales_amount}}</td>
+                                            <td>{{collection.packing_cost}}</td>
+                                            <td>{{collection.delivery_charge}}</td>
+                                            <td>
+                                                {{collection.total_amount}}
+                                            </td>
+                                            <td>{{collection.courier_charge}}</td>
+                                            <td>{{collection.courier_charge_in_advance}}</td>
+                                            <td>{{collection.return_charge}}</td>
+                                            <td>{{collection.collection_charge}}</td>
+                                            <td>{{collection.bkash}}</td>
+                                            <td>{{collection.ssl}}</td>
+                                            <td>{{collection.bkash_charge}}</td>
+                                            <td>{{collection.ssl_charge}}</td>
+                                            <td>{{collection.deposit_to_bank}}</td>
+                                            <td>{{collection.cash}}</td>
+                                            <td>{{collection.promotion}}</td>
+                                            <!-- <td>{{collection.balance}}</td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- <div *ngIf="orders.length>0" class="horizontal-scroll">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th width="10%">
+                                                Select All
+                                                <ba-checkbox [(ngModel)]="selectedall" (change)="onChangeSelectedAll()" [ngModelOptions]="{standalone: true}"></ba-checkbox>
+                                            </th>
+                                            <th>Order No</th>
+                                            <th>Ordered at</th>
+                                            <th>Original Amount</th>
+                                            <th>Due Amount</th>
+                                            <th>Carrier Pay </th>
+                                            <th *ngIf="carrier.carrier_id == '5adebee21ba7c84ec136145d'">Collection Charge</th>
+                                            <th>Carrier Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let order of orders; let i=index">
+                                            <td>
+                                                <ba-checkbox [(ngModel)]="order.is_selected" (change)="onChangeSelectedOne(order.is_selected)" [ngModelOptions]="{standalone: true}"></ba-checkbox>
+                                            </td>
+                                            <td>{{order.order_no}}</td>
+                                            <td>{{order.order_at | date:'dd MMM-yyyy'}} At
+                                                {{order.order_at | date:'h:mma'}}</td>
+                                            <td>{{order.payable_amount}} Tk.</td>
+                                            <td>{{order.due_amount}} Tk.</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="carrier_amount" class="form-control"
+                                                            [(ngModel)]="order.carrier_pay"
+                                                            (ngModelChange)="updateSummary()" placeholder="Carrier Pay">
+                                                    </div>
+                                                    <div class="col-md-4">Tk.</div>
+                                                </div>
+                                            </td>
+                                            <td *ngIf="carrier.carrier_id == '5adebee21ba7c84ec136145d'">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="collection_charge" class="form-control" [(ngModel)]="order.collection_charge" (ngModelChange)="updateSummary()" placeholder="Collection Charge">
+                                                    </div>
+                                                    <div class="col-md-4">Tk.</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p *ngIf="carrier.carrier_id != '5adebee21ba7c84ec136145d'">{{order.due_amount-order.carrier_pay}} Tk.</p>
+                                                <p *ngIf="carrier.carrier_id == '5adebee21ba7c84ec136145d'">{{40+(order.due_amount-(order.carrier_pay+order.collection_charge))}} Tk.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"></td>
+                                            <td>Total: {{summary}}</td>
+                                            <td>Total: {{carrier_summary}}</td>
+                                            <td>Total: {{cost_summary}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group row">
+                                            <label for="carrier_name" class="col-md-2 control-label"> Payment Gateway :
+                                            </label>
+                                            <div class="col-md-6">
+                                                <select [(ngModel)]="carrier.gateway_id" class="form-control"
+                                                    name="gateway" id="gateway">
+                                                    <option *ngFor="let gateway of payementGatewayes"
+                                                        [ngValue]="gateway._id">
+                                                        {{gateway.name}}
+                                                    </option>
+                                                </select>
+                                                <span *ngIf="submitted && !carrier.gateway_id"
+                                                    style="color: red">Payment gateway required!</span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                            <button [disabled]="res_pending" (click)="submit()"
+                                                class="btn btn-default">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </tab>
+                        <tab heading="Carrier Payment" id="tab2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="carrier_name" class="col-md-2 control-label"> Select Carrier:
+                                            </label>
+                                            <div class="col-md-6">
+                                                <select [(ngModel)]="carr_pay.carrier_id" class="form-control" (ngModelChange)="getCarrPayOrder()" name="carrier_name" id="carrier_name">
+                                                    <option *ngFor="let carry of carriers" [ngValue]="carry._id">
+                                                        {{carry.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div *ngFor="let alert of alerts">
+                                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                        </alert>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="unpaid_carr_cost_orders.length>0" class="horizontal-scroll">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th width="10%">
+                                                Select All
+                                                <ba-checkbox [(ngModel)]="selectedall1" (change)="onChangeSelectedAll1()" [ngModelOptions]="{standalone: true}"></ba-checkbox>
+                                            </th>
+                                            <th>Order No</th>
+                                            <th>Ordered at</th>
+                                            <th>Order Amount</th>
+                                            <th>Paid Amount</th>
+                                            <th>Carrier Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let order of unpaid_carr_cost_orders; let i=index">
+                                            <td>
+                                                <ba-checkbox [(ngModel)]="order.is_selected" (change)="onChangeSelectedOne1(order.is_selected)" [ngModelOptions]="{standalone: true}"></ba-checkbox>
+                                            </td>
+                                            <td>{{order.order_no}}</td>
+                                            <td>{{order.order_at | date:'dd MMM-yyyy'}} At {{order.order_at | date:'h:mma'}}</td>
+                                            <td>{{order.payable_amount}} Tk.</td>
+                                            <td>{{order.payment_collection.total_paid}} Tk.</td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="carrier_cost" class="form-control" [(ngModel)]="order.carrier_cost" (ngModelChange)="changeCarrCost()" placeholder="Carrier Cost">
+                                                    </div>
+                                                    <div class="col-md-4">Tk.</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td>Total: {{carr_cost_summary}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="float: right;">
+                                    <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                    <button [disabled]="res_pending" (click)="submitCarrColl()" class="btn btn-default">Submit</button>
+                                </div>
+                            </div>
+                        </tab>
+                        <!-- <tab heading="bKash Refund" id="tab4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form (ngSubmit)="getPaidOSearchOrder()">
+                                        <div class="form-group row">
+                                            <label for="carrier_name" class="col-md-2 control-label"> Order No: </label>
+                                            <div class="col-md-6">
+                                                <input type="number" name="carrier_name" class="form-control" [(ngModel)]="requested_orderno">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <div *ngFor="let alert of alerts">
+                                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf="selectedOrder._id">
+                                <div class="col-md-6">
+                                    <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                        <div class="card-header clearfix">
+                                            <div class="card-title">
+                                                Order Charges
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="horizontal-scroll info-table">
+                                                <table class="table table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="text-align:left;">Item Price</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.total_price}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Delivery Charge</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.delivery_charge}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Wrapping Charge</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.wrapping_charge}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">Discount</td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.discount}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                <b>Payble Amount</b>
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <b>
+                                                                    {{selectedOrder.total_price+selectedOrder.delivery_charge+selectedOrder.wrapping_charge-selectedOrder.discount}} Tk.
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                Paid Amount
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                {{selectedOrder.payment_collection?.total_paid}} Tk.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align:left;">
+                                                                <b>Due Amount</b>
+                                                            </td>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <b>
+                                                                    {{selectedOrder.payable_amount-selectedOrder.payment_collection.total_paid}} Tk.
+                                                                </b>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                        <div class="card-header clearfix">
+                                            <div class="card-title">
+                                                Refund Informations
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="horizontal-scroll info-table">
+                                                <form >
+                                                
+                                                    <div class="form-group row">
+                                                        <label for="pay_amount" class="col-md-4 control-label"> Refund Amount : </label>
+                                                        <div class="col-md-8">
+                                                            <input type="number" name="pay_amount" [(ngModel)]="selectedOrder.payment_information.currency_amount" class="form-control" placeholder="Refund Amount">
+                                                            <span *ngIf="submitted && !selectedOrder.payment_information.currency_amount" style="color: red">Refund amount required!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="transaction_cost" class="col-md-4 control-label"> Currency : </label>
+                                                        <div class="col-md-8">
+                                                            <input  name="transaction_cost" [(ngModel)]="selectedOrder.payment_information.currency" class="form-control" placeholder="Currency">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                                        <button [disabled]="res_pending" (click)="refundPayment()" class="btn btn-default">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab> -->
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

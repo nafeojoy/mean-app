@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-md-12">
+    <ba-card title="Select Product">
+      <div *ngIf="selectedItems.length>0" class="horizontal-scroll">
+        <h3>Item List:</h3>
+        <table class="table table-hover">
+          <tbody>
+            <tr class="black-muted-bg">
+              <td class="table-id" width="1%">#</td>
+              <td width="30%">Name</td>
+              <td width="20%">Authors</td>
+              <td width="15%">Publisher</td>
+              <td width="10%">Qty</td>
+              <td width="10%">Rate</td>
+              <td width="5%">Total</td>
+              <td width="5%">Edit</td>
+              <td width="5%">Remove</td>
+            </tr>
+            <tr *ngFor="let item of selectedItems; let i=index">
+              <td>{{i + 1}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.author}}</td>
+              <td>{{item.publisher}}</td>
+              <td>
+                <span *ngIf="!item.is_edit">{{item.quantity}}</span>
+                <input class="form-control" *ngIf="item.is_edit" [(ngModel)]="item.quantity"
+                  (ngModelChange)="updateTotalCost()" type="number">
+              </td>
+              <td>
+                <span>{{item.price}}</span>
+              </td>
+              <td>{{item.quantity * item.price}}</td>
+              <td>
+                <i *ngIf="!item.is_edit" (click)="edit(item, i)" class="fa fa-pencil-square-o change-ico"></i>
+                <i *ngIf="item.is_edit" (click)="edited(item, i)" class="fa fa-plus-square change-ico"
+                  aria-hidden="true"></i>
+              </td>
+              <td>
+                <i (click)="remove(item, i)" class="fa fa-trash change-ico" aria-hidden="true"></i>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="7"></td>
+              <td colspan="3">
+                <h5>Sum: {{total_cost}} TK.</h5>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <hr style="border-top: dotted 1px;">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="horizontal-scroll info-table">
+              <table class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td style="text-align: left">Order No</td>
+                    <td style="text-align: left">:</td>
+                    <td style="text-align: left">
+                      {{order.order_no}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: left">Created At</td>
+                    <td style="text-align: left">:</td>
+                    <td style="text-align: left">
+                      {{order.order_at | date: 'dd MMM-yyyy hh:mma'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: left">Order Value</td>
+                    <td style="text-align: left">:</td>
+                    <td style="text-align: left">
+                      {{order.payable_amount}} BDT.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: left">Due Amount</td>
+                    <td style="text-align: left">:</td>
+                    <td style="text-align: left">
+                      {{order.payable_amount-order.payment_collection.total_paid}} BDT.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <form class="form-horizontal place-order-13" (ngSubmit)="returnItems()">
+              <div class="form-group row">
+                <label for="return_cost" class="col-md-4 control-label"> Return Cost(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.return_cost" class="form-control" name="return_cost"
+                    id="return_cost" placeholder="Return Cost">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="shipping_charge" class="col-md-4 control-label"> Shipping Charge(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.delivery_charge" class="form-control" name="shipping_charge"
+                    id="shipping_charge" placeholder="Shipping Charge">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="discount" class="col-md-4 control-label"> Discount(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.discount" class="form-control" name="discount"
+                    placeholder="Discount">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="wrapping_charge" class="col-md-4 control-label"> Wrapping Charge(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.wrapping_charge" class="form-control" name="wrapping_charge"
+                    placeholder="Wrapping Charge">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="wrapping_charge" class="col-md-4 control-label">Total Cost:</label>
+                <div class="col-md-8">
+                  <h5>{{total_cost+order.delivery_charge+order.wrapping_charge-order.discount}}
+                    TK.
+                  </h5>
+                </div>
+              </div>
+              <br>
+              <div *ngFor="let alert of alerts">
+                <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+              </div>
+              <button class="btn btn-default" [disabled]="res_pending" style="float: right;">Submit</button>
+              <div class="col-md-2">
+                <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </ba-card>
+  </div>
+</div>

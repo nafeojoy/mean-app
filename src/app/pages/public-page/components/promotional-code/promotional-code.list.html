@@ -1,0 +1,102 @@
+<div class="widgets">
+    <div class="row">
+
+        <div class="col-md-10">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+
+                        <p style="float: right"> Total
+                            <span style="color: red">{{total}}</span> Items</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <!-- <div class="form_group">
+                            <input type="checkbox" (change)="toggle()">
+                            <span>Search By Promo Code</span>
+                            <br>
+                        </div> -->
+                        <input *ngIf='promoSearch' #searchInput type="text" class="form-control" placeholder="Search by name" (keyup)="search($event.target.value)">
+                        <div *ngIf="!promoSearch" class="row">
+
+                            <div class="form-group">
+                                <div>
+                                    <label for="row_store" class="col-sm-1 control-label feild-title">From</label>
+                                    <div class="col-sm-4">
+                                        <aro-datepicker name="from_date" (dateLoader)="getFromDate($event)" [aroModel]="from_date"></aro-datepicker>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="row_store" class="col-sm-1 control-label feild-title">To:</label>
+                                    <div class="col-sm-4">
+                                        <aro-datepicker name="to_date" (dateLoader)="getToDate($event)" [aroModel]="to_date"></aro-datepicker>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <span class="filter_button">
+                                <button (click)="show()" type="submit" class="btn btn-warning">
+                                    Show
+                                </button>
+                            </span>
+                            <span>
+                                <span (click)="reset()" class="btn btn-warning">Reset</span>
+                            </span>
+                        </div>
+                        <br>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th style="text-align: center">Promo Code</th>
+                                    <th style="text-align: center">Active</th>
+                                    <th style="text-align: center">Discount(%)</th>
+                                    <th style="text-align: center">Target Users</th>
+                                    <th style="text-align: center">Start Date</th>
+
+                                    <th style="text-align: center">End Date</th>
+                                    <!-- <th class="align-right">View</th> -->
+                                    <th style="text-align: center">Edit</th>
+                                    <!-- <th class="align-right">Delete</th>  -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let promotionalCode of promotionalCodes | async; let i = index" class="no-top-border">
+                                    <td class="table-id">{{ (currentPage - 1) * itemsPerPage + (i + 1)}}</td>
+                                    <td>
+                                        <p style="text-align: center">{{promotionalCode.promo_code}}</p>
+                                    </td>
+                                    <td style="text-align: center">
+                                        {{promotionalCode.is_active? "Yes": "No"}}
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{promotionalCode.discount}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{promotionalCode.target_no}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{promotionalCode.start_date | date: 'dd/MM/yyyy'}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{promotionalCode.end_date | date: 'dd/MM/yyyy'}}</p>
+                                    </td>
+                                    <td class="align-right">
+                                        <button class="btn btn-success" [routerLink]="['edit', promotionalCode._id]">Edit</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems | async" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+                            [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

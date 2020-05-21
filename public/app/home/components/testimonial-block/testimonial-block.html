@@ -1,0 +1,125 @@
+<section>
+    <div class="testmonials">
+        <div class="container">
+            <div class="row">
+                <div class="testmonials_title">
+                    <h2>{{'Customer' | translate | uppercase}} {{'Testimonials' | translate | uppercase}}</h2>
+                </div>
+                <div class="testmonials_head">
+                    <div class="testmonials_background">
+                        <carousel [interval]="carouselInterval" [noWrap]="noWrapSlides" >
+                            <slide *ngFor="let testimonial of testimonials;">
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <img class="media-object img-circle img-responsive" src="{{testimonial.image}}" width="100">
+                                    </div>
+                                    <div class="col-md-8" style="z-index: 0">
+                                        <div class="testmonials_content">
+                                            <div class="carousel-caption">
+                                                <p>{{testimonial.speech}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </slide>
+                        </carousel>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="service-section border-con">
+        <div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="circle-areaall">
+                        <div class="circle-area">
+                            <span class="btn btn-primary btn-circle btn-lg">
+                                <i class="fa fa-phone fa-2x"></i>
+                            </span>
+                        </div>
+                        <div class="service-title">
+                            <h2> {{'Customer' | translate}} {{'Care' | translate}} </h2>
+                        </div>
+                        <div class="service-support">
+                            <h5> {{'contact_no' | translate}}({{'9am_7pm' | translate}}) </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="circle-areaall">
+                        <div class="circle-area">
+                            <span class="btn btn-primary btn-circle btn-lg">
+                                <i class="fa fa-thumbs-up fa-2x"></i>
+                            </span>
+                        </div>
+                        <div class="service-title">
+                            <h2> {{'cash_on_delivery' | translate}} </h2>
+                        </div>
+                        <div class="service-time">
+                            <h5> {{'pay_cash_at_your_doorstep' | translate}} </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="circle-areaall">
+                        <div class="circle-area">
+                            <span class="btn btn-primary btn-circle btn-lg">
+                                <i class="fa fa-truck fa-2x"></i>
+                            </span>
+                        </div>
+                        <div class="service-title">
+                            <h2> {{'service_availability' | translate}} </h2>
+                        </div>
+                        <div class="service-time">
+                            <h5> {{'all_over_bangladesh' | translate}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="footer-top">
+        <div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="companyinfo">
+                        <h2>
+                            <span> {{'payment_option' | translate}} </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="payment text-center" style="margin-top: 30px" >
+                        <ul>
+                            <li>
+                                <img src="{{staticImageBaseUrl}}ico_1.png" alt="delivery">
+                            </li>
+                            <li>
+                                <img src="{{staticImageBaseUrl}}ico_2.png" alt="bkash">
+                            </li>
+                            <li>
+                                <img src="{{staticImageBaseUrl}}ico_3.png" alt="mastercard">
+                            </li>
+                            <li>
+                                <img src="{{staticImageBaseUrl}}ico_4.png" alt="visa">
+                            </li>
+                            <!-- <li>
+                                <img src="{{staticImageBaseUrl}}ico_5.png" alt="maestro">
+                            </li> -->
+                            <!-- <li>
+                                <img src="{{staticImageBaseUrl}}ico_6.png" alt="payment">
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+</section>

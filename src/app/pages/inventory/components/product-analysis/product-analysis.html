@@ -1,0 +1,111 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <span>Product Analysis</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                   
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Please search with import id or seo url" class="form-control" [(ngModel)]="importIdOrSeoId"  (input)="searchEvent($event)">
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-warning" (click)="getProductBySearch()">Search</button>
+                        </div>  
+                    </div>
+                    <br>
+                    <div *ngIf="counSearch == 'exist'" class="card-body horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th style="text-align:center">Import ID</th>
+                                    <th style="text-align:center">Book Name</th>
+                                    <th style="text-align:center">Author</th>
+                                    <th style="text-align:center">Publisher</th>
+                                    <th style="text-align:center">Purchase Price</th>
+                                    <th style="text-align:center">Sales Price</th>
+                                    <th style="text-align:center">Per-Order</th>
+                                    <th style="text-align:center">Pending</th>
+                                    <th style="text-align:center">Confirmed</th>
+                                    <th style="text-align:center">Current Demand</th>
+                                    <th style="text-align:center">Current Demand Value</th>
+                                    <th style="text-align:center">Current Stock</th>
+                                    <th style="text-align:center">Stock Value</th>
+                                    <th style="text-align:center">Required Quantity</th>
+                                    <th style="text-align:center">Dispatch</th>
+                                    <th style="text-align:center">Inshipment</th>
+                                    <th style="text-align:center">Delivered</th>
+                                    <th style="text-align:center">Order Closed</th>
+                                    <th style="text-align:center">Return Request</th>
+                                    <th style="text-align:center">Cancelled</th>
+                                    <th style="text-align:center">Returned</th>
+                                    <th style="text-align:center">Back order</th>
+                                    <th style="text-align:center">Previous Demand</th>
+                                    <th style="text-align:center">Total Sales</th>
+                                    <th style="text-align:center">Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of searchedData">
+                                    <td style="text-align:center">{{item.import_id}}</td>
+                                    <td style="text-align:center">{{item.book_name}}</td>
+                                    <td style="text-align:center">{{item.author}}</td>
+                                    <td style="text-align:center">{{item.publisher}}</td>
+                                    <td style="text-align:center">{{item.purchase_price}}</td>
+                                    <td style="text-align:center">{{item.sales_price}}</td>
+                                    <td style="text-align:center">{{item.PreOrder}}</td>
+                                    <td style="text-align:center">{{item.Pending}}</td>
+                                    <td style="text-align:center">{{item.Confirmed}}</td>
+                                    <td style="text-align:center">{{item.current_demand}}</td>
+                                    <td style="text-align:center">{{item.value_of_C_D}}</td>
+                                    <td style="text-align:center">{{item.current_stock}}</td>
+                                    <td style="text-align:center">{{item.stock_value}}</td>
+                                    <td style="text-align:center">{{item.required_quantity}}</td>
+                                    <td style="text-align:center">{{item.Dispatch}}</td>
+                                    <td style="text-align:center">{{item.Inshipment}}</td>
+                                    <td style="text-align:center">{{item.Delivered}}</td>
+                                    <td style="text-align:center">{{item.OrderClosed}}</td>
+                                    <td style="text-align:center">{{item.ReturnRequest}}</td>
+                                    <td style="text-align:center">{{item.Cancelled}}</td>
+                                    <td style="text-align:center">{{item.Returned}}</td>
+                                    <td style="text-align:center">{{item.BackOrder}}</td>
+                                    <td style="text-align:center">{{item.previous_demand}}</td>
+                                    <td style="text-align:center">{{item.total_sales_count}}</td>
+                                    <td style="text-align:center">{{item.total_sales_amount}}</td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                    </div>
+                    <br>
+                    <div *ngIf="counSearch != 'exist'" class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th style="text-align:center">Import ID</th>
+                                    <th style="text-align:center">Book Name</th>
+                                    <th style="text-align:center">Orders</th>
+                                    <th style="text-align:center">SEO URL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of productData">
+                                    <td style="text-align:center">{{item._id.import_id}}</td>
+                                    <td style="text-align:center">{{item._id.name}}</td>
+                                    <td style="text-align:center">{{item.count}}</td>
+                                    <td style="text-align:center">{{item._id.seo_url}}</td> 
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;"
+                          nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 padding-right">
+        <div class="category-tab_">
+          <tabset class="home-tabs">
+            <tab *ngFor="let inItems of inputItems; let i=index" heading="{{inItems.category.name}}">
+              <bottom-slide-loader *ngIf="inputItems" [cartItems]='cartItem' [errorImage]="'book-no-photo.jpg'" [arrayItems]="inputItems[i]?.products" [arrayItems]="tab.products"
+                loadUrl="category-tab" urlParams="new-release" nextRoute="book" imageField="image"></bottom-slide-loader>
+              <view-all nextPath="category-books/{{inItems.category.seo_url}}"></view-all>
+              <br>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

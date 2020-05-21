@@ -1,0 +1,70 @@
+<div class="widgets">
+    <div class="row">
+        <form [formGroup]="form" (ngSubmit)="addCategory()">
+            <div class="col-md-6">
+                <ba-card title="Add Category" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [type]="'text'" [name]="'name'" [label]="'Name'" [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" class="form-control" [formControl]="form.controls['description']" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="order">Order</label>
+                        <input name="order" type="tel" class="form-control" [formControl]="form.controls['order']" placeholder="Order">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryParent">Parent</label>
+                        <select name="parent" class="form-control" [formControl]="form.controls['parent']">
+                            <option *ngFor="let category of categories | async" [ngValue]="category._id">{{category.hierarchy_path}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="hide_on_public">Hide in Public</label>
+                        <ui-switch name="hide_on_public" class="form-control" [formControl]="form.controls['hide_on_public']"></ui-switch>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <button type="submit" [disabled]="!form.valid || res_pending" class="btn btn-warning">Add Category</button>
+                    <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="SEO Info" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="meta_tag_title">Meta Tag Title</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_title']" [type]="'text'" [name]="'meta_tag_title'" [label]="'Meta Tag Title'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_description">Meta Tag Description</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_description']" [type]="'textarea'" [name]="'meta_tag_description'"
+                            [label]="'Meta Tag Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_keywords">Meta Tag Keywords</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_keywords']" [type]="'text'" [name]="'meta_tag_keywords'" [label]="'Meta Tag Keywords'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="seo_url">SEO Url</label>
+                        <multi-language-input [parentGroup]="form.controls['seo_url']" [type]="'text'" [name]="'seo_url'" [label]="'SEO Url'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+                        (isImageChosen)="isImageChosen($event)"></bb-image-uploader>
+                </ba-card>
+            </div>
+            <!--<simple-notifications></simple-notifications>-->
+        </form>
+    </div>
+</div>

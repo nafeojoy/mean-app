@@ -1,0 +1,484 @@
+<style>
+    #modal-dia {
+        width: 90%;
+        background-color: #00000073;
+        margin-left: auto;
+        margin-right: auto;
+        top: 20%;
+        /* bottom: -20%; */
+    }
+
+    .carousel-control.right {
+        right: 0% !important;
+    }
+
+    .carousel-control.left {
+        left: 0% !important;
+    }
+</style>
+<product-breadcrumb [breadcrumbData]="matchData"> </product-breadcrumb>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="book-details-section-area-all">
+                    <div class="book-details-section">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                    <div class="col-md-4">
+                                        <div class="details-images-area">
+                                            <div class="details-images-21">
+                                                <!-- <label *ngIf="product.current_offer" class="test_n" style="position: absolute;margin-top:0px;max-height: 106px!important;max-width: 106px; ">
+                                                    <img style="max-height: 106px !important; width: 75%;border: 0px solid#a0ce4e;" src="image/offer/{{product.current_offer}}">
+                                                </label> -->
+
+                                                <label class="test_n offer_image" *ngIf="product.current_offer">
+                                                    <img class="similar-prod-img" src="{{productService.publicImageBaseUrl}}/images/offer/{{product.current_offer}}">
+                                                </label>
+                                                <img src="{{productService.publicImageBaseUrl}}{{product.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+
+                                        <div class="details-description-22">
+                                            <div class="details-title-23">
+                                                <h3 class="book-name"> {{product.name}} </h3>
+                                                <iframe [src]="fbUrl" width="59" height="20" class="fb-share" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                                <img *ngIf='checkBookPage' class="book-down-image" src="assets/images/down_arrow.png">
+
+                                                <div *ngIf='checkBookPage' id="book-page-div">
+                                                    <span id="book-page-btn" (click)="showModal()">{{'Look Inside' | translate}}
+                                                        <i class="fa fa-binoculars"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="details-title-24">
+                                                <div *ngIf="product.authors" class="details-author">
+                                                    <p class="detail-author">{{'Authors'| translate}}:</p>
+                                                    <ul>
+                                                        <li class="auth-trans" *ngFor="let athr of product.authors">
+                                                            <a [routerLink]="['../../'+'author-books',athr.seo_url]">
+                                                                <span style="font-weight: bold;"> {{athr.name}} </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div *ngIf="product.translators && product.translators.length>0" class="details-author">
+                                                    <p class="detail-author">{{'Translator'| translate}}:</p>
+                                                    <ul>
+                                                        <li class="auth-trans" *ngFor="let trans of product.translators">
+                                                            <a [routerLink]="['../../'+'author-books',trans.seo_url]">
+                                                                <span style="font-weight: bold;"> {{trans.name}} </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <star-rating [rating]="product.rating"></star-rating>
+                                            </div>
+                                            <div class="details-title-24">
+                                                <div class="details-price" *ngIf="product.previous_price && product.price && (product.previous_price > product.price)">
+
+                                                    <p *ngIf="!product.is_bundle">{{'price' | translate}} :
+                                                        <span class="outer">
+                                                            <span class="inner">
+                                                                <span class="inner">{{ product.previous_price | priceConvert}}</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="details-previous-price">
+
+                                                        </span>
+                                                    </p>
+                                                    <p *ngIf="product.is_bundle">{{'bundle_price' | translate}} :
+                                                        <span class="outer">
+                                                            <span class="inner">
+                                                                <span class="inner">{{ product.previous_price | priceConvert}}</span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="details-previous-price">
+
+                                                        </span>
+                                                    </p>
+                                                </div>
+
+                                                <div class="details-price">
+                                                    <p *ngIf="!product.is_bundle">{{'boibazar_price' | translate}} :
+                                                        <span> {{product.price | priceConvert}} x {{product.quantity | numberConvert}}
+                                                            =
+                                                            <span style="color: black; white-space: nowrap;">{{ product.price * product.quantity | priceConvert}}
+                                                                <span *ngIf='save_parcent' class="off-price">({{'Off' | translate}}: {{save_parcent | numberConvert }}%)</span>
+                                                            </span>
+                                                        </span>
+                                                    </p>
+                                                    <p *ngIf="product.is_bundle">{{'boibazar_offer_price' | translate}} :
+                                                        <span> {{product.price | priceConvert}} x {{product.quantity | numberConvert}}
+                                                            =
+                                                            <span style="color: black; white-space: nowrap;">{{ product.price * product.quantity | priceConvert}}
+                                                                <span *ngIf='save_parcent' class="off-price">({{'Off' | translate}}: {{save_parcent | numberConvert }}%)</span>
+                                                            </span>
+                                                        </span>
+                                                    </p>
+
+
+                                                </div>
+                                                <div class="quentity">
+                                                    <div class="pull-left">
+                                                        <span>{{'quantity' | translate}}: </span>
+                                                    </div>
+                                                    <div class="pull-left">
+                                                        <input type="button" [disabled]="product.quantity<2" (click)="decreaseQuantity()" value="-" id="subs" class="btn btn-default pull-left value-sub-obutton"
+                                                        />&nbsp;
+                                                        <input type="text" style="width: 50px;text-align: center; margin: 0px;height: 40px;" class="onlyNumber form-control pull-left value-show-button"
+                                                            id="noOfBook" name="" [(ngModel)]="product.quantity" (keyup)="typed($event.target.value)"
+                                                        />&nbsp;
+                                                        <input type="button" [disabled]="!product.price || product.quantity>9" (click)="increaseQuantity()" value="+" id="adds" class="btn btn-default value-add-button"
+                                                        />
+                                                    </div>
+                                                    <!-- <div class="pull-left">
+                                                        <label *ngIf="product.current_offer" class="test_n free-delivery-label">
+                                                            <img class="free-delivery-image" src="image/offer/{{product.current_offer}}">
+                                                        </label>
+                                                    </div> -->
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="details-title-25">
+
+                                                <div class="details-button">
+                                                    <!-- <a class="btn btn-default details-button-view" href="#" role="button"> Save to List </a>-->
+                                                    <button *ngIf="!product.already_added && product.current_offer != 'suq6us7vo7z6zssv2t9.png'" [disabled]="!product.price || product.is_out_of_print" class="btn btn-default details-button-view"
+                                                        (click)="addToCart(product)">
+                                                        <span class="fa fa-shopping-cart"> {{'add_to_cart' | translate}} </span>
+                                                    </button>
+                                                    <button *ngIf="product.current_offer == 'suq6us7vo7z6zssv2t9.png'" class="btn btn-default details-button-view" (click)= showPreOrderModal()>
+                                                        Pre Order
+                                                    </button>
+                                                    <button *ngIf="product.already_added" [disabled]="true" class="btn btn-default details-button-view" style="white-space: nowrap">
+                                                        {{'added_to_cart' | translate}} </button>
+                                                    <button class="btn btn-default details-button-view" (click)="buyNow(product)">
+                                                        {{'buy_now' | translate}} </button>
+                                                    <span *ngIf="product.is_out_of_stock && !product.is_out_of_print" class="stock-flag">
+                                                        <i class="fa fa-exclamation-triangle"></i>{{'out_of_stock' | translate}}</span>
+                                                    <span *ngIf="product.is_out_of_print" class="stock-flag">
+                                                        <i class="fa fa-exclamation-triangle"></i>{{'out_of_print' | translate}}</span>
+                                                </div>
+
+                                                <!-- <div class="details-category">
+
+                                                    <iframe [src]="fbUrl" width="59" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+                                                </div> -->
+                                                <div class="details-category">
+                                                    <p>{{'Category' | translate}} :
+                                                        <span *ngIf="product.categories">
+                                                            <a [routerLink]="['../../'+'category-books', category_seo_url]">
+                                                                <span> {{product.categories[0]?.name}}</span>
+                                                            </a>
+                                                        </span>
+                                                    </p>
+                                                </div>
+
+
+                                                <div *ngIf="!product.is_bundle" class="details-publisher">
+                                                    <p>{{'Publisher' | translate}} :
+                                                        <span>
+                                                            <a [routerLink]="['../../'+'publisher-books',publisher_seo_url]">
+                                                                <span> {{product.publisher?.name}}</span>
+                                                            </a>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="product.is_bundle" class="col-md-12">
+                                        <div class="table-responsive busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                            <br>
+                                            <div class="totalBundle" style="text-align: center">
+                                                <p style="text-transform:uppercase; font-weight: bold">{{'Bundle Items' | translate}}</p>
+                                            </div>
+                                            <br>
+                                            <table class="table table-condensed cart_info">
+                                                <thead>
+                                                    <tr class="cart_menu">
+                                                        <td width="5%"> </td>
+                                                        <td class="image" width="10%"> {{'Books' | translate}}</td>
+                                                        <td class="description" width="30%">{{'Title' | translate}}</td>
+
+
+                                                        <td class="price" width="40%">{{'Price' | translate}}</td>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let bundle_item of bundle_items; let i=index">
+                                                        <td class="item-no"> {{i+1}} </td>
+                                                        <td class="cart_product">
+                                                            <a [routerLink]="['/book', bundle_item.seo_url]" (click)="getProduct(bundle_item.seo_url)">
+                                                                <img style="width: 40px; cursor: pointer" src="{{bundle_item.image}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                                                    alt="" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="cart_description" style="white-space: normal; width: 100px">
+                                                            <h6> {{bundle_item.name}} </h6>
+                                                        </td>
+
+
+                                                        <td class="cart_price" style="text-align: left;white-space: nowrap">
+                                                            <p *ngIf="bundle_item.previous_price" style="float: left; text-decoration: line-through">{{bundle_item.previous_price | priceConvert}}</p>
+                                                            <p *ngIf="!bundle_item.previous_price" style="float: left;padding-left:3em">&nbsp;</p>
+                                                            <p>&nbsp; &nbsp; {{bundle_item.price | numberConvert}}</p>
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            <div class="totalBundle">
+                                                <span>{{'Total' | translate}}</span>
+                                                <span style="float: right; margin-right: 5%">{{bundleTotal | priceConvert}}</span>
+                                                <span style="float: right; text-decoration: line-through"> {{bundlePrevious | priceConvert}} &nbsp; &nbsp; </span>
+                                            </div>
+                                            <br>
+
+                                            <!-- <div class="totalBundle" style="text-align: center;">
+                                                <span>{{'You Are Saving' | translate}}:
+                                                    <b style="color: green;">{{saving | priceConvert}}</b>
+                                                </span>
+
+                                            </div> -->
+                                            <div class="totalBundle" style="text-align: right; padding-right: 6%">
+                                                <span>{{'Bundle Savings' | translate}}:
+                                                    <b style="color: green;">{{saving | priceConvert}}</b>
+                                                </span>
+
+                                            </div>
+                                            <div class="totalBundle" style="text-align: right; padding-right: 6%">
+                                                <span>{{'Bundle Price' | translate}}:
+                                                    <b style="color: green;">{{product.price | priceConvert}}</b>
+                                                </span>
+
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <br>
+                                        <br>
+                                    </div>
+                                    <div *ngIf="product.is_in_bundle" class="col-md-12">
+                                        <div class="table-responsive busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                            <br>
+                                            <div class="totalBundle" style="text-align: center">
+                                                <p style="text-transform:uppercase; font-weight: bold">{{'Related Bundles' | translate}}</p>
+                                            </div>
+                                            <br>
+                                            <table class="table table-condensed cart_info">
+                                                <thead>
+                                                    <tr class="cart_menu">
+                                                        <td width="5%"> </td>
+                                                        <td class="image" width="10%"> {{'Bundle' | translate}}</td>
+                                                        <td class="description" width="60%">{{'Title' | translate}}</td>
+
+
+                                                        <td class="price" width="10%">{{'Price' | translate}}</td>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let bundle of list_bundle; let i=index">
+                                                        <td class="item-no"> {{i+1}} </td>
+                                                        <td class="cart_product">
+                                                            <a [routerLink]="['/book', bundle.seo_url]" (click)="getProduct(bundle.seo_url)">
+                                                                <img style="width: 40px; cursor: pointer" src="{{bundle.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt=""
+                                                                />
+                                                            </a>
+                                                        </td>
+                                                        <td class="cart_description">
+                                                            <h6> {{bundle.name}} </h6>
+                                                        </td>
+
+
+                                                        <td class="cart_price" style="text-align: left;">
+                                                            <p>{{bundle.price | priceConvert}}</p>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+
+                                        <br>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="return-policy">
+                                            <p>
+                                                <span class="return-policy-title">{{'return_policy' | translate}}</span>
+                                                <span class="return-policy-text">{{'return_policy_msg' | translate}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="delivery-policy">
+                                            <p>
+                                                <span class="delivery-policy-title">{{'seller_guarantees' | translate}}</span>
+                                                <span class="delivery-policy-text">
+                                                    {{'seller_guarantees_mgs' | translate}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details-payment-section">
+                        <div class="payment-option">
+                            <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-4">
+                                    <div class="payment-title-option">
+                                        <h2 style="text-align: center; margin: 5px"> {{'payment_option' | translate}} </h2>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="payment-method">
+                                        <ul>
+                                            <li>
+                                                <img alt="pizza" src="{{staticImageBaseUrl}}ico_1.png">
+                                            </li>
+                                            <li>
+                                                <img alt="bkash" src="{{staticImageBaseUrl}}ico_2.png">
+                                            </li>
+                                            <li>
+                                                <img alt="mastercard" src="{{staticImageBaseUrl}}ico_3.png">
+                                            </li>
+                                            <li>
+                                                <img alt="visa" src="{{staticImageBaseUrl}}ico_4.png">
+                                            </li>
+                                            <!-- <li>
+                                                <img alt="paypal" src="{{staticImageBaseUrl}}ico_5.jpg">
+                                            </li> -->
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+
+                <!-- Pruduct Description -->
+                <div class="book-details-section-area-all">
+                    <div class="book-specification-section">
+                        <div class="book-details-section">
+                            <h2 *ngIf="product.is_bundle"> {{'Bundle' | translate}} {{'Description' | translate}} </h2>
+                            <h2 *ngIf="!product.is_bundle"> {{'Book' | translate}} {{'Description' | translate}} </h2>
+
+                        </div>
+                    </div>
+                    <div class="book-details-section-inline">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+
+
+                                    <div class="col-md-12">
+                                        <div class="author-details-section">
+                                            <div class="author-about">
+                                                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                                    <div [innerHTML]="product?.description"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pruduct Description -->
+
+                <!--<product-specification></product-specification>-->
+                <author-details class="busy-loading" [busy]="busy" [authors]="product.authors"></author-details>
+                <customer-review class="busy-loading" [busy]="busy" [product]="product"></customer-review>
+
+            </div>
+            <similar-products *ngIf="related_product?.length > 0" [spinner]="busy" [relatedProduct]="related_product" (selectedProductLoader)="getProduct($event)"></similar-products>
+        </div>
+    </div>
+</section>
+
+<!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+<div bsModal #imageModal="bs-modal" class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id='myModal' class="modal-dialog " role="document">
+        <div class="modal-content" style="margin: auto;
+                width: 80%;">
+            <div class="login-header" style="padding: 20px;">
+                <div class="busy-loading" *ngFor="let image of previewImages" style="padding: 10px;">
+                    <img style="width: 100%" src={{productService.publicImageBaseUrl}}{{image}}>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+
+
+<!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+<div bsModal #preOrderModal="bs-modal" class="modal fade preOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 30%;">
+    <div id='preOrderModal' class="modal-dialog " role="document">
+        <div class="modal-content" style="margin: auto;
+                width: 80%;">
+            <form class="form-horizontal place-order" (ngSubmit)="submitPreOrder(preOrder)">
+                <div class="form-group">
+                    <label for="contact-name" class="col-md-4 control-label"> {{'Name' | translate}}
+                        <span style="color: red; font-size: 15px">*</span>
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text" [(ngModel)]="preOrder.contact_name"  class="form-control" name="contact_name" id="contact_name"
+                            placeholder="{{'Name' | translate}}" required>
+                        <!-- <span *ngIf="validation.name?.length_error" class="help-block sub-little-text">{{'Name' | translate}} {{'should be minimum 4 characters' | translate}}</span> -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-number" class="col-md-4 control-label"> {{'Mobile' | translate}} {{'Number' | translate}}
+                        <span style="color: red; font-size: 15px">*</span>
+                    </label>
+                    <div class="col-md-8">
+                        <ng-input [(inputModel)]="preOrder.phone_number"></ng-input>
+                        <span *ngIf="preOrder.phone_number && preOrder.phone_number.length!=11" class="help-block sub-little-text">{{'Wrong' | translate}} {{'Mobile' | translate}} {{'Number' | translate}} </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="col-md-4 control-label">{{'Address'| translate}}
+                            <span style="color: red; font-size: 15px">*</span>
+                    </label>
+                    <div class="col-md-8">
+                        <textarea [(ngModel)]="preOrder.address" name="message" class="form-control" placeholder="{{'Address'| translate}}"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alt_phone-number" class="col-md-4 control-label"> </label>
+                    <div class="col-md-8">
+                        <button [disabled] = '!preOrder.contact_name || !preOrder.phone_number || !preOrder.address || (preOrder.phone_number && preOrder.phone_number.length!=11)'
+                            type="submit" class="btn btn-default comment-button">{{'Submit Your Pre Order'| translate}}</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->

@@ -1,0 +1,96 @@
+/*************************
+******* footer CSS ******
+**************************/
+
+@import '../../../../sass/conf';
+
+#footer {background: #a8c9ff2b; border-top: 1px solid $footer-border-color;}
+.footer-top{ padding-bottom: 5px;}
+.footer-top .col-sm-3{ overflow: hidden;}
+
+
+
+.payment{
+  margin-top: 57px;  position: inherit;
+    a {                         
+        img{
+          height: 100%;width: 100%;
+        }
+      &:hover,&.overlay-icon{
+         opacity: 1;
+      }  
+    }
+    p{
+      color: #8C8C88;font-family: $font-family;font-size: 12px; font-weight: 500;margin-bottom:0px;
+    }
+    h2{
+      color: #8c8c88; font-family: $font-family;font-size: 12px; font-weight: 300; text-transform:uppercase; margin-top:0px;
+    }
+}
+
+.address { margin-top: 21px;}
+.footer-contact{ width:100%; padding-top: 30px;}
+.footer-contact-left{ float: left; width: 15%;}
+.footer-contact-right{ float: left; width: 85%;}
+.footer-contact-address{font-family: $font-family;font-size: 14px; font-weight: normal; color: #333333;}
+.footer-contact-number{font-family: $font-family;font-size: 15px; font-weight: normal; color: #333333;}
+.footer-contact-icon i{ color: $footer-font-color;}
+.footer-widget { margin-bottom: 68px;}
+.footer-widget .container {padding-top: 40px;}
+
+.single-widget{
+  h2{
+    color: black; font-family: $font-family; font-size: 18px; font-weight: 500; margin-bottom: 6px;text-transform: uppercase;
+      i{
+        margin-right:15px;
+      }
+  }
+  ul li{
+      a{
+        color: black;font-family: $font-family;font-size: 14px;font-weight: normal;padding: 0;
+        i{
+          margin-right: 18px;
+        }
+        &:hover{
+          background:none;color:$secondary-color;
+        }
+      }
+  }
+}
+
+.searchform{
+  input{
+    border: 2px solid $footer-border-color;color: #9a9a9a;font-family: $font-family; font-size: 14px; margin-top: 21px; outline: medium none; padding: 7px; width: 169px; border-radius: 10px 0px 0px 10px ;
+  }
+  button{
+    background: $primary-color; border: medium none;border-radius: 0; margin-left: -5px; margin-top: -1px; color: $primary-font-color; padding: 9px 14px;border-radius: 0 10px 10px 0px;
+      i{
+        color: $primary-font-color;font-size: 20px;
+      }
+      &:hover,&:focus{
+        background-color:$secondary-color;color: $primary-font-color;
+      }
+  }
+  p{
+    color: black; font-family: $font-family; font-size: 14px;font-weight: 400;margin-top: 25px; text-transform: uppercase;
+  }
+
+}
+
+.footer-bottom{
+    background: $primary-color; padding-top: 16px; padding-bottom: 16px;
+    p{
+      color: $primary-font-color; font-family: $font-family;font-weight: 300;margin-left: 15px;
+      span a{
+        color: $primary-font-color;font-style: italic;  text-decoration: underline;
+      }
+    }
+}
+
+.social-icons ul{
+  padding-left: 0px;
+  li a{
+    float: left;
+  }
+}
+

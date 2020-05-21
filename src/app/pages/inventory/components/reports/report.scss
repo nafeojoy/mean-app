@@ -1,0 +1,220 @@
+.card {
+    color: #666666;
+    background-color: #ffffff;
+    border: 0;
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 24px;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+.date-picker{
+    float: left;
+    max-width: 220px;
+    margin-bottom: 15px;
+    border-color: #26c6da;
+  }
+
+.range-calender{
+    font-size: 31px !important;
+    margin-left: -31px !important;
+    color: #26c6da;
+    cursor: pointer;
+  }
+
+.table-id{width:1%; text-align: center;}
+.req-no{width:15%; text-align: center;}
+.req-date{width:14%; text-align: center;}
+.req-total{width:10%; text-align: center;}
+.req-order{width:60%;}
+
+.store-name{ text-align: right;}
+.sales-valuation{ display: block; width: 50%; float: left; text-align: center;}
+.purches-valuation{ display: block; width: 50%;float: left; text-align: center;}
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid #16a085;
+}
+
+.itr-barcode{
+    margin-bottom: 30px;
+}
+
+.code{
+    width: 100%;
+}
+
+.items li { 
+  float: left;
+  border-bottom: 0px!important; 
+  list-style-type: none;
+    margin-top: 4%;
+}
+
+.code ul.items
+{
+  text-align: center; 
+  list-style-type: none;  
+}
+
+.code ul.items li
+{
+    display: inline;     
+}
+
+ui-switch.form-control{
+    border: 0px!important;
+}
+
+.dropdown button.btn.btn-default.dropdown-toggle{
+     width: 100%!important;
+     height: 35px;
+}
+
+// .btn:hover {
+//     transform: scale(1.0);
+// }
+
+.permission ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: white;
+}
+
+.permission ul li {
+    float: left;
+    font-size: 15px!important;
+}
+
+
+.print-view-row-1{ width:50%; padding-left:15px; padding-right: 15px; float: left; }
+.row{width:100%; padding-left:15px;padding-right:15px;}
+.table-print{width:100%;}
+.product-head{border:1px solid #000;}
+.product-t{border-top: 1px solid #000; border-bottom: 1px solid #000;}
+table{ width: 100%;}
+// table tr th{ width:11%; text-align:left; padding-top:4px; padding-bottom:4px;}
+table tr td{border:0px;}
+table thead th {vertical-align: bottom; border-bottom: 0px;}
+.table-print tr td{ padding-top:4px; padding-bottom:4px;}
+.table-print .first-td-1{width:25%;}
+.table-print .first-td-2{width:15%;}
+.table-print .first-td-3{width:60%;}
+.payment-head-img{ width:50%;}
+.payment-head-content{ width:50%; text-align:right;}
+.input-group{width: 66%;}
+.help-block{margin-left: 36%;}
+
+.report_head1 p{ text-align: center; border-bottom: 1px solid #fff;}
+.report_head1 span{ width: 47%; display: block; float: left;border-bottom: 1px solid #fff; margin-right: 5px;}
+.table > tbody > tr > td:first-child {
+     text-align: left; 
+}
+
+.table > thead > tr > th:first-child {
+    text-align: left;
+}
+
+.card > .card-body {
+    overflow-y: initial !important;
+}
+// .reset_button{ float: left;}
+// .filter_button{float: left; margin-right: 20px;}
+
+.filter_button{margin-right: 10px;}
+.date_top_color{ color: #16a085; font-weight: bold;}
+
+
+.report_header{
+    table{
+        width: 100%;
+    }
+
+    .payment-head-img{ width: 20%; float: left;}
+    .payment-head-content{ width: 80%; float: right;}
+}
+
+.table {
+    thead tr th {
+        text-align: center;
+    }
+    tbody tr td {
+        text-align: center;
+    }
+}
+
+.type-block{
+    border: 0px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.25);
+    padding-top: 8px;
+    // margin-left: 1%;
+}
+
+.form-radio
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    position: relative;
+    background-color: #f1f1f1;
+    color: #666;
+    top: 8px;
+    height: 26px;
+    width: 25px;
+    border: 0;
+    border-radius: 13px;
+    cursor: pointer;
+    margin-right: 20px;
+    outline: none;
+}
+.form-radio:checked::before
+{
+    position: absolute;
+    font: 13px/1 'Open Sans', sans-serif;
+    left: 10px;
+    top: 6px;
+    content: '\02143';
+    transform: rotate(40deg);
+}
+.form-radio:hover
+{
+     background-color: #f7f7f7;
+}
+.form-radio:checked
+{
+     background-color: #f1f1f1;
+}
+label
+{
+     font: 300 16px/1.7 'Open Sans', sans-serif;
+     color: #666;
+     cursor: pointer;
+}
+
+.order-detail tr{
+    border-bottom: 1px solid;
+    border-color: rgba(128, 128, 128, 0.30196078431372547);
+}
+
+.sales-order-detail table tr td{
+    padding: 0px 0px !important;
+    line-height: 26px !important;
+    font-size: smaller !important;
+}
+
+.report_header{ 
+    display: block;
+    text-align: center;
+}
+
+.collection-table{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}

@@ -1,0 +1,108 @@
+.fa-caret-down{
+    color: red !important;
+}
+
+.fa-caret-up{
+    color: green !important;
+}
+
+.tag-title{
+    font-size: 14px !important; 
+    color: #666666;
+}
+
+.tag-text{
+    color: #7eabda;
+    font-size: 20px !important;
+}
+
+.prior-state{
+    font-size: 13px !important;
+}
+
+.range-calender{
+  font-size: 31px !important;
+  margin-left: -31px !important;
+  color: #26c6da;
+  cursor: pointer;
+}
+
+.date-picker{
+  float: left;
+  max-width: 220px;
+  margin-bottom: 15px;
+  border-color: #26c6da;
+}
+
+.prior-quick-view{
+    font-size: 13px;
+    text-align: -webkit-right;
+    margin-top: -5px;
+}
+
+.card-counter{
+    box-shadow: 2px 2px 10px #DADADA;
+    margin: 5px;
+    padding: 20px 10px;
+    background-color: #fff;
+    height: 100px;
+    border-radius: 5px;
+    transition: .3s linear all;
+  }
+
+  .card-counter:hover{
+    box-shadow: 4px 4px 20px #DADADA;
+    transition: .3s linear all;
+  }
+
+  .card-counter{
+    color: #666666;
+  }
+  
+  .fa.primary{
+    color: #007bff;
+  }
+
+  .fa.success{
+    color: #66bb6a;
+  }
+
+  .fa.danger{
+    color: #ef5350;
+  }
+
+  .fa.info{
+    color: #26c6da;
+  }
+
+  .fa.primary{
+    color: #007bff;
+  }
+
+  .card-counter i{
+    font-size: 3em;
+    opacity: 0.5;
+  }
+
+  .card-counter .count-numbers{
+    position: absolute;
+    right: 35px;
+    top: 20px;
+    font-size: 20px;
+    display: block;
+    .curr-quick-view{
+        font-size: 20px;
+        color: #7eabda;
+    }
+  }
+
+  .card-counter .count-name{
+    position: absolute;
+    right: 35px;
+    top: 65px;
+    opacity: 1;
+    display: block;
+    font-size: 14px;
+    color: #6f6868;
+    font-weight: 500;
+  }

@@ -1,0 +1,17 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 padding-right">
+                <div class="category-tab">
+                    <tabset class="home-tabs">
+                        <tab *ngFor="let inItems of inputItems; let i=index" heading="{{inItems.category.name}}">
+                            <top-slide-loader *ngIf="inputItems" [cartItems]='cartItem' [arrayItems]="inputItems[i]?.products" loadUrl="category-tab" [urlParams]="inputItems[i]?.category._id"
+                                nextRoute="book" imageField="image"></top-slide-loader>
+                            <view-all nextPath="category-books/{{inItems.category.seo_url}}"></view-all>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

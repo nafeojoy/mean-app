@@ -1,0 +1,21 @@
+.author_img{ width:100%;}
+.author_img img{display: block; display: block;margin-left: 7%; margin-right: 0px; width: 61%;}
+.list-inline li{margin-bottom: 2px; float: left;}
+.titile_author { font-size: 15px; padding:1px 0;}
+.table tbody tr td img{ width: 50px; height: 48px;border-radius: 57%; border-style: none;}
+
+
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+
+  .alert_messages_chart {
+        position: fixed; top: 22%; right: 30%; width: 35%; text-align: center; z-index: 9999999999999999;
+  }

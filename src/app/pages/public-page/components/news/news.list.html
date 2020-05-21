@@ -1,0 +1,95 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Publish At</th>
+                  <th>Headline</th>
+                  <th>View</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let newsObject of news; let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{newsObject.published_at | date: 'dd MMM-yyyy'}}</td>
+                  <td>{{newsObject.headline}}</td>
+                  <td>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#viewModal" (click)="view(newsObject)">View</button>
+                  </td>
+                  <td>
+                    <a (click)="set(newsObject)" [routerLink]="['edit',newsObject._id]" class="btn btn-success">Edit</a>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" (click)="deleteNews(newsObject._id, i)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Start View Modal -->
+
+<div class="modal fade" id="viewModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{selectedNews.headline}}</h4>
+      </div>
+      <div class="modal-body">
+        <img src="{{image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+        <div [innerHTML]="selectedNews.content"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End View Modal -->
+
+
+
+
+
+
+
+<!-- Start Delete Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Author</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure to delete?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal" (click)="delete()">Yes</button>
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Delete Modal -->

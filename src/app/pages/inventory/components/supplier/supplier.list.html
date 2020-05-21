@@ -1,0 +1,93 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <i [routerLink]="['add']" class="add-icon ion-plus-round"> add new </i>
+          </div>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="searchProduct()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="supplier_name">Name:</label>
+                  <input name="supplier_name" type="text" [(ngModel)]="searchCriterion.name" class="form-control"
+                    placeholder="Supplier Name">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="area">Area:</label>
+                  <select name="area" type="number" [(ngModel)]="searchCriterion.area" class="form-control">
+                    <option *ngFor="let area of areas" [value]="area._id">
+                      {{area.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="phone">Phone:</label>
+                  <input name="phone" type="text" [(ngModel)]="searchCriterion.phone" class="form-control"
+                    placeholder="Phone">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                <button [disabled]="res_pending" type="submit" class="btn btn-primary">Search</button>
+              </div>
+              <div class="col-md-6">
+                <button type="reset" class="btn btn-warning" (click)="resetSearch()">Reset</button>
+              </div>
+            </div>
+          </form>
+          <br>
+          <div class="horizontal-scroll" *ngIf="suppliers.length>0">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Name</th>
+                  <th>Area</th>
+                  <th>Email</th>
+                  <th>Cell</th>
+                  <th>Is Enabled</th>
+                  <th width="5%">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let supplier of suppliers; let i=index">
+                  <td>{{ (currentPage - 1) * 10 + (i + 1)}}</td>
+                  <td>{{supplier.name}}</td>
+                  <td>{{supplier.area?supplier.area.name:'Not Specified'}}</td>
+                  <td>{{supplier.email}}</td>
+                  <td>{{supplier.cell}}</td>
+                  <td>{{supplier.is_enabled==true?"Yes": "No"}}</td>
+                  <td>
+                    <a [routerLink]="['edit',supplier._id]" style="text-align: center;display: block;">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+              [boundaryLinks]="true" (click)="setPage(currentPage)">
+            </pagination>
+          </div>
+          <div *ngIf="waiting">
+            <h3>Please wait, loading...</h3>
+          </div>
+          <div *ngIf="!waiting && suppliers.length==0">
+            <h3>No data found.</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

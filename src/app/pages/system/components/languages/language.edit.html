@@ -1,0 +1,31 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <ba-card title="Edit Language" baCardClass="with-scroll">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input name="name" type="text" class="form-control" [(ngModel)]="currentLanguage.name" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="code">Code</label>
+                        <input name="code" type="text" class="form-control" [(ngModel)]="currentLanguage.code" placeholder="Code">
+                    </div>
+                    <div class="form-group">
+                        <label for="locale">Locale</label>
+                        <input name="locale" type="text" class="form-control" [(ngModel)]="currentLanguage.locale" placeholder="Locale">
+                    </div>
+                    <div class="form-group">
+                        <label for="order">Order</label>
+                        <input name="order" type="tel" class="form-control" [(ngModel)]="currentLanguage.order" placeholder="Order">
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [(ngModel)]="currentLanguage.is_enabled"></ui-switch>
+                    </div>
+                    <button type="submit" class="btn btn-warning" (click)="editLanguage()">Edit Language</button>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+</div>

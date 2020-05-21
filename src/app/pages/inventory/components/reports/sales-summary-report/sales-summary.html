@@ -1,0 +1,84 @@
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <span class="filter_button">
+                        <button *ngIf="report_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                        <br><br>
+                        <span>Date: {{route.snapshot.params['date']}}</span>
+                    </span>
+                    <br><br>
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <table class="table-print">
+                                    <tr>
+                                        <td class="payment-head-img">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                            <span>Date: {{route.snapshot.params['date']}}</span>
+                                        </td>
+                                        <td>
+                                            <h4>Sales Detail</h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="1%" class="table-id">SL#</th>
+                                        <th width="4%" style="text-align:left">Order No</th>
+                                        <th width="25%" style="text-align:left">Book Name</th>
+                                        <th width="5%">Unit Price</th>
+                                        <th width="5%">Qty</th>
+                                        <th width="5%">Total</th>
+                                        <th width="5%">Book Price</th>
+                                        <th width="5%">Delivery</th>
+                                        <th width="5%">Discount</th>
+                                        <th width="5%">Wrapping</th>
+                                        <th width="5%">Invoice Value</th>
+                                        <th width="5%">Carrier</th>
+                                        <th width="5%">Transaction</th>
+                                        <th width="5%">Order Value</th>
+                                        <th width="5%">Paid</th>
+                                        <th width="10%">Due</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td>{{item.order_no}}</td>
+                                        <td colspan="4">
+                                            <table width="100%">
+                                                <tr *ngFor="let book of item.products; let k=index">
+                                                    <td width="40%" style="text-align:left; padding: 0px;border-top: 0px;">{{book.name}}</td>
+                                                    <td width="10%" style="padding: 0px; border-top: 0px;">{{book.price}}</td>
+                                                    <td width="10%" style="padding: 0px; border-top: 0px;">{{book.quantity}}</td>
+                                                    <td width="10%" style="padding: 0px;border-top: 0px;">{{book.price * book.quantity}}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>{{item.total_price}}</td>
+                                        <td>{{item.delivery_charge}}</td>
+                                        <td>{{item.discount}}</td>
+                                        <td>{{item.wrapping_charge}}</td>
+                                        <td>{{item.payable_amount}}</td>
+                                        <td>{{item.payment_collection.carrier_cost}}</td>
+                                        <td>{{item.payment_collection.transaction_cost?item.payment_collection.transaction_cost:0}}</td>
+                                        <td>{{item.payable_amount-item.payment_collection.carrier_cost-item.payment_collection.transaction_cost?item.payment_collection.transaction_cost:0}}</td>
+                                        <td>{{item.payment_collection.total_paid}}</td>
+                                        <td>{{item.payment_collection.due_amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

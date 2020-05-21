@@ -1,0 +1,172 @@
+/*************************
+******* shhoping card sass ********
+**************************/
+
+@import '../../../../sass/conf';
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+
+#search-box-promo {position: relative;
+    width: 100%;
+    margin: 0;
+    }
+    
+    #search-form-promo {
+        height: 40px;
+        border: 2px solid $border-color;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+        background-color: $primary-font-color;
+        overflow: hidden;
+    }
+
+.continue-shopping{ 
+        padding-top: 19px; padding-bottom: 19px;
+        i{
+            margin-right: 12px;
+        }
+}
+
+.cart_info, .table { margin-bottom: 20px; } 
+.table-condensed > thead > tr > td{ padding: 8px; color: #464646; font-family: $font-family; }
+.table > thead > tr > th, .table > tbody > tr > th, 
+.table > tfoot > tr > th, .table > thead > tr > td, 
+.table > tbody > tr > td, .table > tfoot > tr > td{vertical-align:middle;}
+.table-condensed > tbody > tr > td{ padding-top: 10px; padding-bottom: 10px;}
+
+.cart_menu td{ 
+        background: #f3f3f3; padding: 5px 10px;
+    }
+
+.cart_info{ 
+    border:1px solid #999999;
+}
+
+.card-header-system{ 
+    border-bottom: 1px solid #ddd;
+ }
+
+.item-no{ 
+    color: #464646; font-family: $font-family; font-size: 14px; font-weight: bold;
+}
+
+.card-header-system{
+    h1{ 
+        color: #333333; font-size: 15px;font-family: $font-family; margin-bottom: 5px;
+    }
+}
+
+.card-border-area{ 
+    border:1px solid #999999;
+}
+
+.cart_product{
+    img{ 
+        margin-left: 0 auto; margin-right: 0px; display: block;
+    }
+}
+
+.cart_description{
+    h4{ 
+        font-size: 12px;font-family: $font-family; color: #464646;
+    }
+}
+
+/********* css for shopping card right site *********/
+.borderdefalt{
+    border: 1px solid #999999;margin-bottom: 15px;
+}
+
+.paddingtopbuttom10{
+    padding: 20px 22px;
+}
+
+.discount-coupon-title{
+    p{ 
+        color: #464646; font-weight: bold;font-size: 12px;font-family: $font-family;
+    }
+}
+
+.coupon-search{
+    padding-top: 19px; padding-bottom: 19px;
+}
+
+.coupon-gift-wrap{
+    input[type="checkbox"]{ 
+        font-size: 10px;
+    }
+}
+
+.coupon-gift{
+    margin-bottom: 10px;
+}
+.gift-boucher{
+    color: #464646; font-size: 10px; font-family: $font-family; margin-left: 10px;
+}
+
+.summarypaddingtopbuttom10{
+    padding: 10px 22px;
+}
+
+.order-summary-title{
+        background: #f3f3f3; border-bottom: 1px solid #ddd; padding: 12px 5px;font-family: $font-family;
+    p{
+        text-align: center; font-weight: bold;color: #464646; font-size: 12px;font-family: $font-family;
+    }
+}
+
+.order-summary-price{
+    border-bottom: 1px solid #d3d3d3; padding-bottom: 6px; padding-top: 6px;
+    &:last-child{
+        border-bottom: none;
+    }
+   span{
+      color: #464646; font-size: 12px; 
+   } 
+}
+
+.order-summary-left{ 
+    float: left;
+}
+
+.order-summary-right{ 
+    float: right;
+}
+
+.checkout-button{
+     margin-top: 10px;
+}
+
+.btn-check-out{ 
+    background: $primary-color; color: #fff; border: 1px solid $border-color;
+}
+
+.conatct-section-say { 
+    margin-top: 10px;
+    p{
+        padding-left: 10px; margin-top: 7px; color: #464646;
+    }
+}
+
+.icon-color i{
+    color: $primary-color; border-radius: 50%; border:1px solid $border-color; padding: 3px;
+}
+
+.no-cart p{ font-size: 18px;font-family: $font-family; text-align: center;}

@@ -1,0 +1,265 @@
+<div class="widgets">
+    <div class="row" *ngIf="!wait">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" style="text-align:center">
+                        Customer Orders
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4>Pending Confirmed</h4>
+                                <table width="100%" class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th style="text-align: left;">Age</th>
+                                            <th style="text-align:center">Order Count</th>
+                                            <th>Show</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let result of result_set['Pending']">
+                                            <td style="text-align:left">
+                                                {{result._id}} {{result._id==1?'Hour':'Hours'}} {{result._id==5?'+':''}}
+                                            </td>
+                                            <td style="text-align:center">
+                                                {{result.count}}
+                                            </td>
+                                            <td>
+                                                <span class="detail" (click)="showDetail(result.orders)">Detail</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3">
+                                <h4>Pending Dispatch</h4>
+                                <table width="100%" class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th style="text-align: left;">Age</th>
+                                            <th style="text-align:center">Order Count</th>
+                                            <th>Show</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let result of result_set['Confirmed']">
+                                            <td style="text-align:left">
+                                                {{result._id}} {{result._id==1?'Day':'Days'}} {{result._id==7?'+':''}}
+                                            </td>
+                                            <td style="text-align:center">
+                                                {{result.count}}
+                                            </td>
+                                            <td>
+                                                <span class="detail" (click)="showDetail(result.orders)">Detail</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3">
+                                <h4>Pending Inshipment</h4>
+                                <table width="100%" class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th style="text-align: left;">Age</th>
+                                            <th style="text-align:center">Order Count</th>
+                                            <th>Show</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let result of result_set['Dispatch']">
+                                            <td style="text-align:left">
+                                                {{result._id}} {{result._id==1?'Day':'Days'}} {{result._id==7?'+':''}}
+                                            </td>
+                                            <td style="text-align:center">
+                                                {{result.count}}
+                                            </td>
+                                            <td>
+                                                <span class="detail" (click)="showDetail(result.orders)">Detail</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3">
+                                <h4>Pending Payment</h4>
+                                <table width="100%" class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th style="text-align: left;">Age</th>
+                                            <th style="text-align:center">Order Count</th>
+                                            <th>Show</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let result of result_set['pending_payment']">
+                                            <td style="text-align:left">
+                                                {{result._id}} {{result._id==1?'Day':'Days'}} {{result._id==7?'+':''}}
+                                            </td>
+                                            <td style="text-align:center">
+                                                {{result.count}}
+                                            </td>
+                                            <td>
+                                                <span class="detail" (click)="showDetail(result.orders)">Detail</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="wait">
+        <h2>Please wait,Loading...</h2>
+    </div>
+    <div class="row" *ngIf="is_found_detail">
+        <div class="col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" style="text-align:center">
+                        Orders List
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <div class="row">
+                            <div class="horizontal-scroll" *ngIf="orders.length>0">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+                                            <th class="table-id">#</th>
+                                            <th>Order at</th>
+                                            <th>Order No</th>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Total Book</th>
+                                            <th>Payable Amount</th>
+                                            <th>View Books</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let order of orders; let i=index">
+                                            <td>
+                                                {{ (currentPage - 1) * 10 + (i + 1)}}
+                                            </td>
+                                            <td>
+                                                {{order.order_at | date:'dd MMM-yyyy'}} At {{order.order_at | date:'h:mma'}}
+                                            </td>
+
+                                            <td>
+                                                {{order.order_no}}
+                                            </td>
+                                            <td>
+                                                {{order.delivery_address?.contact_name}}
+                                            </td>
+                                            <td>
+                                                {{order.delivery_address?.phone_number}}
+                                            </td>
+                                            <td>
+                                                {{order.total_book}}
+                                            </td>
+                                            <td>
+                                                {{order.payable_amount}}
+                                            </td>
+                                            <td>
+                                                <button (click)="viewBooks(order._id)">View</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage(currentPage)">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div bsModal #viewBookModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="print-section">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>Books</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="close pull-right" aria-label="Close" (click)="viewBookModal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-body">
+                    <div class="widgets">
+                        <div class="row">
+                            <div class="horizontal-scroll">
+                                <table width="100%" class="table table-border" style="font-size: 13px;">
+                                    <thead>
+                                        <tr class="black-muted-bg">
+
+                                            <th width="30%" style="text-align:left">Books</th>
+                                            <th width="15%" style="text-align:left">Authors</th>
+                                            <th width="15%">Publishers</th>
+                                            <th width="5%">Required Qty</th>
+                                            <th width="5%">Available</th>
+                                            <th width="5%">Sell Price</th>
+
+                                            <th width="5%">Delay</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr *ngFor="let product of products; let k=index">
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="35%" style="text-align:left; padding: 0px;border-top: 0px;">
+                                                {{product.name}}
+                                            </td>
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="20%" style="text-align:left;padding: 0px; border-top: 0px;">
+                                                {{product.author}}
+                                            </td>
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="20%" style="padding: 0px; border-top: 0px;">
+                                                {{product.publisher}}
+                                            </td>
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px; border-top: 0px;">
+                                                {{product.required_qty}}
+                                            </td>
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                {{product.stock_qty?product.stock_qty:0}}
+                                            </td>
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                {{product.sales_price}}
+                                            </td>
+
+                                            <td [ngClass]="product.stock_qty>=product.required_qty?'available':product.is_out_of_print? 'out-of-print': product.is_out_of_stock?'out-of-stock': product.is_info_delay?'info-delay':'no-style'" width="5%" style="padding: 0px;border-top: 0px;">
+                                                {{product.info_delayed}}
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

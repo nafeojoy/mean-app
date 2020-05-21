@@ -1,0 +1,25 @@
+ui-switch.form-control{
+    border: 0px!important;
+}
+
+.dropdown button.btn.btn-default.dropdown-toggle{
+     width: 100%!important;
+     height: 35px;
+}
+
+.btn:hover {
+    transform: scale(1.0);
+}
+
+.permission ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: white;
+}
+
+.permission ul li {
+    float: left;
+    font-size: 15px!important;
+}

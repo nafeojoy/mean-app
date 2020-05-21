@@ -1,0 +1,103 @@
+@import '../../../../sass/conf';
+
+.payment-header {border-bottom: 1px solid #ddd;}
+.payment-header h1{ color: #333333; font-size: 15px;font-family: $font-family; margin-bottom: 5px;}
+
+.continue-shipping{ padding-top: 19px; padding-bottom: 19px;}
+.continue-shipping i{ margin-right: 12px;}
+.payment-area {border:1px solid #ddd;}
+
+.payable-text{ color: #333333; font-size: 14px;font-family: $font-family;}
+.payable-amount{ color: #333333;font-size: 14px;font-family: $font-family; font-weight: bold;}
+
+.confirm-order-button{ background: $primary-color !important; color: #fff !important;border-color: $border-color !important;}
+.confirm-order-button:hover{ color: $secondary-color !important;background-color: #fff !important; }
+
+.payment-area-01{
+    border:1px solid #ddd;
+}
+
+.payment-tab{
+    padding-left: 0px; width: 100%;
+}
+
+.types-of-payment, .nav-tabs{ border: none;}
+
+.payment-tab tr td { 
+    color: #333333; padding: 10px 0px; border-right: 1px solid #ddd; text-align: center;font-size: 14px;
+    background: #f3f3f3; border-bottom: 1px solid #ddd; cursor: pointer;
+    &.active{
+        background:#fff; border-bottom: none !important;
+    }
+}
+
+.background-payment{ background: #f3f3f3;}
+.online_payment{ padding: 30px 20px;}
+
+.payment-order-summary-title{
+    background: $primary-color; border-bottom: 1px solid #ddd; padding: 12px 5px;font-family: $font-family;
+    p{
+        color: #fff; text-align: center;
+    }
+}
+
+.how-to-pay{
+    p{ 
+        font-size: 12px; color: #333333;
+    }
+}
+
+.online-discription{
+    p{
+        list-style-type:disc;display:list-item; list-style-position: inside; line-height: 25px;font-family: $font-family;
+    }
+}
+
+.online-payment-11{ 
+    h3{ 
+        margin-top: 0px; font-size: 16px; font-family: $font-family; margin-bottom: 10px;
+    }
+}
+
+.online-payment-type{
+    p{
+        margin-bottom: 10px;
+    }
+}
+
+.payment-paddingtopbottom{
+    margin-top: 10px; margin-bottom: 10px;
+}
+
+.payable-text{
+    color: #333333; font-size: 14px;font-family: $font-family;
+}
+
+.payable-amount{
+    color: #e03232;font-size: 14px;font-family: $font-family;
+}
+
+.terms_condition{
+    color: #969696;font-family: $font-family;font-size: 12px; vertical-align: middle; margin-top: 1px;
+}
+
+.place-order-12{
+    border:1px solid #999999; padding: 35px;
+}
+.form-horizontal .control-label { 
+    text-align: left;color: #464646;font-size: 12px;font-family: $font-family;
+}
+
+.terms-policy{
+    color: #2a6496;
+    cursor: pointer;
+}
+.details-payment-section{
+    border-top: 1px solid $border-color; background: #a8c9ff2b;
+}
+.payment-title-option h2 {
+    color: #1361b1;
+    font-size: 24px;
+    font-family: 'Roboto', sans-serif;
+    text-align: right;
+}

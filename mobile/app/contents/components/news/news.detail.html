@@ -1,0 +1,18 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{news.headline}}</h1>
+                <p>Published At: {{news.published_at | date: 'dd MMM-yyyy'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{news.image}}" alt="" /><br>
+            </div>
+            <div class="col-md-8">
+                <div [innerHTML]="news.content"></div>
+            </div>
+        </div>
+    </div>
+</section>

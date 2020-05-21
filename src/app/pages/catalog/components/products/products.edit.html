@@ -1,0 +1,221 @@
+<div class="widgets">
+    <form [formGroup]="form" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-md-6">
+                <ba-card title="Update Product" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [inputValue]="product_name"
+                            [type]="'text'" [name]="'name'" [label]="'Name'" [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <multi-language-input [parentGroup]="form.controls['description']"
+                            [inputValue]="product_description" [type]="'ckeditor'" [name]="'description'"
+                            [label]="'Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="published">Publish Date ({{product.published_at | date: 'dd MMM-yyyy'}})</label>
+                        <input name="published" type="date" class="form-control"
+                            [formControl]="form.controls['published_at']" placeholder="Published Date">
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label for="price">Current Price</label>
+                        <input name="price" type="number" class="form-control" [formControl]="form.controls['price']" placeholder="Price">
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="attributes">Attributes</label>
+                        <typeahead [parentGroup]="form.controls['attributes']" [multiple]="'true'"
+                            (saveNewItem)="saveNewAttribute($event)" (getSelected)="getAttributes($event)"
+                            [display]="'name'" [newAttribute]="newAttribute" [existItems]="previousAttributes"
+                            [canAddNewItem]="'true'" [items]="attributeList" (dataLoader)="searchAttributes($event)">
+                        </typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <typeahead [parentGroup]="form.controls['category']" [multiple]="'true'"
+                            (getSelected)="getCategory($event)" [display]="'hierarchy_path'"
+                            [existItems]="previousCategory" [items]="categoryList"
+                            (dataLoader)="searchCategory($event)"></typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="publisher">Publisher</label>
+                        <typeahead [parentGroup]="form.controls['publisher']" [display]="'name'"
+                            [inputValue]="selectedPublisher" [items]="publisherList"
+                            (dataLoader)="searchPublisher($event)" [isRequired]="true"></typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="died">Author</label>
+                        <typeahead [parentGroup]="form.controls['author']" [multiple]="'true'"
+                            (getSelected)="getAuthors($event)" [display]="'name'" [existItems]="previousAuthors"
+                            [items]="authorList" (dataLoader)="searchAuthor($event)"></typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="died">Editor</label>
+                        <typeahead [parentGroup]="form.controls['editor']" [multiple]="'true'"
+                            (getSelected)="getEditors($event)" [display]="'name'" [existItems]="previousEditors"
+                            [items]="editorList" (dataLoader)="searchEditor($event)"></typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="died">Composer</label>
+                        <typeahead [parentGroup]="form.controls['composer']" [multiple]="'true'"
+                            (getSelected)="getComposers($event)" [display]="'name'" [existItems]="previousComposers"
+                            [items]="composerList" (dataLoader)="searchComposer($event)"></typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="died">Translator</label>
+                        <typeahead [parentGroup]="form.controls['translator']" [multiple]="'true'"
+                            (getSelected)="getTranslators($event)" [display]="'name'" [existItems]="previousTranslators"
+                            [items]="translatorList" (dataLoader)="searchTranslator($event)"></typeahead>
+                    </div>
+
+                    <fieldset>
+                        <legend>Bundle</legend>
+                        <div class="form-group">
+                            <label for="free_delivery">As Bundle</label>
+                            <ui-switch name="free_delivery" class="form-control"
+                                [formControl]="form.controls['is_bundle']"></ui-switch>
+                        </div>
+                        <div *ngIf="form.controls['is_bundle'].value" class="form-group">
+                            <label for="bundle">Bundle Items</label>
+                            <typeahead [parentGroup]="form.controls['bundle_items']" [multiple]="'true'"
+                                (getSelected)="getBundleItems($event)" [display]="'name'"
+                                [existItems]="previousBundleItems" [items]="bundleItemsList"
+                                (dataLoader)="searchTerm$.next($event)"></typeahead>
+                        </div>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <legend>Offer</legend>
+                        <div class="form-group">
+                            <label for="nationality">Current Offer</label>
+                            <select name="current_offer" class="form-control"
+                                [formControl]="form.controls['current_offer']">
+                                <option *ngFor="let offer of offers" [ngValue]="offer._id">{{offer.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="free_delivery">Free Delivery</label>
+                            <ui-switch name="free_delivery" class="form-control"
+                                [formControl]="form.controls['free_delivery']"></ui-switch>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']">
+                        </ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_out_of_stock">Out of Stock</label>
+                        <ui-switch name="is_out_of_stock" class="form-control"
+                            [formControl]="form.controls['is_out_of_stock']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_out_of_print">Out of Print</label>
+                        <ui-switch name="is_out_of_print" class="form-control"
+                            [formControl]="form.controls['is_out_of_print']"></ui-switch>
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="SEO Info & Image" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="isbn">ISBN</label>
+                        <input name="isbn" type="text" class="form-control" [formControl]="form.controls['isbn']"
+                            placeholder="ISBN">
+                    </div>
+                    <div class="form-group">
+                        <label for="number_of_pages">Number Of Page</label>
+                        <input name="number_of_pages" type="number" class="form-control"
+                            [formControl]="form.controls['number_of_pages']" placeholder="Number Of Page">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Priority</label>
+                        <input name="quantity" type="number" class="form-control"
+                            [formControl]="form.controls['priority']" placeholder="Priority">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input name="quantity" type="number" class="form-control"
+                            [formControl]="form.controls['quantity']" placeholder="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="previous_price">Initial Price</label>
+                        <input name="previous_price" type="number" class="form-control"
+                            [formControl]="form.controls['previous_price']" placeholder="Initial Price">
+                    </div>
+                    <div class="form-group">
+                        <label for="discount_rate">Discount Percent</label>
+                        <input name="discount_rate" type="number" class="form-control"
+                            [formControl]="form.controls['discount_rate']" placeholder="Discount Percent">
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_title">Meta Tag Title</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_title']"
+                            [inputValue]="product_meta_tag_title" [type]="'text'" [name]="'meta_tag_title'"
+                            [label]="'Meta Tag Title'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_description">Meta Tag Description</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_description']"
+                            [inputValue]="product_meta_tag_description" [type]="'textarea'"
+                            [name]="'meta_tag_description'" [label]="'Meta Tag Description'" [isRequired]="false">
+                        </multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_keywords">Meta Tag Keywords</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_keywords']"
+                            [inputValue]="product_meta_tag_keywords" [type]="'text'" [name]="'meta_tag_keywords'"
+                            [label]="'Meta Tag Keywords'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div *ngIf="false" class="form-group">
+                        <label for="seo_url">SEO Url</label>
+                        <multi-language-input [parentGroup]="form.controls['seo_url']" [inputValue]="product_seo_url"
+                            [type]="'text'" [name]="'seo_url'" [label]="'SEO Url'" [isRequired]="false">
+                        </multi-language-input>
+                    </div>
+                    <!-- <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+                        (isImageChosen)="isImageChosen($event)"></bb-image-uploader> -->
+                </ba-card>
+            </div>
+        </div>
+        <button type="submit" [disabled]="!form.valid || res_pending" class="btn btn-warning">Update</button>
+        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+    </form>
+</div>
+
+<div bsModal #optionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="optionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3>{{update_res_massege}}</h3>
+                        <h5>Want to upload image for this item?</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <button style="float: right;" class="close" aria-label="Close" (click)="redirectToList()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-3">
+                        <button class="btn btn-danger confirm-btn" (click)="redirectToList()">No</button>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-warning confirm-btn"
+                            [routerLink]="['../../../product-image/edit',product._id]">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

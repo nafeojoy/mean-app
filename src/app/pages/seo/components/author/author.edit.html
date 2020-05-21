@@ -1,0 +1,45 @@
+<div class="widgets">
+    <form [formGroup]="form" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ba-card title="Update Author" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [readOnly]="true" [parentGroup]="form.controls['name']" [inputValue]="author_name" [type]="'text'" [name]="'name'" [label]="'Name'"
+                            [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <multi-language-input [readOnly]="true" [parentGroup]="form.controls['description']" [inputValue]="author_description" [type]="'textarea'"
+                            [name]="'description'" [label]="'Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_title">Meta Tag Title</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_title']" [inputValue]="author_meta_tag_title" [type]="'text'"
+                            [name]="'meta_tag_title'" [label]="'Meta Tag Title'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_description">Meta Tag Description</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_description']" [inputValue]="author_meta_tag_description" [type]="'textarea'"
+                            [name]="'meta_tag_description'" [label]="'Meta Tag Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_keywords">Meta Tag Keywords</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_keywords']" [inputValue]="author_meta_tag_keywords" [type]="'text'"
+                            [name]="'meta_tag_keywords'" [label]="'Meta Tag Keywords'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="seo_url">Seo URL</label>
+                        <multi-language-input [parentGroup]="form.controls['seo_url']" [inputValue]="author_seo_url" [type]="'text'"
+                            [name]="'seo_url'" [label]="'SEO Url'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" [disabled]="!form.valid || res_pending" class="btn btn-warning">Update</button>
+                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>

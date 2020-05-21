@@ -1,0 +1,38 @@
+<div class="book-details-section-area-all">
+    <div class="book-specification-section">
+        <div class="book-details-section">
+            <h2> {{'Author' | translate}} {{'details' | translate}} </h2>
+        </div>
+    </div>
+    <div class="book-details-section-inline">
+        <div class="row" *ngFor="let author of authors">
+            <div class="col-md-12">
+                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                    <div class="col-md-3">
+                        <a (click)="goToAuthorDetailsPage(author.seo_url)">
+                            <div class="image-box">
+                                <img src="{{author?.image}}" class="img-responsive">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="author-details-section">
+                            <div class="author-name">
+                                <p>{{author?.name}}</p>
+                            </div>
+                            <div class="author-about">
+                                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                    <div *ngIf='author.description' [innerHTML]="author?.description"></div>
+                                </div>
+                            </div>
+                            <!--  <div class="readmore">
+                              <a href="#"><span> read more </span></a>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

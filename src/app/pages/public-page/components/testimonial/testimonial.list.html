@@ -1,0 +1,95 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Speech At</th>
+                  <th>Email</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let testimonial of testimonials; let i=index">
+                  <td>{{i+1}}</td>
+                  <td><img src="{{testimonial.image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';"
+                      alt=""></td>
+                  <td>{{testimonial.name}}</td>
+                  <td>{{testimonial.speech_at | date: 'dd MMM-yyyy'}}</td>
+                  <td>{{testimonial.email}}</td>
+                  <td>
+                    <button  class="btn btn-default" [routerLink]="['edit', testimonial._id]">Update</button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteModal" (click)="deleteTestimonial(testimonial._id, i)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Start View Modal -->
+<div class="modal fade" id="viewModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Testimonial Detail</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove-circle"></span> Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End View Modal -->
+
+
+
+
+
+
+
+<!-- Start Delete Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Author</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure to delete?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal" (click)="delete()">Yes</button>
+        <button type="button" class="btn btn-default btn-close" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Delete Modal -->

@@ -1,0 +1,54 @@
+.image-title {
+    padding: 10px;
+    border-radius: 9px;
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 2px 4px -1px;
+}
+
+.query-date {
+    float: right;
+    span {
+        font-size: 19px;
+    }
+    p {
+        font-size: 12px;
+    }
+}
+
+.q-content {
+    font-size: 16px;
+}
+
+.view-comment {
+    padding: 8px;
+    border-radius: 4px;
+    background: #f3f3f1;
+    cursor: pointer;
+}
+
+.commnet-name {
+    color: #3F51B5;
+    font-size: 18px;
+}
+
+.comment-sec {
+    padding: 13px;
+    border-radius: 30px;
+    background: #e1f6ca;
+    margin-bottom: 10px;
+}
+
+.count-label{
+    padding: 4px;
+    background: white;
+    color: gray;
+    border-radius: 16px;
+    font-size: 10px;
+}
+
+.comment-table{
+    max-height: 170px;
+    overflow-y: scroll;
+}
+.search-style{
+    font-size: 17px;
+}

@@ -1,0 +1,15 @@
+@import '../../../../sass/conf';
+
+.language_tab{
+    float: right; margin-bottom: 0px; padding-left: 10px; width: 50px;
+      li{
+        display: block; position: relative; float: left;padding-bottom: 5px;padding-top: 5px;text-align: right; margin-left: 5px; font-size: 14px !important;
+          span{
+             border:2px solid #FFF; padding: 5px 5px; border-radius: 5px; font-weight: bold; color: $primary-font-color; 
+            &:focus,&.active,&.focus,&:active{
+              color: #000; ;text-decoration: none; 
+            }
+          }
+          
+      }
+}

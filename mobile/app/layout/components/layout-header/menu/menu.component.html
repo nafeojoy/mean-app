@@ -1,0 +1,242 @@
+<style>
+    a {
+        color: #5582b1 !important;
+    }
+
+    i {
+        margin: 10px;
+        padding-left: 8px;
+        padding-right: 8px;
+        width: 30px;
+    }
+
+    span {
+        font-size: 15px;
+        color: black;
+        font-family: initial;
+    }
+
+    ul {
+        background: white !important;
+        padding-left: 0px;
+        padding-top: 8px;
+        /* box-shadow: 4px 4px 14px -2px rgba(0, 0, 0, 0.75) !important; */
+    }
+
+    .back-color {
+        /* background-color: #1361b11a; */
+        /* background-color: #4f759c1a; */
+        background-color: white;
+
+    }
+
+    .fixed-profile {
+        height: 150px;
+        width: 100%;
+        overflow: hidden;
+        margin-right: auto;
+        margin-left: auto;
+        /* background-image: url("https://cdn.evbuc.com/images/27108608/85530073675/1/logo.jpg"); */
+        background-image: url("assets/images/menu_back.jpg");
+
+    }
+
+    .selectBox {
+        border-radius: 4px;
+        border: 1px solid #AAAAAA;
+        float: right
+    }
+
+    .fax {
+        margin: 0px;
+    }
+
+    .bottom-border {
+        border-bottom: 1px solid rgb(156, 146, 146);
+    }
+
+    .right-align {
+        float: right;
+    }
+
+    .contact-show {
+        font-size: 12px !important;
+        color: white !important;
+    }
+
+    .side-ul {
+        overflow-y: auto;
+        width: 70%;
+        padding-top: 0px;
+        box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.75);
+        height: 100%
+        /* padding-bottom: 100px; */
+    }
+</style>
+
+<ul class="side-ul">
+
+    <li *ngIf="checkMenuLogin">
+        <div class="fixed-profile">
+            <!-- <i class="fa fa-sign-out" aria-hidden="true" style="float: right; color: #be0202"></i> -->
+            <app-language style="float: right;"></app-language>
+
+            <img alt="" style="width: 20%;; margin: 5%" src="assets/images/icon-user.png">
+            <h6 style="color:white; padding-left: 5%">
+                <i class="fa fa-user-circle fax" aria-hidden="true"></i>{{checkMenuLogin.first_name}}</h6>
+            <h6 *ngIf="checkMenuLogin.email" style="color:white; padding-left: 5%">
+                <i class="fa fa-envelope fax" aria-hidden="true"></i>{{checkMenuLogin.email}}
+            </h6>
+            <h6 *ngIf="checkMenuLogin.phone_number" style="color:white; padding-left: 5%">
+                <i class="fa fa-phone fax" aria-hidden="true"></i>{{checkMenuLogin.phone_number}}</h6>
+        </div>
+
+    </li>
+    <li *ngIf="!checkMenuLogin">
+        <div class="fixed-profile" style="height: 110px">
+
+            <facebook-login></facebook-login>
+            <!-- <h5 style="white-space: normal; width: 150px; text-align: center; padding: 5px; color: white;float: left;">
+                {{'You can join us for free to get better experience !!!' | translate}}
+    
+            </h5> -->
+            <div style="width: 170px;
+            float: left;">
+                <div style="width: 165px;">
+                    <i class="fa fa-phone" style="margin: 0px; margin-left: 10px; color: white"></i>
+                    <span class="footer-contact-number contact-show"> {{'contact_no' | translate}} </span>
+                </div>
+                <div style="width: 165px;">
+                    <i class="fa fa-envelope" style="margin:0px; margin-left: 10px; color: white"></i>
+                    <span class="footer-contact-address contact-show"></span>
+                    <img alt="mail" style="    width: 110px;" src="assets/images/mail_info_white.png">
+
+                    <!-- <img style="width: 100px;" alt="" src="assets/images/mail-info.png"> -->
+                </div>
+            </div>
+
+            <app-language style="float: right; width: 48px"></app-language>
+
+
+        </div>
+    </li>
+
+    <!-- <li class="dropdown menu-large" (click)=change();>
+        <a >
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>{{ 'Books' | translate }}</span>
+            <i class="fa fa-angle-down" aria-hidden="true" style="float: right"></i>
+        </a>
+        <ul *ngIf="expand1" style="padding-top: 0px; font-size: 12px">
+            <li class="dropdown menu-large" style="padding-left: 30%">
+                <a [routerLink]="['/category-books/book']" (click)="menuSelected()">
+                    <i class="fa fa-arrow-right"  aria-hidden="true"></i>
+                    <span>{{ 'All Books' | translate }}</span>
+                </a>
+            </li>
+            <li class="dropdown menu-large" style="padding-left: 30%">
+                <a [routerLink]="['/category-books/boimela-2018']" (click)="menuSelected()">
+                    <i class="fa fa-arrow-right"  aria-hidden="true"></i>
+                    <span>{{ 'Boimela 2018' | translate }}</span>
+                </a>
+            </li>
+        </ul>
+    </li> -->
+    <li [routerLink]="['']" (click)="menuSelected()" class="dropdown menu-large back-color" [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <span>{{ 'Home' | translate }}</span>
+        </a>
+    </li>
+    <li [routerLink]="['/contents/purchase-list']" [style.background-color]="false?'lightgray':'none'" class="back-color " (click)="menuSelected()">
+        <a>
+            <i class="fa fa-money" aria-hidden="true"></i>
+            <span *ngIf="!checkMenuLogin">{{ 'Order Tracker' | translate }}</span>
+            <span *ngIf="checkMenuLogin">{{ 'Order List' | translate }}</span>
+        </a>
+    </li>
+    <li [routerLink]="['/billing/cart']" (click)="menuSelected()" class="dropdown menu-large back-color bottom-border" [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+            <span>{{ 'Cart' | translate }}</span>
+        </a>
+    </li>
+
+
+    <li (click)="emitChange('category-books', 'boimela-2018')" [routerLink]="['/category-books/boimela-2018']" class="dropdown menu-large"
+        [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>{{ 'Boimela 2018' | translate }}
+                <i style="font-size: 10px; margin: 0px" class="fa fa-star"></i>
+                <i class="fa fa-angle-right right-align" style="color: #5582b1; font-size:  18px !important; margin-left: -10px"></i>
+            </span>
+
+
+        </a>
+    </li>
+    <!-- <li (click)="emitChange('category-books', 'book')" [routerLink]="['/category-books/book']" class="dropdown menu-large back-color"
+        [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-book" aria-hidden="true"></i>
+            <span>{{ 'All Books' | translate }}</span>
+            <i class="fa fa-angle-right right-align"></i>
+        </a>
+    </li> -->
+    <li [routerLink]="['/categories']" (click)="menuSelected()" [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-columns" aria-hidden="true"></i>
+            <span>{{ 'Categories' | translate }}</span>
+            <i class="fa fa-angle-right right-align"></i>
+        </a>
+    </li>
+    <li [routerLink]="['/authors']" (click)="menuSelected()" class="back-color" [style.background-color]="false?'lightgray':'none'">
+        <a>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <span>{{ 'Authors' | translate }}</span>
+            <i class="fa fa-angle-right right-align"></i>
+        </a>
+    </li>
+    <li [routerLink]="['/publishers']" (click)="menuSelected()" [style.background-color]="false?'lightgray':'none'" class="bottom-border">
+        <a>
+            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            <span>{{ 'Publishers' | translate }}</span>
+            <i class="fa fa-angle-right right-align"></i>
+        </a>
+    </li>
+
+
+    <li [style.background-color]="false?'lightgray':'none'" (click)="menuSelected()">
+        <a target="_blank"  href="http://blog.boibazar.com/">
+            <i class="fa fa-commenting" aria-hidden="true"></i>
+            <span>{{'Blog' | translate}}</span>
+        </a>
+    </li>
+
+    <li [routerLink]="['/contents/testimonial-list']" [style.background-color]="false?'lightgray':'none'" (click)="menuSelected()">
+        <a>
+            <i class="fa fa-commenting" aria-hidden="true"></i>
+            <span>{{ 'Testimonials' | translate }} </span>
+        </a>
+    </li>
+    <li [routerLink]="['support/help-and-support']" [style.background-color]="false?'lightgray':'none'" class="back-color" (click)="menuSelected()">
+        <a>
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+            <span>{{'Support' | translate}}</span>
+        </a>
+    </li>
+    <li [routerLink]="['info/about-us']" [style.background-color]="false?'lightgray':'none'" (click)="menuSelected()">
+        <a>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+            <span>{{'About Us' | translate}}</span>
+        </a>
+    </li>
+    <li [routerLink]="['info/contact-us']" [style.background-color]="false?'lightgray':'none'" class="back-color" (click)="menuSelected()">
+        <a>
+            <i class="fa fa-envelope" aria-hidden="true"></i>
+            <span>{{'Contact Us' | translate}}</span>
+        </a>
+    </li>
+
+
+</ul>

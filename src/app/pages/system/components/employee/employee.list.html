@@ -1,0 +1,50 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <i [routerLink]="['add']" class="add-icon ion-plus-round"> add new </i>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Designation</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Is Enabled</th>
+                  <th width="5%">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let employee of employees; let i=index">
+                  <td>{{i + 1}}</td>
+                  <td>{{employee.employee_id}}</td>
+                  <td>{{employee.name}}</td>
+                  <td>{{employee.designation}}</td>
+                  <td>{{employee.phone}}</td>
+                  <td>{{employee.email}}</td>
+                  <td>{{employee.is_enabled==true?"Yes": "No"}}</td>
+                  <td>
+                    <a [routerLink]="['edit',employee._id]" style="text-align: center;display: block;">
+                      <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;"
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage(currentPage)">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

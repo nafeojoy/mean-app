@@ -1,0 +1,36 @@
+<div class="col-md-3"></div>
+<div class="col-md-6">
+	<ba-card title="Update Discount">
+		<form>
+
+			<div class="form-group">
+				<label for="discount_on">Discount On</label>
+				<select name="discount_on" class="form-control" [(ngModel)]="discount.discount_on" (ngModelChange)="onSelectOption()">
+					<option [ngValue]="null">Select</option>
+					<option [ngValue]="'Author'">Author</option>
+					<option [ngValue]="'Category'">Category</option>
+					<option [ngValue]="'Publisher'">Publisher</option>
+				</select>
+			</div>
+
+			<div class="form-group" *ngIf="discount.discount_on">
+				<label for="seo_url">Enter Seo Url</label>
+				<input name="seo_url" type="text" class="form-control" [(ngModel)]="discount.seo_url" placeholder="{{discount.discount_on}} Seo Url">
+        <span class="btn btn-primary avlb-btn" (click)="checkAvailableStatus()">Check Availability</span>
+				<span style="color: green" *ngIf="discount.total_item">Total {{discount.total_item}} item will be updated.</span>
+				<span style="color: red" *ngIf="!discount.total_item">{{message}}</span> 
+			</div>
+
+			<div class="form-group" *ngIf="discount.total_item">
+				<label for="amount">Discount Percentage</label>
+				<input name="amount" type="number" class="form-control" [(ngModel)]="discount.amount" placeholder="Percentage">
+			</div>
+
+			<div class="row" *ngIf="discount.total_item">
+				<button [disabled]="!discount.amount || res_pending" style="margin-left: 3%;" class="col-md-2 btn btn-default" (click)="updatePrice()">Update</button>
+        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>        
+      </div>
+
+		</form>
+	</ba-card>
+</div>

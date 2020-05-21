@@ -1,0 +1,134 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          Total Uncheked {{totalItems}}
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <div *ngIf="totalItems<1">
+              <h4>
+                No item remain as unchecked!
+              </h4>
+            </div>
+            <table *ngIf="totalItems>0" class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">Id</th>
+                  <th>Name</th>
+                  <th>Updated at</th>
+                  <th>Update By</th>
+                  <th>Site Link</th>
+                  <th>View</th>
+                  <th>Accept</th>
+                  <th>Reject</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products; let i = index">
+                  <td>{{product.import_id}}</td>
+                  <td>{{product.name}}</td>
+                  <td>{{product.updated_at | date:'dd MMM-yyyy'}}</td>
+                  <td>{{product.updated_by?.first_name}} {{product.updated_by?.last_name}}</td>
+                  <td>
+                    <button (click)="showViewModal(product._id)" class="btn btn-success">View Detail</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-success" (click)="showConfirmModal(product._id, 'accept')">Accept</button>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" (click)="showConfirmModal(product._id, 'reject')">Reject</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize" previousText="&lsaquo;"
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Start Delete Modal -->
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="viewModal.hide()">&times;</button>
+        <h4 class="modal-title">Product Detail and Approval</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <tr>
+                <td>
+                  <span style="font-size: 15px;">En Name &nbsp;:&nbsp;</span>
+                  {{product_detail.en_name}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Bn Name &nbsp;:&nbsp;</span>
+                  {{product_detail.bn_name}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Seo Url&nbsp;:&nbsp;</span>
+                  {{product_detail.seo_url}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="font-size: 15px;">Previous Price&nbsp;:&nbsp;</span>
+                  {{product_detail.previous_price}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Current Price&nbsp;:&nbsp;</span>
+                  {{product_detail.price}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Discount&nbsp;:&nbsp;</span>
+                  {{product_detail.discount_pc}} %
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="font-size: 15px;">Author&nbsp;:&nbsp;</span>
+                  {{product_detail.authorObj?.name}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Category&nbsp;:&nbsp;</span>
+                  {{product_detail.categoryObj?.name}}
+                </td>
+                <td>
+                  <span style="font-size: 15px;">Publisher&nbsp;:&nbsp;</span>
+                  {{product_detail.publisher?.name}}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-2">
+            <button class="btn btn-success" (click)="showConfirmModal(product_detail._id, 'accept')">Accept</button>
+          </div>
+          <div class="col-md-2">
+              <button class="btn btn-danger" (click)="showConfirmModal(product_detail._id, 'reject')">Reject</button>
+          </div>
+        </div>
+        <br>
+        <br>
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-close" (click)="viewModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Delete Modal -->

@@ -1,0 +1,122 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <div class="card-title">
+              <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <div class="card-body">
+              <div class="card border-primary col-md-12">
+                <div class="card-header">
+                  <h3>Total: {{count_obj.total}}</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button class="btn btn-success" (click)="changeStatus('Pending')">
+                        Pending Queries
+                        <span class="count-label">{{count_obj.pending}}</span>
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-primary" (click)="changeStatus('Answered')">
+                        Answred Queries
+                        <span class="count-label">{{count_obj.answred}}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span class="search-style">Filter with Query No.</span>
+                <div class="row">
+                  <div class="col-md-4 col-md-offset-3">
+                    <form (ngSubmit)="search()" class="search-form">
+                      <div class="form-group has-feedback">
+                        <label for="search" class="sr-only">Search</label>
+                        <input type="number" class="form-control" [(ngModel)]="search_text" name="search" id="search" placeholder="Query No">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <h4>{{current_status}} Query List</h4>
+              </div>
+              <hr>
+              <div *ngFor="let c_qry of queries; let i=index">
+                <div class="row">
+                  <div class="col-md-2">
+                    <h4>Query No: {{c_qry.query_no}}</h4>
+                    <span>{{c_qry.query_at | date: 'dd MMM-yyyy'}}, {{c_qry.query_at | date: 'hh:mm a'}}</span>
+                    <br>
+                    <br>
+                    <h5>Customer:</h5>
+                    <p>Name: &nbsp;&nbsp;{{c_qry.name}}</p>
+                    <p>Phone:&nbsp;&nbsp;{{c_qry.phone_number? c_qry.phone_number: 'Not defined'}}</p>
+                    <p>Form:&nbsp;&nbsp;{{c_qry.created_from}}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <h5>Book Name: </h5>
+                    <p>{{c_qry.query?.book_name}}</p>
+                    <p>Author Name:&nbsp;&nbsp;{{c_qry.query && c_qry.query.author? c_qry.query.author: 'Not defined'}}</p>
+                    <h5>Message:</h5>
+                    <p>{{c_qry.message?c_qry.message:'No Message'}}</p>
+                  </div>
+                  <div class="col-md-7">
+                    <span (click)="showComments(c_qry)" class="view-comment">
+                      <i class="fa fa-comment"></i> Comments</span>
+                    <br>
+                    <br>
+                    <div *ngIf="c_qry.showComment">
+                      <div *ngIf="!c_qry.answered" class="row">
+                        <div class="col-md-8">
+                          <form (ngSubmit)="addComment(c_qry)">
+                            <input name="comment" [(ngModel)]="newComment" class="form-control" type="text" placeholder="Add Comment...">
+                            <br>
+                            <button type="submit" class="btn btn-default">Add Comment</button>
+                          </form>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-primary" (click)="updateStatus(c_qry)">Mark as Done</button>
+                        </div>
+                      </div>
+                      <div *ngIf="c_qry.comments && c_qry.comments.length>0" class="comment-table">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>By</th>
+                              <th>At</th>
+                              <th>Text</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let comment of c_qry.comments; let i=index">
+                              <td>{{i+1}}</td>
+                              <td>{{comment.name}}</td>
+                              <td>{{comment.comment_at | date: 'dd MMM hh:mm a'}}</td>
+                              <td>{{comment.speech}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+              </div>
+              <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize" previousText="&lsaquo;"
+                nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

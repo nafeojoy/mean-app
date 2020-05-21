@@ -1,0 +1,142 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    Collection Info
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <i class="fa fa-calendar range-calender" (click)="vst.toggle()"
+                                        [attr.aria-expanded]="vst.isOpen"></i>
+                                    <input type="text" placeholder="Choose Date Range" class="form-control date-picker"
+                                        [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker"
+                                        bsDaterangepicker>
+                                </div>
+                                <br>
+                                <div class="button_all">
+                                    <span class="filter_button">
+                                        <button *ngIf="report_data.length>0" class="btn btn-warning"
+                                            (click)="print()">Downlaod</button>
+                                    </span>
+                                    <span class="filter_button">
+                                        <button (click)="submitReportdata()" [disabled]="res_pending"
+                                            class="btn btn-warning"> Show
+                                        </button>
+                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                    </span>
+                                    <span>
+                                        <button (click)="reset()" class="btn btn-default">Reset</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div *ngFor="let alert of alerts">
+                                    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                    </alert>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <h3>Boibazar Sales, Collection Report</h3>
+                                <address>
+                                    Address: Dhaka, Phone: 08809610666001
+                                </address>
+                                <h5>Period:
+                                    {{filter.start_date | date: 'dd.MM.yyyy'}}-{{filter.end_date | date: 'dd.MM.yyyy'}}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-hover collection-table">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th class="table-id">SL#</th>
+                                        <th>Courier Name</th>
+                                        <th>Courier Code</th>
+                                        <th>Opening Amount</th>
+                                        <!-- <th>Order Amount</th> -->
+                                        <th>Chalan Amount</th>
+                                        <th>Sales Discount</th>
+                                        <th>Return Amount</th>
+                                        <th>Return %</th>
+                                        <th>Net Sale Amount</th>
+                                        <th>Packing Cost</th>
+                                        <th>Transport Cost</th>
+                                        <th>Net Receivable</th>
+                                        <th>Bkash</th>
+                                        <th>SSL</th>
+                                        <th>Wallet Pay</th>
+                                        <th>Deposit To Bank</th>
+                                        <th>Cash</th>
+                                        <th>Total Collection</th>
+                                        <th>Bkash Charge</th>
+                                        <th>SSL Charge</th>
+                                        <th>Courier Charge (Return)</th>
+                                        <th>Collection Charge</th>
+                                        <th>Total Charge</th>
+                                        <th>Net Collection</th>
+                                        <th>Promotion</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td style="text-align:left">{{item.courier_name}}</td>
+                                        <td style="text-align:left">{{item.courier_code}}</td>
+                                        <td style="text-align:center">-</td>
+                                        <td style="text-align:center">{{item.challan_amount}}</td>
+                                        <td style="text-align:center">{{item.sales_discount}}</td>
+                                        <td style="text-align:center">{{item.return_amount}}</td>
+                                        <td style="text-align:center">{{item.return_percentage}}</td>
+                                        <td style="text-align:center">
+                                            {{item.challan_amount-item.sales_discount-item.return_amount}}</td>
+                                        <td style="text-align:center">{{item.packing_cost}}</td>
+                                        <td style="text-align:center">{{item.delivery_charge}}</td>
+                                        <td style="text-align:center">
+                                            {{(item.challan_amount+item.packing_cost+item.delivery_charge)-(item.sales_discount+item.return_amount)}}
+                                        </td>
+                                        <td style="text-align:center">{{item.bkash}}</td>
+                                        <td style="text-align:center">{{item.ssl}}</td>
+                                        <td style="text-align:center">{{item.wallet_pay}}</td>
+                                        <td style="text-align:center">{{item.deposit_to_bank}}</td>
+                                        <td style="text-align:center">{{item.cash}}</td>
+                                        <td style="text-align:center">{{item.total_collection}}</td>
+
+                                        <td style="text-align:center">{{item.bkash_charge}}</td>
+                                        <td style="text-align:center">{{item.ssl_charge}}</td>
+                                        <td style="text-align:center">{{item.return_charge}}</td>
+                                        <td style="text-align:center">{{item.collection_charge}}</td>
+                                        <td style="text-align:center">{{item.total_charge}}</td>
+                                        <td style="text-align:center">{{item.total_collection+item.total_charge}}</td>
+                                        <td style="text-align:center">{{item.promotion}}</td>
+                                        <td style="text-align:center">{{item.balance.toFixed(2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

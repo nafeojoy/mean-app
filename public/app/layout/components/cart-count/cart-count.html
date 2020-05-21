@@ -1,0 +1,33 @@
+<div>
+    <a [routerLink]="['/billing/cart']">
+        <!-- <i class="fa fa-shopping-cart"></i> -->
+        <img class="crt-icon" src="/assets/images/cart-icon-50X50.png" style="margin-left: 8px;">
+        <div *ngIf="cartItems>0">
+            <span style=" letter-spacing: 0px;">
+                {{'Cart' | translate}} ({{cartItems | numberConvert}})
+            </span><br>
+            <span style="text-transform: none; ">
+                {{ cartCost | priceConvert }}
+            </span>
+        </div>
+
+
+        <div *ngIf="cartItems==0">
+            <span style=" letter-spacing: 0px;">
+                {{'Cart' | translate}} (0)
+            </span><br>
+            <span style="text-transform: none; letter-spacing: 0px;">
+                {{'Tk.' | translate}} 0 
+            </span>
+        </div>
+        <!-- <span *ngIf="cartItems=0" style="margin-right: 5px;">
+            {{'Cart' | translate}} (0)
+        </span>
+        <span *ngIf="cartItems=0">
+            No Item
+        </span> -->
+    </a>
+</div>
+
+
+<!--[routerLink]="['../billing/cart']"-->

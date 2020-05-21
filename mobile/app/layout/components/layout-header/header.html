@@ -1,0 +1,126 @@
+<style>
+    .navbar {
+        overflow: hidden;
+        background-color: rgba(19, 97, 177, 0.80);
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .onclick-menu {
+        position: relative;
+        display: inline-flex;
+    }
+
+    .onclick-menu:before {
+        padding: 20px;
+        content: url('http://advcloudfiles.advantech.com/web/Images/common/icon-header-nav.svg');
+    }
+
+    .onclick-menu:focus {
+        pointer-events: none;
+
+    }
+
+    .onclick-menu:focus .onclick-menu-content {
+        background-color: rgba(245, 245, 245, 0.9);
+        visibility: visible;
+        margin-left: 20px;
+        margin-right: 20px;
+        pointer-events: auto;
+    }
+
+    .onclick-menu-content {
+        position: absolute;
+        z-index: 1;
+        margin-top: 50px;
+        background: whitesmoke;
+        visibility: hidden;
+        transition: visibility 0.5s;
+
+    }
+
+    .dropdown:focus {
+        background-color: red;
+    }
+
+    .logo-mod {
+        margin-top: -1%;
+        max-width: 100%;
+        /* width: 65% !important; */
+        height: auto;
+    }
+
+    .menu-header {
+        /* box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.75); */
+        width: 100% !important;
+        left: -103% !important;
+        background-color: #2a6fb900 !important;
+    }
+</style>
+
+
+<header id="header">
+    <div class="header_top navbar-fixed-top" style=" background-color: rgba(19, 97, 177, 0.90); padding-top: 5px; box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 6px -1px;">
+        <div class="container">
+            <div class="row" style="height: 6px;">
+                <div class="col-xs-2">
+                    <span (click)="toggleMenu()">
+                        <i *ngIf='menuState=="in"' class="fa fa-times" style=" padding-top: 15px; padding-left: 10px; 
+                            font-size: x-large;" aria-hidden="true"></i>
+                        <i *ngIf='menuState=="out"' class="fa fa-bars" style=" padding-top: 15px; padding-left: 10px;
+                            font-size: x-large;" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="col-xs-8" style="height: 100%;" (click)="outMenu()">
+                    <img class="logo-mod" src="{{logo_url}}" alt="" [routerLink]="['']" />
+                    <br>
+
+                    <br>
+                </div>
+                <div class="col-xs-2" style="padding-left: 0px" (click)="outMenu()">
+                    <cart-count></cart-count>
+                </div>
+                <div class="col-xs-2" (click)="outMenu()">
+                    <!-- <app-language></app-language> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<section class="border-bottom" id="fixed_bar" style="margin-top: 80px" (window:scroll)="onWindowScroll($event)">
+    <div class="container">
+        <div class="header-middle">
+            <div class="header-middle middle_header_section_user">
+                <div class="row" style="height: 60px;">
+                    <div *ngIf="true" class="col-md-6">
+                        <app-search></app-search>
+                    </div>
+                    <div class="col-md-4">
+                        <user (click)="outMenu()"></user>
+                        <app-signup (click)="outMenu()" style="float: right"></app-signup>
+                        <app-login (click)="outMenu()" style="float: right"></app-login>
+                        <header-menu (click)="outMenu()" class="menu-header" [checkMenuLogin]="getMenuLoginStatus()" [@slideInOut]="menuState" (isMenuSelected)="toggleMenu()"></header-menu>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div *ngIf="showTop" id="bottom_up" style="display: block;opacity: 1;" (click)="go_top()">
+                    <i class="fa fa-angle-up"></i>
+                </div>
+            </div>
+            <div>
+                <div id="phone_number" style="display: block;opacity: 1;" (click)="go_top()">
+                    <i class="fa fa-phone"></i>
+                    <a href="tel:01726262020">
+                        <span style="font-size: 15px; color: aliceblue"> {{'contact_no' | translate}} </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

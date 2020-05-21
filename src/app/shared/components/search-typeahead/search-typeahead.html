@@ -1,0 +1,61 @@
+<div>
+    <input class="form-control" type="text" [(ngModel)]="searchText" (keyup)="typed($event.target.value)" (blur)="getText($event.target.value)">
+    <div class="typeahead-ul1">
+        <ul *ngIf="items.length>0" class="dropdown-menu type_head_drop2">
+            <li *ngFor="let item of items" class="typeahead-hover">
+                <div class="row" (click)="getDetail(item)">
+                    <div *ngIf='item.image' class="col-md-2">
+                        <div class="type-head-padding">
+                            <p class="type-head-image">
+                                <img *ngIf="image && item.image" src="https://d1jpltibqvso3j.cloudfront.net{{item.image}}" alt="">
+                            </p>
+                        </div>
+                    </div>
+
+                    <div *ngIf='item.name' class="col-md-8">
+                        <div class="type-head-padding">
+                            <p class="result-name"> {{item.name}} </p>
+                            <p class="author-name-title">
+                                <span *ngIf='item.authorObj'>
+                                    <b>{{item.authorObj.name}}</b>
+                                </span>
+                                <br>
+                                <i *ngIf='item.publisherObj'>{{item.publisherObj.name}}</i>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div *ngIf='item.price' class="col-md-2">
+                        <div class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.price'> {{item.price}} TK.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div *ngIf='item.promo_code' class="col-md-2">
+                        <div  class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.promo_code'> {{item.promo_code}} </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div *ngIf='item.discount' class="col-md-4">
+                        <div  class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.discount'> {{item.discount}}% discount </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div *ngIf='item.end_date' class="col-md-6">
+                        <div  class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.discount'>Expiry Date: {{item.end_date | date}} </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>`
+    </div>
+</div>

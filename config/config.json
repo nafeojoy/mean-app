@@ -1,0 +1,30 @@
+{
+    "ENV": "development",
+    "PORT": {
+        "PUBLIC": {
+            "DEV": 3000,
+            "PROD": 3000
+        },
+        "ADMIN": {
+            "DEV": 4000,
+            "PROD": 4000
+        },
+        "MOBILE": {
+            "DEV": 5000,
+            "PROD": 5000
+        }
+    },
+    "MONGO_URI": {
+        "DEVELOPMENT": "mongodb://localhost:27017/boibazar"
+    },
+    "REDIS_SERVER": {
+        "DEVELOPMENT": "localhost",
+        "PRODUCTION": "localhost"
+    },
+    "SESSION_SECRET": "123123",
+    "_IMAGE_UPLOAD_PATH": "/home/nafeo/boibazar/uploads/",
+    "IMAGE_UPLOAD_PATH": "/usr/src/boibazar/uploads/",
+    "WATERMARK_PATH_STRING": "image Over 100,150,0,0 /usr/src/boibazar/server-resource/stamp.png",
+    "BACK_IMAGE_WATERMARK_PATH_STRING": "image Over 220,400,0,0 /usr/src/boibazar/server-resource/stamp.png",
+    "DEFAULT_LANGUAGE": "en"
+}

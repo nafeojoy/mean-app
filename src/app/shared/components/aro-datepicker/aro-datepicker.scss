@@ -1,0 +1,34 @@
+aro-datepicker {
+    .btn:hover {
+             transform: none; 
+    }
+    .date_picker_root{
+      position: relative;
+      i {
+            position: absolute; 
+            top:0; 
+            right: 8px;
+            margin-top: 10px !important;
+            cursor: pointer;
+      }
+    }
+  .date_picker{ 
+      position: relative; z-index: 99999;
+      datepicker{
+          position: absolute; top:-162px; right: 22%;
+      }
+  }
+  .btn.pull-left,.btn.pull-left:hover {
+
+        background-image: url('/assets/img/left-arrow.png');
+        background-repeat: no-repeat;
+        background-position: center; 
+        padding: 14px; 
+  }
+.btn.pull-right,.btn.pull-right:hover  {
+        background-image: url('/assets/img/right-arrow.png');
+        background-repeat: no-repeat;
+        background-position: center; 
+        padding: 14px; 
+  }
+} 

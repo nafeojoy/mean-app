@@ -1,0 +1,231 @@
+<style>
+    #myModal {
+        width: 90% !important;
+        height: 85% !important;
+        overflow: scroll !important;
+        background-color: #00000073 !important;
+        margin-top: 5% !important;
+    }
+</style>
+<footer id="footer">
+    <!--Footer-->
+    <div class="footer-widget">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="single-widget">
+                        <div class="logo">
+                            <a [routerLink]="['']" style="width: 160px;text-align: center; 
+                                        height: 40px;
+                                        height: auto;">
+                                <img src="{{logo_url}}" alt="" />
+                            </a>
+                        </div>
+                        <div class="footer-contact">
+                            <div class="footer-contact-left">
+                                <span class="footer-contact-icon">
+                                    <i class="fa fa-phone"></i>
+                                </span>
+                            </div>
+                            <div class="footer-contact-right">
+                                <span class="footer-contact-number"> {{'contact_no' | translate}} </span>
+                            </div>
+                        </div>
+                        <div class="footer-contact">
+                            <div class="footer-contact-left">
+                                <span class="footer-contact-icon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                            </div>
+                            <div class="footer-contact-right">
+                                <!-- <span class="footer-contact-address"> {{'email_address' | translate}} </span> -->
+                                <img src="assets/images/mail-info.png" alt="" />
+                            </div>
+                        </div>
+                        <div class="footer-contact">
+                            <div class="footer-contact-left">
+                                <span class="footer-contact-icon">
+                                    <i class="fa fa-home"></i>
+                                </span>
+                            </div>
+                            <div class="footer-contact-right">
+                                <span class="footer-contact-address"> {{'address' | translate}} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'home_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li>
+                                        <a [routerLink]="['../categories']"> {{'Categories' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['../authors']"> {{'Authors' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['../publishers']"> {{'Publishers' | translate}} </a>
+                                    </li>
+                                    <li style="visibility: hidden;">
+                                        <a> style="visibility: hidden;" </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'books_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="#"> {{'new_releases' | translate}} </a></li>
+                                    <li><a href="#"> {{'foreign_books' | translate}} </a></li>
+                                    <li><a href="#"> {{'best_seller' | translate}}</a></li>
+                                    <li><a href="#"> {{'most_popular' | translate}}</a></li>
+                                </ul>
+                            </div>
+                        </div-->
+                        <div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'know_us_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li>
+                                        <a [routerLink]="['info/about-us']"> {{'About Us' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['info/contact-us']"> {{'Contact Us' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['info/return-policy']"> {{'Return Policy' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['/contents/news']"> {{'News' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a [routerLink]="['/contents/dynamic-page']"> {{'Articles' | translate}} </a>
+                                    </li>
+                                    <li style="visibility: hidden;">
+                                        <a [routerLink]="['news']"> News </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'shop_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a [routerLink]="['../categories']"> {{'Category' | translate}} </a></li>
+                                    <li><a href="#"> {{'price' | translate}} </a></li>
+                                    <li><a href="#"> {{'rating' | translate}} </a></li>
+
+                                </ul>
+                            </div>
+                        </div-->
+                        <div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'support_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <!--li><a [routerLink]="['support/help-and-support']" class="active"> {{'Help_Support' | translate}}  </a></li-->
+                                    <li>
+                                        <a [routerLink]="['support/faq']" class="active"> {{'faq' | translate}} </a>
+                                    </li>
+                                    <li>
+                                        <a (click)="showPdf('bn')" class="active" style="cursor: pointer"> {{'How To Order' | translate}} </a>
+                                    </li>
+                                    <!--li><a [routerLink]="['support/help-desk']" class="active"> {{'Help_Desk' | translate}}  </a></li-->
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4 menu_footer_mobile">
+                            <div class="single-widget">
+                                <h2> {{'policy_heading' | translate}} </h2>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li>
+                                        <a [routerLink]="['policy/terms-of-use']"> {{'Terms of Use' | translate}} </a>
+                                    </li>
+                                    <!-- <li><a [routerLink]="['policy/buy-policy']"> {{'Buying Policy' | translate}} </a></li> -->
+                                    <li>
+                                        <a [routerLink]="['policy/privacy-policy']"> {{'Privacy Policy' | translate}} </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="single-widget">
+                        <!-- <form  class="searchform">
+                            <input type="text" placeholder="Your email address" />
+                            <button type="submit" class="btn btn-default"> {{'Subscribe' | translate}} </button>
+                        </form> -->
+                        <div class="searchform">
+                            <p>
+                                <span>{{'Stay Connected' | translate}}</span>
+                            </p>
+                        </div>
+                        <div class="social-icons">
+                            <ul class="social">
+                                <li>
+                                    <a href="https://www.facebook.com/MyBoiBazar" target="_blank">
+                                        <i class="fa fa-facebook-square fa-2x"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://twitter.com/myboibazar" target="_blank">
+                                        <i class="fa fa-twitter-square fa-2x"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.youtube.com/channel/UCYqvw2_4CqjYC_CdOEr_3uQ" target="_blank">
+                                        <i class="fa fa-youtube-square fa-2x"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://plus.google.com/109139666657902762570" target="_blank">
+                                        <i class="fa fa-google-plus-square fa-2x"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <p class="pull-left"> {{'copyright' | translate}} </p>
+            </div>
+        </div>
+    </div>
+
+    <!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+    <div bsModal #imageModal="bs-modal" class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div id='myModal' class="modal-dialog " role="document">
+            <div class="modal-content" style="margin: auto;
+                    width: 80%;">
+                <div *ngIf="pdfLang =='bn'" class="login-header" style="padding: 20px;">
+                    <div class="busy-loading" *ngFor="let image of banglaImages" style="padding: 10px;">
+                        <img style="width: 100%" src={{image}}>
+                    </div>
+                </div>
+                <!-- <div *ngIf="pdfLang =='en'" class="login-header" style="padding: 20px;">
+                    <div class="busy-loading" *ngFor="let image of englishImages" style="padding: 10px;">
+                        <img style="width: 100%" src={{image}}>
+                    </div>
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+
+    <!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+</footer>
+<!--/Footer-->

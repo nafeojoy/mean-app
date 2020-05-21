@@ -1,0 +1,7 @@
+<div>
+    <ul class="language_tab" style="float: right; padding: 0px">
+        <li *ngFor="let lang of supportedLanguages" (click)="selectLang(lang.value)" >
+            <span style="cursor:pointer" [ngClass]="lang.value==currentLanguage? 'active' : 'active_'"> {{ lang.display }} </span>
+        </li>
+    </ul>
+</div>

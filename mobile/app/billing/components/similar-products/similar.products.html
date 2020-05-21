@@ -1,0 +1,88 @@
+<style>
+    #new-board-btn1 {
+        white-space: normal;
+    }
+
+    #new-board-btn2 {
+        white-space: normal;
+    }
+
+    .m_high {
+        max-height: 400px;
+        min-height: 400px;
+    }
+
+    .middleBtn {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .middleBtnDiv {
+        margin: 0 auto;
+        text-align: center;
+    }
+</style>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="similar-book-scroll">
+                <div class="col-md-12">
+                    <div class="similar-product">
+                        <span> {{'SIMILAR BOOKS YOU MIGHT LIKE' | translate}} </span>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 padding-right busy-loading" style="margin-top: 10px ">
+                    <div>
+                        <div *ngFor="let product of products; let i = index" class="tab-pane fade active in">
+                            <div class="col-12 col-md-3 similar_height" style="width: 160px; float: left">
+                                <div class="thumbnail" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20"
+                                    style="width: 140px; margin-right: 10px">
+                                    <label *ngIf="product.current_offer" class="test_n" style="position: absolute;margin-top:0px;max-height: 64px!important;max-width: 64px; ">
+                                        <a [routerLink]="['/book', product.seo_url]">
+                                            <img style="max-height: 64px !important;" src="{{cartService.publicImageBaseUrl}}/images/offer/{{product.current_offer}}">
+                                        </a>
+                                    </label>
+                                    <a [routerLink]="['/book', product.seo_url]">
+                                        <div class="fixed-container">
+                                            <img class="list-group-image" src="{{cartService.publicImageBaseUrl}}{{product.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt="">
+                                        </div>
+                                    </a>
+
+                                    <div class="caption">
+                                        <h4 class="line_nowrap group inner list-group-item-heading">
+                                            <p style="text-align: center; "> {{product.name}} </p>
+                                        </h4>
+                                        <h4 class="line_nowrap" style="margin-bottom: 0px">
+                                            <div>
+                                                <p style="text-align: center;  "> {{product.authorObj.name}} </p>
+                                            </div>
+                                        </h4>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-xs-12">
+                                                <p class="lead" style="text-align: center; margin-bottom: 0px; margin-top: 0px">
+                                                    <span *ngIf="product.price" class="tk_home" style="font-size: 14px; font-weight: bold">{{product.price | priceConvert}}</span>
+                                                    <span *ngIf="!product.price" class="tk_home"> NA</span>
+                                                    <span *ngIf="product.previous_price && product.price && (product.previous_price>product.price)" class="prev_price">{{product.previous_price | priceConvert}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="card_system middleBtnDiv" style="margin-top:0px ">
+                                            <button *ngIf="!product.already_added" id="new-board-btn1" class="btn btn-default details-button-view" (click)="addToCart(product, i)">
+                                                <span class="fa fa-shopping-cart"> {{'add_to_cart'|translate}} </span>
+                                            </button>
+                                            <button *ngIf="product.already_added" id="new-board-btn2" [disabled]="true" class="btn btn-default details-button-view">
+                                                <span class="fa fa-shopping-cart">{{'added_to_cart'|translate}}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

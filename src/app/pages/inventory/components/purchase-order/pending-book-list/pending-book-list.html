@@ -1,0 +1,225 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-header clearfix">
+                <div class="card-title">
+                    Pending Book List (Partial Purchased)
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="!loading">
+                    <div class="col-md-6">
+                        <label for="order_no">Date Range:</label>
+                        <br>
+                        <i class="fa fa-calendar range-calender" (click)="vst.toggle()" [attr.aria-expanded]="vst.isOpen"></i>
+                        <input type="text" placeholder="Choose Date Range" class="form-control date-picker" [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker" bsDaterangepicker>
+                    </div>
+                </div>
+                <div *ngIf="products.length==0 && loading">
+                    <h3>Please wait, Loading...</h3>
+                </div>
+                <div *ngIf="products.length==0 && !loading">
+                    <h3>No pending book found with this query.</h3>
+                </div>
+                <div class="horizontal-scroll" *ngIf="products.length>0 && !loading">
+                    <div>
+                        <button class="btn btn-primary pending-purchase" (click)="openPurchaseModal()">Purchase</button>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="black-muted-bg">
+                                <th class="table-id">#</th>
+                                <th>PO No.</th>
+                                <th>Name</th>
+                                <th>Publisher</th>
+                                <th>Required Qty</th>
+                                <th>Purchase Qty</th>
+                                <th>Rate</th>
+                                <th>Supplier</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item  of products; let i=index">
+                                <td>{{i + 1}}</td>
+                                <td>{{item.orders}}</td>
+                                <td>{{item.book_name}}({{item.import_id}})</td>
+                                <td>{{item.publisher}}</td>
+                                <td>{{item.required_quantity}}</td>
+                                <td>
+                                    <input type="number" name="aty" class="form-control" [(ngModel)]="item.purchased_qty">
+                                </td>
+                                <td>
+                                    <input type="number" name="last_pprice" class="form-control" [(ngModel)]="item.last_pprice">
+                                </td>
+                                <td>
+                                    <p>{{item.supplier && item.supplier.name? item.supplier.name: "Not Specified"}}</p>
+                                </td>
+                                <td>
+                                    <button *ngIf="item.supplier && item.supplier.name" (click)="addSupp(item, i)" class="btn btn-default">Change
+                                        Supplier</button>
+                                    <button *ngIf="!item.supplier" (click)="addSupp(item, i)" class="btn btn-default">Add Supplier</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7"></td>
+                                <td colspan="3" style="text-align:right">Summary: {{summary}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #changeSupplierModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-label="Close" (click)="closeSuppModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="widgets">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="supplier" class="control-label">Search Supplier</label>
+                                <div>
+                                    <search-typeahead [clearField]="isClear" [items]="supplierList" (dataLoader)="supplierSearchTerm$.next($event)" (selectedLoader)="getSelectedSupplier($event)"></search-typeahead>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div *ngFor="let alert of alerts">
+                            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" (click)="changeSupp()" data-dismiss="modal">Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #purchaseItemsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-label="Close" (click)="purchaseItemsModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="widgets">
+                    <div class="row" *ngIf="selected_purchase_items.length>0">
+                        <div class="col-md-12">
+                            <h3>Selecetd Purchase Items</h3>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th class="table-id">#</th>
+                                        <th>Name</th>
+                                        <th>Publisher</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Supplier</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item  of selected_purchase_items; let i=index">
+                                        <td>{{i + 1}}</td>
+                                        <td>{{item.book_name}}</td>
+                                        <td>{{item.publisher}}</td>
+                                        <td>{{item.purchased_qty}}</td>
+                                        <td>{{item.last_pprice}}</td>
+                                        <td>{{item.supplier?.name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="selected_purchase_items.length>0">
+                        <form>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="date" class="col-sm-4 control-label">Purchase Date</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control" name="purchase_date"
+                                            [(ngModel)]="purchase_data.purchase_date">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="purchase_mode" class="col-sm-4 control-label">Puchased Mode</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" name="purchase_mode" id="purchase_mode"
+                                            [(ngModel)]="purchase_data.purchase_mode" required>
+                                            <option *ngFor="let mode of purcahse_modes" [value]="mode.name">
+                                                {{mode.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="courier_charge" class="col-sm-4 control-label">Courier Charge</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" name="courier_charge"
+                                            [(ngModel)]="purchase_data.courier_charge">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="convenience" class="col-sm-4 control-label">Convenience</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" name="convenience"
+                                            [(ngModel)]="purchase_data.convenience">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="remark" class="col-sm-4 control-label">Remark</label>
+                                    <div class="col-sm-8">
+                                        <textarea type="text" name="remark" [(ngModel)]="purchase_data.remark"
+                                            class="form-control" id="name" placeholder="Remark"></textarea>
+                                    </div>
+                                </div>
+                                <button [disabled]="res_pending" class="btn btn-warning" style="float: right;"
+                                    (click)="purchase()">Purchase</button>
+                                <spinner style="float: right;" *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                            </div>
+                            <div class="col-sm-6">
+                                <div *ngFor="let alert of alerts">
+                                    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}
+                                    </alert>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row" *ngIf="selected_purchase_items.length==0">
+                        <div class="col-md-12">
+                            <h3>No valid purchase item found.</h3>
+                            <p>Purchase quantity, price and supplier are manadatory.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div *ngFor="let alert of alerts">
+                            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

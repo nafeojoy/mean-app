@@ -1,0 +1,18 @@
+<!-- <div [style.background-image] = "checkFest ? 'url(/assets/images/background.png)' : 'none'"> -->
+<div>
+
+    <app-header></app-header>
+    <div style="min-height:530px; margin-bottom: 10px; margin-top:110px">
+
+        <router-outlet style="z-index:-1"></router-outlet>
+    </div>
+    <app-footer></app-footer>
+</div>
+<!-- <div *ngIf='!checkFest'>
+    <app-header></app-header>
+    <div style="min-height:530px; margin-bottom: 10px; margin-top:140px">
+
+        <router-outlet style="z-index:-1"></router-outlet>
+    </div>
+    <app-footer></app-footer>
+</div> -->

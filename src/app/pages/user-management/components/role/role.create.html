@@ -1,0 +1,69 @@
+
+<div class="row">
+    <form style="margin-top: 21px" (ngSubmit)="saveRole()" class="form-horizontal">
+        <div class="col-md-6">
+            <ba-card title="Role Info" baCardClass="with-scroll">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" [(ngModel)]="role.name" class="form-control" id="name" placeholder="Name" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                        <textarea name="description" [(ngModel)]="role.description" class="form-control" id="description" placeholder="Description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="is_enabled" class="col-sm-2 control-label">Is Enabled</label>
+                    <div class="col-sm-10">
+                        <ui-switch name="is_enabled" class="form-control" [(ngModel)]="role.is_enabled"></ui-switch>
+                    </div>
+                </div>
+            </ba-card>
+        </div>
+        <div class="col-md-6">
+            <ba-card title="Menu List" baCardClass="with-scroll">
+                <div class="form-group">
+                    <div class="d-inline-block">
+                        <leo-treeview [items]="items" [template]="tpl" (selectedChange)="onSelectedChange($event)">
+                        </leo-treeview>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <div *ngFor="let alert of alerts">
+                            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button style="float:right" type="submit" class="btn btn-warning">Save</button>
+                    </div>
+                </div>
+            </ba-card>
+        </div>
+    </form>
+</div>
+
+
+<template #tpl let-item="item" let-toggleCollapseExpand="toggleCollapseExpand" let-onCheckedChange="onCheckedChange">
+    <div class="form-check row">
+        <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true" class="fa col-md-1" [class.fa-caret-right]="item.collapsed"
+            [class.fa-caret-down]="!item.collapsed"></i>
+        <label class="form-check-label col-md-5" (click)="onChange(item)">
+            <input type="checkbox" class="form-check-input"
+                [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange(item)" [disabled]="item.disabled" />
+            {{item.text}}
+        </label>
+        <div class="col-md-6 permission" *ngIf="!item.children && item.permissions">
+            <ul>
+                <li *ngFor="let permission of item.permissions; let i=index">
+                    <label class="checkbox-inline">
+                        <input [(ngModel)]="permission.status" id="i" type="checkbox">{{permission.name}}
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>

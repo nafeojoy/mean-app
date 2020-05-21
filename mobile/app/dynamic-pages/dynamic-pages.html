@@ -1,0 +1,29 @@
+<style>
+    .default-content img {
+        width: 100%;
+        height: auto;
+    }
+
+    .default-content p {
+        font-family: 'sans-serif' !important;
+        font-size: 14px !important;
+        color: black;
+    }
+
+    .default-content span {
+        font-family: 'sans-serif' !important;
+        font-size: 14px !important;
+        color: black;
+    }
+
+    .default-content {
+        text-align: justify;
+    }
+</style>
+<section class="margintop30 marginbottm30">
+    <div class="container busy-loading">
+        <div class="default-content" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+            <div [innerHTML]="content_object?.content"></div>
+        </div>
+    </div>
+</section>

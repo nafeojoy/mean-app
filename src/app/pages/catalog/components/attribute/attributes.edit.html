@@ -1,0 +1,28 @@
+<div class="widgets">
+    <form [formGroup]="form" (ngSubmit)="update()">
+        <div class="row">
+            <div class="col-md-6">
+                <ba-card title="Edit attributes" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [inputValue]="attributes_name" [type]="'text'" [name]="'name'" [label]="'Name'"
+                            [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_featured">Is Featured</label>
+                        <ui-switch name="is_featured" class="form-control" [formControl]="form.controls['is_featured']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="featured_order">Feature Order</label>
+                        <input name="featured_order" type="number" class="form-control" [formControl]="form.controls['featured_order']" placeholder="Feature Order">
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+        <button type="submit" [disabled]="!form.valid" class="btn btn-warning">Save</button>
+    </form>
+</div>

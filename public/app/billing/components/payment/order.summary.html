@@ -1,0 +1,101 @@
+<div *ngIf="subTotal" class="row">
+  <div class="col-md-12">
+    <div class="borderdefalt">
+      <div class="order-summary-title">
+        <p> Order Summary </p>
+      </div>
+      <div class="summarypaddingtopbuttom10">
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Sub-total </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> Tk. {{inputItems}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Delivery Charge <sup>*{{'condition_applicable' | translate}}</sup></span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> Tk. 50 </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Discount </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> Tk. 150 </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span style="font-weight: bold;"> Total </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> Tk.{{inputItems + deliveryCharge - discount}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="checkout-button">
+          <a [routerLink]="['../shipping']" (click)="storeCart()" class="btn btn-default btn-check-out" style="display: block; width: 100%;"> Checkout </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div  class="row">
+  <div class="col-md-12">
+    <div class="background-payment">
+      <div class="payment-order-summary-title">
+        <p> Order Summary </p>
+      </div>
+      <div class="summarypaddingtopbuttom10">
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Sub-total </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> TK. {{inputItems}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Delivery Charge <sup>*{{'condition_applicable' | translate}}</sup></span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> TK. {{deliveryCharge}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> Discount </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> TK. {{discount}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span style="font-weight: bold;">Payable Total Amount</span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> TK. {{inputItems + deliveryCharge - discount}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

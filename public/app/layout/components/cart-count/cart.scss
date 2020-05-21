@@ -1,0 +1,17 @@
+@import '../../../../sass/conf';
+
+.cart_header {
+    display:inline-block; padding-right: 15px;
+      &:last-child{
+        padding-right: 0;
+      }
+      a{
+        background: $primary-color;color: $primary-font-color; font-family: $font-family; font-size: 13px; font-weight: 500;  margin-left:-6px;cursor: pointer;
+          i{color: $primary-font-color;}
+         span{color: $primary-font-color;} 
+      }
+}
+
+.crt-icon{
+  padding-right: 0px; margin-right: 0px; display: block; width: 40px;
+}

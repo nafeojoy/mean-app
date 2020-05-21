@@ -1,0 +1,151 @@
+@import '../../../../sass/conf';
+
+/*************************
+******* Contact CSS ********
+**************************/
+.google-maps {
+  width: 100%;
+  height: calc(100vh - 283px);
+}
+
+.contact-map {
+  width: 100%;
+  height: 443px;
+  margin-bottom: 70px
+}
+
+.google-map{
+   height: 443px !important;
+}
+.contact-info .heading, 
+.contact-form .heading {
+  text-transform: capitalize;
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+
+#contact-page 
+.form-control::-moz-placeholder {
+  color: #8D8D8D;
+}
+
+#contact-page .form-control {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #696763;
+  height: 46px;
+  padding: 6px 12px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow:inherit;
+}
+
+#contact-page #message {
+  height:160px;
+  resize:none;
+}
+
+#main-contact-form .btn-primary {
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+
+#contact-page .form-control:focus, 
+#contact-page .form-control:hover {
+  box-shadow: inherit;
+  border-color: $border-color-light;
+}
+
+#contact-page .contact-info {
+  padding: 0 20px;
+}
+
+#contact-page .contact-info address {
+  margin-bottom: 40px;
+  margin-top: -5px;
+}
+
+#contact-page .contact-info p {
+  margin-bottom: 0;
+  color: #696763;
+  font-size: 16px;
+  line-height: 25px;
+}
+
+.social-networks{
+  overflow: hidden;
+  text-align: center;
+}
+
+.social-networks ul {
+  margin-top: -5px;
+  padding: 0;
+  display: inline-block;
+}
+
+.social-networks ul li {
+  float: left;
+  text-decoration: none;
+  list-style: none;
+  margin-right: 20px;
+}
+
+.social-networks ul li:last-child{
+  margin-right: 0;
+}
+
+.social-networks ul li a {
+  color: $primary-color;
+  font-size: 25px;
+}
+
+.contact-info .social-networks ul li a i{
+  background: none;
+}
+
+.contact-info .social-networks ul li a:hover{
+  color: $secondary-color;
+}
+
+.title { width: 100%;}
+
+h2.title {
+    color: $secondary-color;
+    font-family: $font-family;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 4 0px 30px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.text-left {
+    text-align: left;
+}
+
+ h2.title::after {
+    border: 1px solid #f5f5f5;
+    bottom: 8px;
+    content: " ";
+    height: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: -2;
+}
+
+h2.title::before {
+    background: #fff none repeat scroll 0 0;
+    bottom: -6px;
+    content: " ";
+    height: 30px;
+    left: 50%;
+    margin-left: -110px;
+    position: absolute;
+    width: 220px;
+    z-index: -1;
+}

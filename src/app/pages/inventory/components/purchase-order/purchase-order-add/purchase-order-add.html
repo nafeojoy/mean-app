@@ -1,0 +1,99 @@
+<ba-card title="Create Purchase Requisition" baCardClass="with-scroll heading-widget">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Create purchase requisition by adding book</h4>
+                        <span style="font-size: 16px;">Search with Product Name:</span>
+                        <search-typeahead [clearField]="isClear" [items]="dataList" (dataLoader)="searchProduct$.next($event)"
+                            (selectedLoader)="getSelected($event)"></search-typeahead>
+                        <br>
+                        <span style="font-size: 16px;">Search with Seo Url:</span>
+                        <input class="form-control" type="text" name="seo_url" [(ngModel)]="seo_url" (keyup.enter)="getItemByUrl()">
+                        <br>
+                        <button class="btn btn-default" (click)="addItem()">
+                            <i class="fa fa-plus-circle plus-icon">&nbsp;&nbsp;Add</i>
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Create purchase requisition by publisher</h4>
+                        <span style="font-size: 16px;">Search Publisher:</span>
+                        <search-typeahead [clearField]="isClear" [items]="publisherDataList" (dataLoader)="searchPurlisher$.next($event)"
+                            (selectedLoader)="getSelectedPublisher($event)"></search-typeahead>
+                        <button [disabled]="getting_publisher_book" class="btn btn-default" (click)="getPublisherBook()">
+                            Get Book List
+                        </button>
+                        <spinner *ngIf="getting_publisher_book" [tickness]="1" [size]="20"></spinner>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-md-6">
+                    <div *ngFor="let alert of alerts">
+                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedItems.length>0" class="horizontal-scroll">
+                <h3>Purchase Product List:</h3>
+                <table class="table table-hover">
+                    <tbody>
+                        <tr class="black-muted-bg">
+                            <td class="table-id" width="2%">#</td>
+                            <td width="30%">Name</td>
+                            <td width="18%">Author</td>
+                            <td width="5%">Req. Qty</td>
+                            <td width="5%">Avi. Qty</td>
+                            <td width="5%">Pur. Qty</td>
+                            <td width="5%">Pur. Rate</td>
+                            <td width="5%">Total</td>
+                            <td width="20%">Pur. From</td>
+                            <td width="5%">Edit</td>
+                            <td width="5%">Remove</td>
+                        </tr>
+                        <tr *ngFor="let item of selectedItems; let i=index">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.author}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.stock_qty}}</td>
+                            <td>
+                                <span *ngIf="!item.is_edit">{{item.purchase_qty}}</span>
+                                <input class="form-control" *ngIf="item.is_edit" [(ngModel)]="item.purchase_qty"
+                                    (ngModelChange)="updateTotalCost()" type="number">
+                            </td>
+                            <td>{{item.rate}}</td>
+                            <td>{{item.rate * item.purchase_qty}}</td>
+                            <td>
+                                <span>
+                                    {{item.supplier?item.supplier:'Not Specified'}}
+                                </span>
+                            </td>
+                            <td>
+                                <i *ngIf="!item.is_edit" (click)="edit(item, i)" class="fa fa-pencil-square-o change-ico"></i>
+                                <i *ngIf="item.is_edit" (click)="edited(item, i)" class="fa fa-plus-square change-ico"
+                                    aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                <i (click)="remove(item, i)" class="fa fa-trash change-ico" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td colspan="7"></td>
+                            <td colspan="3">Approximate Purchase Cost: {{total_cost}}</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="employee" class="control-label">Employee</label>
+                        <search-typeahead [clearField]="isClear" [items]="employeeList" (dataLoader)="employeeSearchTerm$.next($event)"
+                            (selectedLoader)="getSelectedEmployee($event)"></search-typeahead>
+                        <br>
+                        <button type="button" class="btn btn-default" (click)="createOrder()">Create Requisition</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ba-card>

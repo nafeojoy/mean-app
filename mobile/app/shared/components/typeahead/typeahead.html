@@ -1,0 +1,42 @@
+<div>
+    <input type="text" [(ngModel)]="searchText" (keyup)="typed($event.target.value)" (keyup.enter)="searchedProducts()" 
+    placeholder="{{ searchLn }}">
+    <div class="typeahead-ul">
+        <ul *ngIf="items.length>0 && !hide" class="dropdown-menu type_head_drop">
+            <li *ngFor="let item of items" class="typeahead-hover">
+                <div class="row" (click)="getDetail(item)">
+                    <div class="col-md-1">
+                        <div class="type-head-padding">
+                            <p class="type-head-image">
+                                <img *ngIf="image && item.click_url=='author-books'" src="https://d1jpltibqvso3j.cloudfront.net{{item.image}}" alt="" onError="this.src='assets/images/author-no-photo.png'">
+                                <img *ngIf="image && item.click_url=='book'" src="https://d1jpltibqvso3j.cloudfront.net{{item.image}}" alt="" onError="this.src='assets/images/book-no-photo.jpg'">
+                                <img *ngIf="image && item.click_url=='publisher-books'" src="https://d1jpltibqvso3j.cloudfront.net{{item.image}}" alt="" onError="this.src='assets/images/publisher-no-photo.jpg'">
+                                <img *ngIf="image && item.click_url=='category-books'" src="https://d1jpltibqvso3j.cloudfront.net{{item.image}}" alt="" onError="this.src='assets/images/category-no-photo.png'">
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="type-head-padding">
+                            <p class="result-name"> {{item.name}} </p>
+                            <p class="author-name-title">
+                                <span *ngIf='item.authorObj'>{{item.authorObj.name}}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.price'> {{item.price | priceConvert}}</span>
+                            </p>
+                            <p class="">
+                                <star-rating [rating]="item.rating" viewSize="small"></star-rating>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul><br>
+    </div>
+</div>

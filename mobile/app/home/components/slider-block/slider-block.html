@@ -1,0 +1,19 @@
+<section id="slider" class="margintop30_" style="padding-bottom: 15px">
+    <div class="container">
+
+        <div class="col-md-7">
+            <carousel [interval]="myInterval" [noWrap]="noWrapSlides" [(activeSlide)]="activeSlideIndex" style="bottom:0px">
+                <slide *ngFor="let banner of bannerData; let index=index">
+                    <div *ngIf="banner.click_url">
+                        <a href="{{banner.click_url}}" target="_blank">
+                            <img src="{{homeService.publicImageBaseUrl}}/images/banner/{{banner.image}}" onerror="this.src='assets/images/banner-no-image.png'" alt="image slide" style="display: block; width: 100%;">
+                        </a>
+                    </div>
+                    <div *ngIf="!banner.click_url">
+                        <img src="{{homeService.publicImageBaseUrl}}/images/banner/{{banner.image}}" onerror="this.src='assets/images/banner-no-image.png'" alt="image slide" style="display: block; width: 100%;">
+                    </div>
+                </slide>
+            </carousel>
+        </div>
+    </div>
+</section>

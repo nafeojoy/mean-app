@@ -1,0 +1,71 @@
+<div class="alert_messages_chart">
+    <div *ngFor="let alert of alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+</div>
+<div class="widgets">
+    <div class="row">
+        <form style="margin-top: 21px" (ngSubmit)="updateEmployee()" class="form-horizontal">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ba-card title="Add Employee" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 control-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" [(ngModel)]="employee.name" class="form-control" id="name" placeholder="Employee Name">
+                            <span *ngIf="isSubmited && !employee.name" style="color: red;">Employee name is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="carrier_name" class="col-md-4 control-label"> Designation: </label>
+                        <div class="col-md-8">
+                            <select [(ngModel)]="employee.designation" class="form-control" name="designation" id="designation">
+                                <option *ngFor="let designation of designations" [ngValue]="designation.value">
+                                    {{designation.name}}
+                                </option>
+                            </select>
+                            <span *ngIf="isSubmited && !employee.designation" style="color: red;">Designation is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-4 control-label">ID</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="employee_id" [(ngModel)]="employee.employee_id" class="form-control" id="name" placeholder="Employee ID">
+                            <span *ngIf="isSubmited && !employee.employee_id" style="color: red;">Employee ID is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-4 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" name="email" [(ngModel)]="employee.email" class="form-control" id="email" placeholder="Email">
+                            <span *ngIf="isSubmited && !employee.email" style="color: red;">Email is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cell" class="col-sm-4 control-label">phone</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="cell" [(ngModel)]="employee.phone" class="form-control" id="cell" placeholder="Phone">
+                            <span *ngIf="isSubmited && !employee.phone" style="color: red;">Phone is required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_enabled" class="col-sm-4 control-label">Is Enabled</label>
+                        <div class="col-sm-8">
+                            <ui-switch name="is_enabled" class="form-control" [(ngModel)]="employee.is_enabled"></ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button [disabled]="isDisabled" type="submit" class="btn btn-warning">Save</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <a (click)="back()" style="text-align: right; display: block; padding-top: 11px; cursor:pointer">
+                                <i class="fa fa-reply"></i> Back To List </a>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </form>
+    </div>
+</div>

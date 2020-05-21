@@ -1,0 +1,172 @@
+<style type="text/css">
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .thumbnail>img,
+    .thumbnail a>img {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 10%;
+    }
+
+
+    .thumbnail {
+        margin-bottom: 20px;
+        padding: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+    }
+
+    .item.list-group-item {
+        float: none;
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .item.list-group-item:nth-of-type(odd):hover,
+    .item.list-group-item:hover {
+        background: #428bca;
+    }
+
+    .item.list-group-item .list-group-image {
+        margin-right: 10px;
+    }
+
+    .item.list-group-item .thumbnail {
+        margin-bottom: 0px;
+    }
+
+    .item.list-group-item .caption {
+        padding: 9px 9px 0px 9px;
+    }
+
+    .item.list-group-item:nth-of-type(odd) {
+        background: #eeeeee;
+    }
+
+    .item.list-group-item:before,
+    .item.list-group-item:after {
+        display: table;
+        content: " ";
+    }
+
+    .item.list-group-item img {
+        float: left;
+    }
+
+    .item.list-group-item:after {
+        clear: both;
+    }
+
+    .list-group-item-text {
+        margin: 0 0 11px;
+    }
+
+    @media screen and (orientation: landscape) {
+        .busy-loading {
+            margin-left: 8%;
+        }
+    }
+
+    @media (min-width: 992px) and (orientation: landscape) {
+        .middle_header_section_user .row .col-md-6 {
+            width: 65% !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .middle_header_section_user .row .col-md-6 {
+            width: 65% !important;
+        }
+    }
+</style>
+<div class="row">
+    <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+        <div *ngFor="let item of inputItems; let i = index" class="tab-pane fade active in">
+            <div [class]="screenSize">
+                <!-- <a [routerLink]="['../'+ nextRoute, item.seo_url]"> -->
+                <a>
+                    <div class="thumbnail thumb_home_height">
+                        <label *ngIf="item.free_delivery" class="offer-image-home">
+                            <img style="max-height: 64px !important;" src="{{homeService.publicImageBaseUrl}}/images/offer/{{item.current_offer}}">
+                        </label>
+                        <div class="fixed-container-book">
+                            <div class="touchDivParent">
+                                <div class="touchDivChild">
+                                    <span *ngIf="item.is_out_of_print" style="color: #ffc300;">
+                                        {{'out_of_print' | translate}}
+                                    </span>
+                                    <span *ngIf="!item.already_added && !item.is_out_of_print" (click)="addToCart(item, i)">
+                                        {{'add_to_cart' | translate}}
+                                    </span>
+                                    <span *ngIf="item.already_added" style="color: #ffc300;">
+                                        {{'added_to_cart' | translate}}
+                                    </span>
+                                    <hr *ngIf='item.preview_images == 0' class="hrStyle">
+                                    <p *ngIf='item.preview_images >0' class="hrStyle">
+                                        <a [routerLink]="['../'+ nextRoute, item.seo_url]">{{'Look Inside' | translate}}</a>
+                                    </p>
+                                    <span>
+                                        <a [routerLink]="['../'+ nextRoute, item.seo_url]">{{'View Details' | translate}}</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <img *ngIf='!gifshow' class="group list-group-image" src="{{homeService.publicImageBaseUrl}}{{item[imageField]}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                alt="{{item.name}}">
+                            <img *ngIf='gifshow && gifProductId != item._id' class="group list-group-image" src="{{homeService.publicImageBaseUrl}}{{item[imageField]}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                alt="{{item.name}}">
+                        </div>
+                        <!-- For Off -->
+                        <label *ngIf="item.previous_price && item.previous_price !=0 && !(item.price >= item.previous_price) " class="discount-parcent-label">
+                            <img style="max-height: 64px !important; width: 80%;" src="assets/images/off.png">
+                            <span class="span-off">{{this.Math.round(((item.previous_price - item.price)/item.previous_price)*100) | numberConvert}}%</span>
+                            <span class="span-off" style="top: 22px;">{{'OFF' | translate}}</span>
+
+                        </label>
+                        <div class="caption">
+                            <h4 id="item-name" class="group inner list-group-item-heading">
+                                <div>
+                                    <p style="text-align: center;  "> {{item.name}} </p>
+                                </div>
+                            </h4>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-xs-12">
+                                    <p class="lead" style="text-align: center; margin-bottom: 5px">
+                                        <span *ngIf="item.price" class="tk_home" style="font-size: 14px; font-weight: bold">{{item.price | priceConvert}}</span>
+                                        <span *ngIf="!item.price" class="tk_home" style="font-size: 14px; font-weight: bold"> NA</span>
+                                        <span *ngIf="item.previous_price && item.price && (item.previous_price>item.price)" class="prev_price">{{item.previous_price | priceConvert}}</span>
+
+                                    </p>
+                                </div>
+                            </div>
+                            <h4 class="author-h4">
+                                <div>
+                                    <!-- <p style="white-space: nowrap; overflow: hidden;width: 130px; text-align: center;  "> {{item.publisher.name}} </p> -->
+                                    <p *ngIf='item.author' class="author-name-home"> {{item.author.name}} </p>
+                                </div>
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <a [ngClass]="currentPage>1 ? 'left section-arrow-left-4 carousel-control' : 'left section-arrow-left-4 carousel-control disabled'"
+    (click)="prev()">
+    <i class="fa fa-angle-left angle_left"></i>
+</a>
+<a [ngClass]="checkCurrentPage>7 ? 'right section-arrow-right-4 carousel-control' : 'right section-arrow-right-4 carousel-control disabled'"
+    (click)="next()">
+    <i class="fa fa-angle-right angle_right"></i>
+</a> -->

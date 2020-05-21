@@ -1,0 +1,269 @@
+<div class="container-wrapper">
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 style="color: #7eabda;">Data show from:</h3>
+                            <p> <span style="font-size: large">{{selected_date.from | date:'dd MMM-yyyy'}}</span> to <span style="font-size: large">{{selected_date.to | date:'dd MMM-yyyy'}}</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <i class="fa fa-calendar range-calender" (click)="vst.toggle()" [attr.aria-expanded]="vst.isOpen"></i>
+                            <input type="text" placeholder="Choose Date Range" class="form-control date-picker"
+                                [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker"
+                                bsDaterangepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-1 col-sm-4">
+                            <h4 class="tag-title">Total Visitors</h4>
+                            <h5 class="tag-text">{{visit_and_order_info.current_visit_data?.total_visitors}}</h5>
+                            <p class="prior-state">{{visit_and_order_info.proir_visit_data?.total_visitors}}&nbsp;&nbsp;
+                                <i [ngClass]="{
+                                            'fa':true,
+                                            'fa-caret-down': visit_and_order_info.current_visit_data?.total_visitors<visit_and_order_info.proir_visit_data?.total_visitors,
+                                            'fa-caret-up': visit_and_order_info.current_visit_data?.total_visitors>=visit_and_order_info.proir_visit_data?.total_visitors
+                                            }"></i>
+                            </p>
+                        </div>
+                        <div class="col-md-1 col-sm-4">
+                            <h4 class="tag-title">Unique Visitors</h4>
+                            <h5 class="tag-text">{{visit_and_order_info.current_visit_data?.unq_visited}}</h5>
+                            <p class="prior-state">{{visit_and_order_info.proir_visit_data?.unq_visited}}&nbsp;&nbsp;
+                                <i [ngClass]="{
+                                                'fa':true,
+                                                'fa-caret-down': visit_and_order_info.current_visit_data?.unq_visited<visit_and_order_info.proir_visit_data?.unq_visited,
+                                                'fa-caret-up': visit_and_order_info.current_visit_data?.unq_visited>=visit_and_order_info.proir_visit_data?.unq_visited
+                                                }"></i>
+                            </p>
+                        </div>
+
+                        <div *ngFor="let order of order_summary" class="col-md-1 col-sm-4">
+                            <h4 class="tag-title">{{order.status_name}}</h4>
+                            <h5 class="tag-text">{{order.current_qty}}</h5>
+                            <p class="prior-state">{{order.prior_qty}}&nbsp;&nbsp;
+                                <i [ngClass]="{
+                                                    'fa':true,
+                                                    'fa-caret-down': order.current_qty<order.prior_qty,
+                                                    'fa-caret-up':   order.current_qty>=order.prior_qty
+                                                    }"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-money primary"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">{{quick_view_obj.current_sales_data?.total_sales}} <span style="font-size: 9px;">({{quick_view_obj.current_sales_data?.total_book}}
+                                    book)</span></p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.total_sales}}<span style="font-size: 9px;">({{quick_view_obj.proir_sales_data?.total_book}}
+                                    book)</span></p>
+                        </span>
+                        <span class="count-name">Total Sales</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-file danger"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">{{quick_view_obj.curr_purchase_statistics?.total_purchase_cost}}
+                                <span style="font-size: 9px;">({{quick_view_obj.curr_purchase_statistics?.total_book}}
+                                    book)</span></p>
+                            <p class="prior-quick-view">{{quick_view_obj.prior_purchase_statistics?.total_purchase_cost}}<span
+                                    style="font-size: 9px;">({{quick_view_obj.prior_purchase_statistics?.total_book}}
+                                    book)</span></p>
+                        </span>
+                        <span class="count-name">Total Purchase</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-exchange primary"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">{{quick_view_obj.current_sales_data?.transaction_cost?.toFixed(2)}}</p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.transaction_cost?.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Transaction Cost</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-truck success"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">{{quick_view_obj.current_sales_data?.carrier_cost?.toFixed(2)}}</p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.carrier_cost?.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Carrier Cost</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-step-backward info"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">{{quick_view_obj.current_sales_data?.return_cost?
+                                quick_view_obj.current_sales_data?.return_cost?.toFixed(2):
+                                0}}
+                            </p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.return_cost?
+                                quick_view_obj.proir_sales_data?.return_cost?.toFixed(2):
+                                0}}
+                            </p>
+                        </span>
+                        <span class="count-name">Total Return Cost</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-minus-square primary"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">
+                                {{total_current_cost.toFixed(2)}}
+                            </p>
+                            <p class="prior-quick-view">{{total_prior_cost.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Cost</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-get-pocket info"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">
+                                {{quick_view_obj.current_sales_data?.paid_amount?.toFixed(2)}}
+                            </p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.paid_amount?.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Recieved</span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-expeditedssl primary"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">
+                                {{quick_view_obj.current_sales_data?.due_amount?.toFixed(2)}}
+                            </p>
+                            <p class="prior-quick-view">{{quick_view_obj.proir_sales_data?.due_amount?.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Due</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-plus-circle success"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">
+                                {{total_current_gain.toFixed(2)}}
+                            </p>
+                            <p class="prior-quick-view">{{total_prior_gain.toFixed(2)}}</p>
+                        </span>
+                        <span class="count-name">Total Gain</span>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="card-counter">
+                        <i class="fa fa-database info"></i>
+                        <span class="count-numbers">
+                            <p class="curr-quick-view">
+                                {{quick_view_obj.current_stock?.net_price?.toFixed(2)}}
+                            </p>
+                        </span>
+                        <span class="count-name">Total Stock Value</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="col-md-12">
+                    <div #salesBarchartTarget>
+                        chart target
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="col-md-6">
+                    <div #orderSummaryBarChartTarget>
+                        chart target
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div #salesPurchaseSummaryBarChartTarget>
+                        chart target
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+            <div class="card-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <h4 class="tag-title">Order Processing Consuming Time (From Pending to Close)</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p class="prior-state">Minimum</p>
+                                    <h5 class="tag-text">{{order_process_and_customer_info.order_process_statistics?.minimum_val}}hr</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="prior-state">Average</p>
+                                    <h5 class="tag-text">{{order_process_and_customer_info.order_process_statistics?.average_val}}hr</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="prior-state">Maximum</p>
+                                    <h5 class="tag-text">{{order_process_and_customer_info.order_process_statistics?.maximum_val}}hr</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <h4 class="tag-title">New Customer</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="prior-state">Total</p>
+                                    <h5 class="tag-text">{{order_process_and_customer_info.customer_statistics}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

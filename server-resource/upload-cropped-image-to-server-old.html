@@ -1,0 +1,238 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width = device-width">
+  <title>Image upload and clipping applications: Croppie - GOOCODE Demo platform</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://localhost:4000/cropper.js"></script>
+  <link rel="stylesheet" href="http://localhost:4000/cropper.css" type="text/css">
+</head>
+
+<body>
+  <div id="page">
+    <div class="section">
+      <style>
+        .demo {
+          width: 360px;
+          margin: 60px auto 10px auto
+        }
+
+        button,
+        a.btn {
+          background-color: #189094;
+          color: white;
+          /* padding: 10; */
+          border-radius: 3px;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          /* font-size: 16px; */
+          /* cursor: pointer; */
+          /* text-decoration: none; */
+          /* text-shadow: none; */
+          font-size: 20px;
+        }
+
+
+        button:focus {
+          outline: 0;
+        }
+
+        .file-btn {
+          position: relative;
+
+        }
+
+        .file-btn input[type="file"] {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 50%;
+          float: left;
+          opacity: 0;
+        }
+
+        .actions {
+          padding: 5px 0;
+        }
+
+        .actions button {
+          margin-right: 5px;
+        }
+
+        .crop {
+          display: none
+        }
+
+        .crop-container {
+          width: 400px;
+          height: 450px
+        }
+      </style>
+
+      <div class="crop-container">
+        <div id="main">
+          <div class="demo">
+            <div class="actions">
+                <input type="file" id="upload" value="Select an image" />
+              <div class="crop">
+                <div id="upload-demo"></div>
+                <button class="upload-result">Upload</button>
+              </div>
+              <div id="result">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(function () {
+          var $uploadCrop;
+          var myFile = {
+            dom: null,
+            binary: null
+          }
+
+          function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+          }
+
+          function readFile(input) {
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              myFile.dom = input;
+              reader.addEventListener("load", function () {
+                myFile.binary = reader.result;
+              });
+              console.log(myFile);
+              reader.onload = function (e) {
+                $uploadCrop.croppie('bind', {
+                  url: e.target.result
+                });
+                $('.upload-demo').addClass('ready');
+              }
+              reader.readAsDataURL(input.files[0]);
+            }
+            else {
+              alert("Sorry - you're browser doesn't support the FileReader API");
+            }
+          }
+
+          $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+              width: 300,
+              height: 450
+            },
+            boundary: {
+              width: 350,
+              height: 580
+            }
+          });
+
+          $('#upload').on('change', function () {
+            $(".crop").show();
+            console.log("Changing");
+            // $('#blah').attr('src', e.target.result);
+            readFile(this);
+          });
+          $('.upload-result').on('click', function (ev) {
+            $uploadCrop.croppie('result', 'canvas').then(function (resp) {
+              var block = resp.split(";");
+              var contentType = block[0].split(":")[1];
+              var realData = block[1].split(",")[1];
+              var blob = b64toBlob(realData, contentType, 512);
+              var formDataToUpload = new FormData();
+              formDataToUpload.append("image", blob);
+              var import_id = 144;//getParameterByName('import_id');
+              makeFileRequest(`http://localhost:4000/admin/api/product-frontcover/update?import_id=${import_id}`, formDataToUpload).then(result => {
+                if (result.success) {
+                  let img_path = result.item.image['250X360'];
+                  if (img_path) {
+                    let dir = img_path.split('/')[3];
+                    let name = img_path.split('/')[6];
+                    let imprt_id = name.split('.')[0];
+                    let ext = name.split('.')[1];
+                    sendData(dir, imprt_id, ext);
+                  }
+                }
+              });
+            });
+          });
+
+          function sendData(dir, import_id, ext) {
+            var block = myFile.binary.split(";");
+            var contentType = block[0].split(":")[1];
+            var realData = block[1].split(",")[1];
+            var blob = b64toBlob(realData, contentType, 512);
+            var formDataToUpload = new FormData();
+            formDataToUpload.append("image", blob);
+            makeFileRequest(`http://localhost:4000/admin/api/product/original-fron-cover/${dir}/${import_id}/${ext}`, formDataToUpload).then(result => {
+              if (result) {
+                alert('Image Uploaded');
+              }
+            });
+          }
+
+          function makeFileRequest(url, formData) {
+            return new Promise((resolve, reject) => {
+              var xhr = new XMLHttpRequest();
+              xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                  if (xhr.status == 200) {
+                    resolve(JSON.parse(xhr.response));
+                  } else {
+                    reject(xhr.response);
+                  }
+                }
+              }
+              xhr.open("POST", url, true);
+              xhr.send(formData);
+            });
+          }
+
+          function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+              var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+              var byteNumbers = new Array(slice.length);
+              for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+              }
+
+              var byteArray = new Uint8Array(byteNumbers);
+
+              byteArrays.push(byteArray);
+            }
+
+            var blob = new Blob(byteArrays, { type: contentType });
+            return blob;
+          }
+
+          function popupResult(result) {
+            var html;
+            if (result.html) {
+              html = result.html;
+            }
+            if (result.src) {
+              html = '<img src="' + result.src + '" />';
+            }
+            $("#result").html(html);
+          }
+        });
+      </script>
+    </div>
+  </div>
+</body>
+</html>

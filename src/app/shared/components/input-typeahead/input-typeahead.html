@@ -1,0 +1,86 @@
+<div>
+    <!--<div [formGroup]="parentGroup" *ngIf="!multiple">
+        <div class="att-sltd" *ngIf="tempList.length>0">
+            <ul>
+                <li *ngFor="let item of tempList">
+                    <p>{{item.name}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf="item.isNew" (click)="save(item)" class="btn btn-default">Add Item</span></p>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div [ngClass]="{'has-error': (!parentGroup.controls[display].valid && parentGroup.controls[display].touched)}">
+            <input class="form-control" display="text" formControlName="{{display}}" (keyup)="typed($event.target.value)">
+        </div>
+        <span *ngIf="parentGroup.controls[display].hasError('required') && parentGroup.controls[display].touched" class="help-block sub-little-text"> {{display}} is required</span>
+    </div>
+    <ul *ngIf="items.length>0 && !multiple" class="dropdown-menu type_head_drop">
+        <li *ngFor="let item of items">
+            <div class="row" (click)="getDetail(item)">
+                <div class="col-md-2">
+                    <img *ngIf="item.image" src="{{item.image['120X175']}}" alt="">
+                    <img *ngIf="item.logo" src="{{item.logo['120X175']}}" alt="">
+                </div>
+                <div class="col-md-6">
+                    <div class="result-name">
+                        {{item[display]}}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>-->
+    <div *ngIf="multiple">
+        <h4 *ngIf="hasError" style="color: red">{{errorMessage.title}}</h4>
+        <p *ngIf="hasError">{{errorMessage.desc}}</p>
+        <div class="att-sltd" *ngIf="tempList.length>0">
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th width="50%" style="text-align: -webkit-left;">Name</th>
+                        <th width="20%">Qty</th>
+                        <th width="5%" *ngIf="isRate">Rate</th>
+                        <th width="20%" *ngIf="isRate">Price</th>
+                        <th width="5%">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of tempList; let i=index">
+                        <td style="text-align: -webkit-left;">({{item.authorObj?.name}})&nbsp;{{item.name}}</td>
+                        <td>{{item.quantity}} Pcs</td>
+                        <td *ngIf="isRate">{{item.rate}}</td>
+                        <td *ngIf="isRate">{{item.quantity * item.rate}}</td>
+                        <td>
+                            <i style="color:red;" class="fa fa-minus-square" aria-hidden="true" (click)="removeItem(i)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            <input class="form-control" [(ngModel)]="text" display="text" (keyup)="typed($event.target.value)">
+        </div>
+    </div>
+    <div class="typeahead-ul">
+        <ul *ngIf="items.length>0 && multiple" class="dropdown-menu type_head_drop">
+            <li *ngFor="let item of newItemList; let i=index">
+                <div class="multi-item">
+                    <div class="form-group row pad">
+                        <label for="quantity" class="col-md-12 col-sm-12 control-label">({{item.authorObj?.name}})&nbsp;&nbsp;&nbsp;{{item[display]}}</label>
+                    </div>
+                    <div class="form-group row pad">
+                        <div *ngIf="isQty" class="col-md-5 col-sm-5">
+                            <input type="text" name="quantity" [(ngModel)]="item.quantity" class="form-control" id="quantity" placeholder="Quantity(Pcs)"
+                                required>
+                        </div>
+                        <div *ngIf="isRate" class="col-md-5 col-sm-5">
+                            <input type="text" name="rate" [(ngModel)]="item.rate" class="form-control" id="rate" placeholder="Rate(TK/Pcs)" required>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <i class="fa fa-plus-square size" aria-hidden="true" (click)="getItem(item, i)"></i>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

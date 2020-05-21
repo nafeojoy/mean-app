@@ -1,0 +1,39 @@
+<div class="col-md-3">
+    <div class="similar-section-area">
+        <div class="similar-title">
+            <h1> {{'similar_books' | translate}} </h1>
+        </div>
+        <div *ngFor="let item of relatedProduct" class="similar-book-area" [ngBusy]="{busy: spinner, message: 'Loading...', backdrop: true, minDuration: 200}">
+            <label *ngIf="item.current_offer" class="offer_image" style="z-index: 1">
+                <img class="similar-prod-img" src="image/offer/{{item.current_offer}}">
+            </label>
+            <div class="similar-book">
+                <div class="similar-book-view">
+                    <div class="busy-loading">
+                        <div>
+                            <a (click)="getSelectedProduct(item.seo_url)">
+                                <div class="similar-book-images">
+                                    <img src="{{uploadedImageBaseUrl}}{{item.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt="" />
+                                </div>
+                            </a>
+                            <div class="similar-title-price">
+                                <div class="similar-book-title">
+                                    <span> {{item.name}} </span>
+                                </div>
+                                <div class="similar-price">
+                                    <span> {{item.price | priceConvert}} </span>
+                                </div>
+                            </div>
+                            <!-- <div class="details-button">
+                                <button  [disabled]="false" class="btn btn-default details-button-view" >
+                                    <span class="fa fa-shopping-cart"> {{'add_to_cart' | translate}} </span>
+                                </button>
+                                <button  [disabled]="true" class="btn btn-default details-button-view"> {{'added_to_cart' | translate}} </button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

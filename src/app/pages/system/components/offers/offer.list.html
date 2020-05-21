@@ -1,0 +1,73 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <!-- <th class="align-right">View</th>
+                                    <th class="align-right">Edit</th>
+                                    <th class="align-right">Delete</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let offer of offers | async; let i = index" class="no-top-border">
+                                    <td class="table-id">{{i + 1}}</td>
+                                    <td>
+                                        <img style="width: 50px; height: 48px; border-radius: 57%; border-style: none;" src="/image/offer/{{offer.image}}"
+                                        onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+                                    </td>
+                                    <td>{{offer.name}}</td>
+                                    <!-- <td class="align-right">
+                                        <button class="btn btn-warning" [routerLink]="showViewModal(offer)">View</button>
+                                    </td>
+                                    <td class="align-right">
+                                        <button class="btn btn-success" [routerLink]="['edit', offer._id]">Edit</button>
+                                    </td>
+                                    <td class="align-right">
+                                        <button class="btn btn-danger" (click)="showDeleteModal(offer)">Delete</button>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Offer Delete Modal -->
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-label="Close" (click)="deleteModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Delete Offer</h4>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this offer?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-btn" (click)="deleteOffer()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

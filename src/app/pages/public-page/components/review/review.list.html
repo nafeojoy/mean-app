@@ -1,0 +1,84 @@
+<div class="container-wrapper">
+    <div class="row">
+        <!-- <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200000}"> -->
+        <div class="col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Review List
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="radio-inline" style="margin-right: 30px;">
+                                <input type="radio" name="status" (change)="selectedStatus()" [(ngModel)]="approved"
+                                    [value]="false"> Pending
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status" (change)="selectedStatus()" [(ngModel)]="approved"
+                                    [value]="true"> Accepted
+                            </label>
+                            <h3 style="color: #7eabda;">Data show from:</h3>
+                            <p> <span style="font-size: large">{{start_date | date:'dd MMM-yyyy'}}</span> to <span
+                                    style="font-size: large">{{end_date | date:'dd MMM-yyyy'}}</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <i class="fa fa-calendar range-calender" (click)="vst.toggle()"
+                                [attr.aria-expanded]="vst.isOpen"></i>
+                            <input type="text" placeholder="Choose Date Range" class="form-control date-picker"
+                                [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker"
+                                bsDaterangepicker>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="horizontal-scroll" *ngIf="reviewList.length>0 && !waiting">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th width="2%" class="table-id">#</th>
+                                    <th width="8%">Review At</th>
+                                    <th width="6%">Review By</th>
+                                    <th width="18%">Review On</th>
+                                    <th width="48%">Review Text</th>
+                                    <th width="6%">Status</th>
+                                    <th *ngIf="!approved" width="6%" class="align-right">Approve</th>
+                                    <th *ngIf="!approved" width="6%" class="align-right">Delete</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of reviewList; let i = index" class="no-top-border">
+                                    <td class="table-id">{{ (currentPage - 1) * 10 + (i + 1)}}</td>
+                                    <td>
+                                        {{item.review_at | date: 'dd MMM-yyyy'}}
+                                    </td>
+                                    <td>
+                                        {{item.review_by}}
+                                    </td>
+                                    <td>{{item.book_name}}</td>
+                                    <td>{{item.review_speech}}</td>
+                                    <td>{{item.approved? 'Accepted': 'Pending'}}</td>
+                                    <td *ngIf="!approved" class="align-right">
+                                        <button (click)="acceptReview(item, i)" class="btn btn-success">Accept</button>
+                                    </td>
+                                    <td *ngIf="!approved" class="align-right">
+                                        <button (click)="deleteReview(item, i)" class="btn btn-success">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                            [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                            lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage()">
+                        </pagination>
+                    </div>
+                    <div *ngIf="reviewList.length==0 && !waiting">
+                        <h2 style="text-align: center;">No data found.</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+</div>

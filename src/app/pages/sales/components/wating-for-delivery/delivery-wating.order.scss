@@ -1,0 +1,31 @@
+td.deliveryable {
+    background: #5cb85c;
+    color: black;
+    font-size: 17px;
+}
+
+.partial-deliveryable {
+    background: #e7f712;
+    color: black;
+    font-size: 17px;
+}
+
+.not-deliveryable {
+    background: red;
+    color: black;
+    font-size: 17px;
+}
+
+.date-picker{
+    float: left;
+    max-width: 220px;
+    margin-bottom: 15px;
+    border-color: #26c6da;
+  }
+
+.range-calender{
+    font-size: 31px !important;
+    margin-left: -31px !important;
+    color: #26c6da;
+    cursor: pointer;
+  }

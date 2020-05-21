@@ -1,0 +1,40 @@
+<div class="auth-main">
+  <div class="auth-block" style="width: 750px;">
+    <div class="row">
+      <h1>Welcome to Boibazar</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-4">
+        <div class="logo-images">
+          <img src="/assets/icon/boibazar-logo.png" width="125">
+        </div> 
+      </div>
+      <div class="col-md-6">
+        <form (ngSubmit)="submit(user)">
+          <div class="form-group row">
+            <label for="username" class="control-label col-md-4">User Name</label>
+            <input name="username" class="form-control col-md-8" id="username" placeholder="Username" [(ngModel)]="user.username" required>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="control-label col-md-4">Password</label>
+            <input name="password" [(ngModel)]="user.password" type="password" class="form-control col-md-8" id="inputPassword3" placeholder="Password"
+              required>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-8" style="padding-left: 0px;">
+
+            </div>
+            <div class="col-md-4" style="padding-right:0px;">
+              <button type="submit" class="btn btn-default btn-auth pull-right">Sign in</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+      <h4 style="color:#ff0000">{{loginMessage}}</h4>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<style>
+    .dropdown.dropdown-lg .dropdown-menu {
+        margin-top: -1px;
+        padding: 6px 20px;
+    }
+
+    .input-group-btn .btn-group {
+        display: flex !important;
+        top: -10px !important;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+        margin-left: -1px;
+    }
+
+    .btn-group .btn:last-child {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .btn-group .form-horizontal .btn[type="submit"] {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .form-horizontal .form-group {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .form-group .form-control:last-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .btn {
+        line-height: 2;
+        padding: 5px 8px;
+    }
+
+
+    @media screen and (min-width: 768px) {
+        #adv-search {
+            width: 600px;
+            margin: 0 auto;
+        }
+        .dropdown.dropdown-lg {
+            position: static !important;
+        }
+        .dropdown.dropdown-lg .dropdown-menu {
+            min-width: 500px;
+        }
+    }
+
+
+
+
+    /* CAUTION: IE hackery ahead */
+
+    select::-ms-expand {
+        display: none;
+        /* remove default arrow on ie10 and ie11 */
+    }
+
+    /* target Internet Explorer 9 to undo the custom arrow */
+
+    @media screen and (min-width:0\0) {
+        select {
+            background: none\9;
+            padding: 5px\9;
+        }
+    }
+
+    .btn:hover {
+        color: #1159a2 !important;
+    }
+
+    .btn:focus {
+        color: #1159a2 !important;
+    }
+
+    .no_border {
+        border-top-right-radius: 7px;
+        border-bottom-right-radius: 7px;
+        border-width: 0px;
+    }
+
+    /* chrome */
+
+    @supports (-webkit-appearance:none) {
+        .select-style {
+            padding-top: 8px !important;
+            width: 100px !important;
+            padding-left: 4px !important;
+            padding-bottom: 8px !important;
+            border: 1px solid #1361b1 !important;
+        }
+    }
+
+    /* mozilla */
+
+    _:-moz-tree-row(hover),
+    .input-group-btn .select-style {
+
+        padding-top: 9px;
+        width: 80px;
+        padding-left: 4px;
+        padding-bottom: 9px;
+        border: 1px solid #1361b1;
+    }
+
+    _::-webkit-full-page-media,
+    _:future,
+    :root .select-style {
+
+        padding-top: 9px;
+        width: 8px;
+        padding-left: 4px;
+        padding-bottom: 9px;
+        border: 1px solid #1361b1;
+    }
+
+
+</style>
+
+<div id='search-box' class="mobile_search_box">
+    <div class="input-group" id="adv-search">
+        <typeahead [items]="dataList" [image]="show_image" (dataLoader)="searchTerm$.next($event)" (selectedLoader)="getSelected($event)"></typeahead>
+        <div class="input-group-btn">
+            <div class="btn-group">
+                <div class="dropdown dropdown-lg">
+                    <select type="button" class="btn btn-default dropdown-toggle select-style" [(ngModel)]="searchType" (change)="changeSearchItems(searchType)"
+                        aria-expanded="false">
+                        <option *ngFor="let searchItem of searchItems" [ngValue]="searchItem.val">{{searchItem.name}}</option>
+                    </select>
+                </div>
+                <button class="btn-primary no_border" (click)="searchedProducts()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

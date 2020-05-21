@@ -1,0 +1,140 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h3>Orders</h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="order_no">Order No.:</label>
+                <input name="order_no" type="text" [(ngModel)]="searchObj.order_no" class="form-control"
+                  placeholder="Order No.">
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <button class="btn btn-primary" (click)="search()">Search</button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-warning" (click)="reset()">Reset</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="order_no">Date Range:</label>
+              <br>
+              <i class="fa fa-calendar range-calender" (click)="vst.toggle()" [attr.aria-expanded]="vst.isOpen"></i>
+              <input type="text" placeholder="Choose Date Range" class="form-control date-picker" [(ngModel)]="dtRange"
+                (ngModelChange)="dateChanged()" #vst="bsDaterangepicker" bsDaterangepicker>
+            </div>
+          </div>
+          <div class="horizontal-scroll" *ngIf="orders.length>0">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Order at</th>
+                  <th>Order No</th>
+                  <th>Payable Amount</th>
+                  <th>Paid</th>
+                  <th>Due Amount</th>
+                  <th>Shipping</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders; let i=index">
+                  <td>
+                      {{ (currentPage - 1) * 10 + (i + 1)}}
+                  </td>
+                  <td>
+                    {{order.order_at | date:'dd MMM-yyyy'}} At {{order.order_at | date:'h:mma'}}
+                  </td>
+                  <td>
+                    {{order.order_no}}
+                  </td>
+                  <td>{{order.payable_amount}}</td>
+                  <td>{{order.payment_collection?.total_paid}}</td>
+                  <td>{{order.payable_amount-order.payment_collection.total_paid}}</td>
+                  <td>
+                    <button (click)="showOrder(order, i)" class="btn btn-success">Delivery Panel</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+              [boundaryLinks]="true" (click)="setPage(currentPage)">
+            </pagination>
+          </div>
+          <div *ngIf="waiting">
+            <h3>Please wait, loading...</h3>
+          </div>
+          <div *ngIf="!waiting && orders.length==0">
+            <h3>No data found.</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #orderViewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="oredrViewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" (click)="cancel()">&times;</button>
+        <h4 class="modal-title">Order No. {{selectedOrder.order_no}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+              <div class="card-header clearfix">
+                <div class="card-title">
+                  Delivery
+                </div>
+              </div>
+              <div class="card-body">
+                <form (ngSubmit)="save()">
+                  <div class="form-group row">
+                    <label for="shipping_charge" class="col-md-2 control-label">Carrier Name: </label>
+                    <div class="col-md-10">
+                      <h5>{{selectedOrder.carrier?.name}}</h5>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="delivered_at" class="col-md-2 control-label"> Delivered At: </label>
+                    <div class="col-md-4">
+                      <input type="date" [(ngModel)]="delivery.delivered_at" class="form-control" name="delivered_at">
+                      <span *ngIf="(isSubmitted && !delivery.delivered_at)" style="color: red">Delivery time is
+                        required!</span>
+                    </div>
+                    <label for="d_time" class="col-md-2 control-label"> Delivery Time: </label>
+                    <div class="col-md-4">
+                      <input type="time" [(ngModel)]="delivery.time" class="form-control" name="d_time">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-6">
+                      <h4 style="color:#1361b1">{{resMessage}}</h4>
+                    </div>
+                    <div class="col-md-6">
+                      <button [disabled]="res_pending" type="submit" class="btn btn-primary pull-right">Update</button>
+                      <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

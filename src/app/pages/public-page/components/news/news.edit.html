@@ -1,0 +1,22 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-md-12">
+      <ba-card title="Add News" baCardClass="with-scroll">
+        <ba-card title="Upload Picture" baCardClass="with-scroll">
+          <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+            (isImageChosen)="isImageChosen($event)"></bb-image-uploader>
+        </ba-card>
+        <div *ngFor="let lang of languages">
+          <hr>
+          <div class="form-group">
+            <label for="headline">Headline</label>
+            <input name="headline" type="text" class="form-control" [(ngModel)]="news[lang.code].headline" placeholder="Title({{lang.name}})">
+          </div>
+          <label>Content({{lang.name}})</label>
+          <ckeditor [(ngModel)]="news[lang.code].content" [config]="config" debounce="500"></ckeditor>
+        </div>
+        <button class="btn btn-warning" style="margin-top: 28px; float: right;" (click)="save()">Save Content</button>
+      </ba-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div>
+    <div [formGroup]="parentGroup" *ngIf="!multiple">
+        <div class="att-sltd" *ngIf="tempList.length>0">
+            <ul>
+                <li *ngFor="let item of tempList">
+                    <p>{{item.name}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span *ngIf="item.isNew" (click)="save(item)" class="btn btn-default">Add Item</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div [ngClass]="{'has-error': (!parentGroup.controls[display].valid && parentGroup.controls[display].touched)}">
+            <input class="form-control" display="text" formControlName="{{display}}" (keyup)="typed($event.target.value)">
+        </div>
+        <span *ngIf="parentGroup.controls[display].hasError('required') && parentGroup.controls[display].touched" class="help-block sub-little-text">
+            {{display}} is required</span>
+    </div>
+    <div class="typeahead-ul2">
+        <ul *ngIf="items.length>0 && !multiple" class="dropdown-menu type_head_drop1">
+            <li *ngFor="let item of items">
+                <div class="row" (click)="getDetail(item)">
+                    <div class="col-md-2 hint">
+                        <img *ngIf="item.image" src="{{item.image['120X175']}}" alt="">
+                        <img *ngIf="item.logo" src="{{item.logo['120X175']}}" alt="">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="result-name">
+                            {{item[display]}} ({{item.import_id}})
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div [formGroup]="parentGroup" *ngIf="multiple">
+        <div class="att-sltd" *ngIf="tempList.length>0">
+            <ul>
+                <li *ngFor="let item of tempList; let i=index">
+                    <p>
+                        <span>{{item.name}}</span>
+                        <span *ngIf="item.isNew" (click)="save(item)" class="btn btn-default">Add Item</span>
+                        <span>
+                            <i style="color:red;" class="fa fa-minus-square" aria-hidden="true" (click)="removeItem(i)"></i>
+                        </span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div [ngClass]="{'has-error': (!parentGroup.controls[display].valid && parentGroup.controls[display].touched)}">
+            <input class="form-control" display="text" formControlName="{{display}}" (keyup)="typed($event.target.value)" (keyup.enter)="setNew($event.target.value)">
+        </div>
+        <span *ngIf="parentGroup.controls[display].hasError('required') && parentGroup.controls[display].touched" class="help-block sub-little-text">
+            {{display}} is required</span>
+    </div>
+    <div class="typeahead-ul2">
+        <ul *ngIf="items.length>0 && multiple" class="dropdown-menu type_head_drop1">
+            <li *ngFor="let item of newItemList; let i=index">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="multi-item" (click)="getItem(item, i)">
+                            <p>{{item[display]}}  ({{item.import_id}})</p>
+                            <p *ngIf="item.author &&  item.author.length>0">
+                                <i *ngFor="let ath of item.author; let k=index">
+                                    <span style="color: #1361b1;"> {{ath.name}}
+                                        <span *ngIf="(k+1)!=(item.author.length)">,</span>
+                                    </span>
+                                </i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

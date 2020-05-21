@@ -1,0 +1,45 @@
+table tbody tr td img {
+    width: 50px;
+    height: 48px;
+    border-radius: 57%;
+    border-style: none;
+}
+
+.prod-desc {
+    border-bottom: 1px solid rgb(182, 181, 179);
+    padding: 6px;
+}
+
+legend {
+    font-size: 18px !important;
+}
+
+.highlight {
+    background: paleturquoise;
+}
+
+.bttm {
+    padding-bottom: 2px;
+}
+
+.prv-images {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.page-block {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 9px;
+}
+
+.fron-cover{
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 3px;
+    background: rgba(105, 133, 130, 0.16);;
+    color: #808080;
+    cursor: pointer;
+}

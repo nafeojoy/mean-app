@@ -1,0 +1,101 @@
+<div class="col-md-2 col-sm-2" style="z-index: 1">
+    <!-- 
+    <div>
+        <h5>
+            Filter By...
+        </h5>
+    </div> -->
+    <div *ngIf="state != 'category'" class="left-category-area">
+        <div class="left-category-title" (click)="toggle('cat')">
+            <p> {{'Category' | translate}}
+                <i class="fa fa-caret-down angle_icon" style="padding-right: 5px"></i>
+                <i class="fa fa-caret-up angle_icon" style="padding-right: 5px"></i>
+            </p>
+        </div>
+        <div id='cat' class="list-group-category">
+            <div class="checkbox checkbox-primary" *ngFor="let category of categories; let i = index">
+                <input type="checkbox" class="styled" id="checkbox_category_{{i}}" [attr.name]="categories" [value]="category" (change)="search('categories',category, $event)"
+                />
+                <label [attr.for]="'checkbox_category_'+i"> &nbsp;{{category?.name | truncate : 15 : '.'}} </label>
+                <span class="count-item">({{category?.total_items}})</span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="state != 'author'" class="left-category-area">
+        <div class="left-category-title" (click)="toggle('aut')">
+            <p> {{'Author' | translate}}
+                <i class="fa fa-caret-down angle_icon" style="padding-right: 5px"></i>
+                <i class="fa fa-caret-up angle_icon" style="padding-right: 5px"></i>
+            </p>
+        </div>
+        <div id='aut' class="list-group-category">
+            <div class="checkbox checkbox-primary" *ngFor="let author of authors; let i = index">
+                <input type="checkbox" class="styled" id="checkbox_author_{{i}}" [attr.name]="authors" [value]="author" [checked]="(checkBoxData.type == 'authors') && (checkBoxData.typeId == author._id)  ? true:false"
+                    (change)="search('authors',author, $event)">
+                <label [attr.for]="'checkbox_author_'+i">&nbsp; {{author?.name | truncate : 15 : '.'}}</label>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="state != 'publisher'" class="left-category-area">
+        <div class="left-category-title" (click)="toggle('pub')">
+            <p> {{'Publisher' | translate}}
+                <i class="fa fa-caret-down angle_icon" style="padding-right: 5px"></i>
+                <i class="fa fa-caret-up angle_icon" style="padding-right: 5px"></i>
+            </p>
+        </div>
+        <div id='pub' class="list-group-category">
+            <div class="checkbox checkbox-primary" *ngFor="let publisher of publishers; let i = index">
+                <input type="checkbox" class="styled" id="checkbox_publisher_{{i}}" [attr.name]="publishers" [value]="publisher" [checked]="(checkBoxData.type == 'publishers') && (checkBoxData.typeId == publisher._id)  ? true:false"
+                    (change)="search('publishers', publisher, $event)">
+                <label [attr.for]="'checkbox_publisher_'+i">&nbsp;{{publisher?.name | truncate : 15 : '.'}}</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="left-category-area">
+        <div class="left-category-title" (click)="toggle('pri')">
+            <p> {{'price' | translate}}
+                <i class="fa fa-caret-down angle_icon" style="padding-right: 5px"></i>
+                <i class="fa fa-caret-up angle_icon" style="padding-right: 5px"></i>
+            </p>
+        </div>
+        <div id='pri' class="list-group-category" style="padding-top: 10px;">
+            <div class="price-range" style="margin-left:2px">
+                <input type="radio" name="prices" [value]="'first'" (change)="priceChange(0, 100)">
+                <label for="prices1">&nbsp;Tk. 0 - 100</label>
+            </div>
+            <div class="price-range" style="margin-left:2px">
+                <input type="radio" name="prices" [value]="'second'" (change)="priceChange(100, 250)">
+                <label for="prices2">&nbsp;Tk. 100 - 250</label>
+            </div>
+            <div class="price-range" style="margin-left:2px">
+                <input type="radio" name="prices" [value]="'third'" (change)="priceChange(250, 500)">
+                <label for="prices">&nbsp;Tk. 250 - 500</label>
+            </div>
+            <div class="price-range" style="margin-left:2px">
+                <input type="radio" name="prices" [value]="'forth'" (change)="priceChange(500, 1000)">
+                <label>&nbsp;Tk. 500 - 1000</label>
+            </div>
+            <div class="price-range" style="margin-left:2px">
+                <input type="radio" name="prices" [value]="'fifth'" (change)="priceChange(1000, 1500)">
+                <label>&nbsp;Tk. 1000 - 1500 + </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="left-category-area">
+        <div class="left-category-title" (click)="toggle('att')">
+            <p> {{'Attributes' | translate}} <i class="fa fa-caret-down angle_icon" style="padding-right: 5px"></i> <i class="fa fa-caret-up angle_icon" style="padding-right: 5px"></i></p>
+        </div>
+        <div *ngIf="att" class="list-group-category">
+            <div class="checkbox checkbox-primary" *ngFor="let attribute of attributes; let i = index">
+                <input type="checkbox" class="styled" id="checkbox_attribute_{{i}}" [attr.name]="attributes" [value]="attribute" (change)="search('attributes',attribute, $event)"
+                />
+                <label [attr.for]="'checkbox_attribute_'+i"> &nbsp;{{attribute?.name | truncate : 15 : '.'}} </label>
+            </div>
+        </div>
+    </div> -->
+</div>

@@ -1,0 +1,121 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <h3 style="text-align:center;">{{selected_item.name}}</h3>
+                        <hr>
+                        <div class="col-md-6">
+                            <h6>Current front cover</h6>
+                            <img [style.border]="replacing_img_type == 'front_cover' ? '3px solid red' : null" [src]="selected_item.sngImage" alt="No Photo Uploaded">
+                            <br>
+                            <br>
+                            <span class="fron-cover" (click)="openUploader()">Change Front Cover</span>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Current back cover</h6>
+                            <div>
+                                <img [style.border]="replacing_img_type == 'back_cover' ? '3px solid red' : null" [src]="selected_item.back_image"
+                                    alt="No Photo Uploaded">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6>Preview Images</h6>
+                            <p *ngIf="selected_item.preview_images && selected_item.preview_images.length<1">
+                                No Preview image uploaded to show.
+                            </p>
+                            <div *ngIf="selected_item.preview_images && selected_item.preview_images.length>0">
+                                <p>Total uploaded {{selected_item.preview_images.length}} image</p>
+                                <div *ngFor="let imgData of selected_item.preview_images">
+                                    <div class="col-md-4 page-block">
+                                        <div class="prv-images" [style.border]="(replacing_img_type == 'preview' && imgData.page_num==page_num) ? '3px solid red' : null"
+                                            (click)="selectToreplace('preview', imgData.page_num)">
+                                            <img class="zoom" width="100%" [src]="imgData.image['1200X1600']" alt="">
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p>Page: {{imgData.page_num}}</p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="disabled">Disabled</label>
+                                                    <ui-switch name="disabled" class="form-control" [(ngModel)]="imgData.disabled"
+                                                        (ngModelChange)="disabledPage(imgData.page_num, imgData.disabled)"></ui-switch>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Upload Image
+                        </div>
+                        <div class="col-md-6">
+                            <a class="pull-right" [routerLink]="['../../../products']">
+                                <i class="fa fa-backward"> Back to List</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <bulk-image-uploader [importid]="import_id" (uploaded)="updateImage($event)"></bulk-image-uploader>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+            </div>
+            <div *ngIf="replacing_img_type" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    Replace Image
+                </div>
+                <div class="card-body">
+                    <rsz-image-upload [imageType]="sendImageType" [importid]="import_id" (uploaded)="updateImage($event)"></rsz-image-upload>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div bsModal #optionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="optionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Choose Front Image
+                </div>
+                <div class="modal-body">
+                    <div class="row" *ngIf="frame_src">
+                        <div class="col-md-12">
+                            <iframe [src]="frame_src" width="100%" height="800px" frameborder="0" allowtransparency="true"
+                                style="overflow:scroll">
+                            </iframe>
+                        </div>
+                        <div class="col-row-12">
+                            <button class="btn btn-danger pull-right" style="margin-right: 12px;" (click)="cancel()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

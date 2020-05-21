@@ -1,0 +1,103 @@
+<div class="widgets">
+    <div class="row">
+        <table class="table table-hover">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Refund Request
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll info-table">
+                        <form #refundForm="ngForm" (ngSubmit)="addRefundRequest(refund_info)">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="order_no" class="col-md-4 control-label">Order No* :</label>
+                                        <div class="col-md-8">
+                                            <input type="number" name="order_no" [(ngModel)]="refund_info.order_no" class="form-control" placeholder="Order No" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="refund_comment" class="col-md-4 control-label"> Comment :</label>
+                                        <div class="col-md-8">
+                                            <textarea name="refund_comment" [(ngModel)]="refund_info.refund_comment" class="form-control" placeholder="Comment" required>
+                                                </textarea>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label for="gateway_id" class="col-md-4 control-label"> Reason for
+                                                    refund*:</label>
+                                        <div class="col-md-8">
+                                            <select [(ngModel)]="selectedRefund_reason" class="form-control" name="refund_reason" id="refund_reason" required>
+                                                        <option *ngFor="let refund_reason of refund_reasons"
+                                                            [ngValue]="refund_reason">
+                                                            {{refund_reason}}
+                                                        </option>
+                                                    </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="order_no" class="col-md-4 control-label"> Refund Amount* :</label>
+                                        <div class="col-md-8">
+                                            <input type="number" name="refund_amount" [(ngModel)]="refund_info.refund_amount" class="form-control" placeholder="Refund Amount" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="customer_mobile" class="col-md-4 control-label"> Customer Mobile Number*
+                                            :</label>
+                                        <div class="col-md-8">
+                                            <input type="number" name="customer_mobile" [(ngModel)]="refund_info.customer_mobile" class="form-control" placeholder="Customer Mobile Number" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2"></div>
+
+                                        <div class="col-md-7">
+                                            <label id="responseMsg">{{responseMessage}}</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <!-- <div class="row">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-3">
+                                    <label id="responseMsg">{{responseMessage}}</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                            </div> -->
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </table>
+
+
+        <div class="col-md-6">
+
+        </div>
+
+    </div>
+
+</div>

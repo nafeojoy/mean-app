@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="background-payment">
+      <div class="payment-order-summary-title">
+        <p> {{'Order Summary' | translate}} </p>
+      </div>
+      <div class="summarypaddingtopbuttom10">
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span>{{'Sub-total' | translate}} </span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> {{subTotal | priceConvert}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span>{{'Discount' | translate}}
+              <span *ngIf='discount_parcent>0' id="x" (click)="removeDiscount()">
+                <i class="fa fa-times"></i>
+              </span>
+            </span>
+          </div>
+          <div class="order-summary-right">
+            <span *ngIf='!discount' class="price">(-) {{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+            <span *ngIf='discount' class="price">(-){{discount | priceConvert}}</span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span> {{'Delivery Charge' | translate}}
+            </span>
+          </div>
+          <div class="order-summary-right">
+            <span *ngIf='!deliveryCharge' class="price">(+) {{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+            <span *ngIf='deliveryCharge' class="price">(+) {{deliveryCharge | priceConvert}}</span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div *ngIf="wrappingCharge"  class="order-summary-price">
+          <div class="order-summary-left">
+            <span> {{'Gift Wrap' | translate}}</span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price">(+) {{wrappingCharge | priceConvert}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+
+        <div class="order-summary-price">
+          <div class="order-summary-left">
+            <span style="font-weight: bold;"> {{'Payable Total Amount' | translate}}</span>
+          </div>
+          <div class="order-summary-right">
+            <span class="price"> {{total | priceConvert}} </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

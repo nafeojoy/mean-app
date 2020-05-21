@@ -1,0 +1,48 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <ba-card title="Update Testimonial" baCardClass="with-scroll">
+                <form (ngSubmit)="updateTestimonial(testimonial)">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input name="name" type="text" class="form-control" [(ngModel)]="testimonial.name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="occupation">Occupation</label>
+                        <input name="occupation" type="text" class="form-control" [(ngModel)]="testimonial.occupation" placeholder="Occupation">
+                    </div>
+                    <div class="form-group">
+                        <label for="designation">Designation</label>
+                        <input name="designation" type="text" class="form-control" [(ngModel)]="testimonial.designation" placeholder="Designation">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input name="email" type="text" class="form-control" [(ngModel)]="testimonial.email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="speech">Speech</label>
+                        <textarea name="speech" class="form-control" [(ngModel)]="testimonial.speech" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="speech_at">Speech At</label>
+                        <input type="date" name="speech_at" class="form-control" [(ngModel)]="testimonial.speech_at"/>
+                    </div>
+                     <div class="form-group">
+                        <label for="speech_at">Order</label>
+                        <input type="number" name="order" class="form-control" [(ngModel)]="testimonial.order"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="enabled">Enabled</label>
+                        <ui-switch name="enabled" class="form-control" [(ngModel)]="testimonial.is_enabled"></ui-switch>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Add Testimonial</button>
+                </form>
+            </ba-card>
+        </div>
+        <div class="col-md-6">
+            <ba-card title="Upload Picture" baCardClass="with-scroll">
+                <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (isImageChosen)="isImageChosen($event)"></bb-image-uploader>
+            </ba-card>
+        </div>
+    </div>
+</div>

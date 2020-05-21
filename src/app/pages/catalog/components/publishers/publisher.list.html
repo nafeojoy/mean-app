@@ -1,0 +1,152 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" *ngIf="authManager.canAdd">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <input #searchInput type="text" class="form-control" placeholder="Search by name" (keyup)="search($event.target.value)">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Name</th>
+                                    <th style="text-align: center">No Of Book</th>
+
+                                    <th>Address</th>
+                                    <th>Active</th>
+                                    <th>Is Featured</th>
+                                    <th>Website</th>
+                                    <th>View</th>
+                                    <th *ngIf="authManager.canEdit">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let publisher of publishers | async; let i=index">
+                                    <td>{{ (currentPage - 1) * itemsPerPage + (i + 1)}}</td>
+                                    <td>{{publisher.name}}</td>
+                                    <td *ngIf="publisher.book_list" style="text-align: center">{{publisher.book_list.length}}</td>
+
+                                    <td>{{publisher.address}}</td>
+                                    <td>
+                                        <p *ngIf="publisher.is_enabled">Yes</p>
+                                        <p *ngIf="!publisher.is_enabled">No</p>
+                                    </td>
+                                    <td>
+                                        {{publisher.is_featured? "Yes": "No"}}
+                                    </td>
+                                    <td>{{publisher.website}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewPublisher" (click)="showViewModal(publisher)">View</button>
+                                    </td>
+                                    <td *ngIf="authManager.canEdit">
+                                        <a (click)="set(publisher)" [routerLink]="['edit',publisher._id]" class="btn btn-success">Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems | async" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+                            [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Start View Modal -->
+<div class="modal fade" id="viewPublisher" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Publisher Detail</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">{{selectedPublisher.name}}</h4>
+                        <h6 class="card-subtitle">
+                            {{selectedPublisher.website}}
+                        </h6>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- <div class="author_img">
+                                <img src="{{apiBaseUrl}}upload/{{selectedPublisher.logo}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="Card image">
+                            </div> -->
+                            <div class="card-block">
+                                <div class=row>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">Address :</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">{{selectedPublisher.address}}</p>
+                                    </div>
+                                </div>
+                                <div class=row>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">Email :</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">{{selectedPublisher.email}}</p>
+                                    </div>
+                                </div>
+                                <div class=row>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">Phone :</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="titile_author">{{selectedPublisher.phone}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                {{selectedPublisher.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove-circle"></span> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End View Modal -->
+
+
+<!-- Start Delete Modal -->
+<div class="modal fade" id="deleteModal1" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Publisher</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure to delete?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal" (click)="delete()">Delete</button>
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Delete Modal -->

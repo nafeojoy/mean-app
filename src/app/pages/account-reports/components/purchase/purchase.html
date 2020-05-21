@@ -1,0 +1,43 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          Purchase
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <div class="row">
+              <div class="form">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <i class="fa fa-calendar range-calender" (click)="vst.toggle()"
+                      [attr.aria-expanded]="vst.isOpen"></i>
+                    <input type="text" placeholder="Choose Date Range" class="form-control date-picker"
+                      [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker" bsDaterangepicker>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="button_all">
+                    <span class="filter_button">
+                      <button *ngIf="report_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                    </span>
+                    <span class="filter_button">
+                      <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning"> Show
+                      </button>
+                      <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                    </span>
+                    <span>
+                      <button (click)="reset()" class="btn btn-default">Reset</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

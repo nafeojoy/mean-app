@@ -1,0 +1,136 @@
+<div class="header_right_44" style="display: none" [hidden]="authService.isLoggedIn()">
+    <div class="shop-menu">
+        <div>
+            <span class="create-account" (click)="openModal()">
+                <i class="fa fa-lock"></i> {{'New Account' | translate}} </span>
+        </div>
+    </div>
+</div>
+
+<div bsModal #createAccountModal="bs-modal" (onHidden)="onHidden()" class="modal fade myModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header login-header ">
+                <button type="button" (click)="createAccountModal.hide()" class="close" aria-label="Close">
+                    <span aria-hidden="true ">&times;</span>
+                </button>
+
+                <div class="signin-logo">
+                    <a [routerLink]="['']" style="width: 160px;text-align: center; 
+                                height: 40px;
+                                height: auto;">
+                        <img src="{{logo_url}}" alt="" />
+                    </a>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="signup-head">
+                            <h3> {{'CREATE ACCOUNT' | translate}} </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-6 sgn">
+                        <form *ngIf="!show_code_submit_part" class="form-inline " (ngSubmit)="signup(subscriber)">
+                            <div *ngIf="!is_success_register">
+                                <div class="form-group-defult">
+                                    <input [(ngModel)]="subscriber.first_name" (ngModelChange)="validate('first_name')" type="text" class="form-control" name="firstName"
+                                        id="firstName" placeholder="{{'Name' | translate}}"  required>
+                                    <span *ngIf="validation.first_name?.required_error" class="help-block sub-little-text ">Name is required</span>
+                                    <span *ngIf="validation.first_name?.length_error" class="help-block sub-little-text">Name should be minimum 4 characters</span>
+                                </div>
+                                <div class="form-group-defult">
+                                    <input [(ngModel)]="subscriber.email" (ngModelChange)="validate('email')" type="email" name="email" class="form-control "
+                                        id="email " placeholder="{{'Email/Phone' | translate}}"required>
+                                    <span *ngIf="(subscriber.email || subscriber.email!='') && validation.email?.invalid" class="help-block sub-little-text ">{{validation.email.error_message}}</span>
+                                </div>
+
+                                <div class="form-group-defult">
+                                    <input [(ngModel)]="subscriber.password" (ngModelChange)="validate('password')" type="password" name="password" class="form-control"
+                                        id="password"  placeholder="{{'Password' | translate}}" required>
+                                    <span *ngIf="subscriber.password && subscriber.password.length<6" class="help-block sub-little-text ">Password should be minimum 6 characters</span>
+                                </div>
+
+                                <div class="form-group-defult">
+                                    <input [(ngModel)]="subscriber.repeatPassword" (ngModelChange)="checkMatch()" type="password" name="repeatPassword" class="form-control"
+                                        id="repeatPassword"  placeholder="{{'Confirm Password' | translate}}" required>
+                                    <span *ngIf="passowrd_match_error" class="help-block sub-little-text ">{{'Passwords dont match.' | translate}}</span>
+                                </div>
+                                <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6LfwcD0UAAAAAIR5qwJVXy0ZPPXE0W_26bZb4lva"></re-captcha>
+                                <div class="margintop20 marginbuttom10">
+                                    <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>&nbsp;&nbsp;
+                                    <span *ngIf="res_pending">{{'Please Wait...' | translate}}</span>
+                                    <button type="submit" [disabled]="!captcha_valid || !subscriber.email || !subscriber.repeatPassword || passowrd_match_error || validation.password?.required_error || validation.password?.length_error || !subscriber.first_name || validation.email?.invalid || validation.first_name?.length_error"
+                                        class="form-control btn btn-default sign-button">{{'Create Account' | translate}}  </button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="registerMessage" class="form-group-defult">
+                                <div *ngIf="is_success_register">
+                                    <h4 [ngClass]="{'has-error': !registerStatus,'has-success':registerStatus}" style="text-align:left">
+                                        {{registerMessage}}
+                                        <a style="font-size: 12px;color: darkblue;" target="_blank" href="http://www.{{user.email.split('@')[1]}}">{{user.email}}</a>
+                                    </h4>
+                                    <a *ngIf="registerStatus" class="sinup-success" style="margin-left: -17px" (click)="showLoginModal()">
+                                        <span class="hand_cursor btn btn-default">{{'Sign in' | translate}}</span>
+                                    </a>
+                                </div>
+                                <div *ngIf="!is_success_register">
+                                    <h4 style="color: red;font-size: 15px;">{{registerMessage}}</h4>
+                                </div>
+                            </div>
+                        </form>
+                        <div *ngIf="show_code_submit_part">
+                            <form class="form-inline " (ngSubmit)="verifyPhone(subscriber)">
+                                <div class="form-group-defult">
+                                    <input [(ngModel)]="vrification.code" type="text" class="form-control" name="code" id="code" placeholder="{{'Code' | translate}}" required>
+                                    <span *ngIf="vrification.code && vrification.code?.length<6" class="help-block sub-little-text ">{{'Invalid Code' | translate}}</span>
+                                </div>
+                                <div class="form-group-defult">
+                                    <label for="resend_code">{{'Did not recieve code?' | translate}}</label>
+                                    <a class="sinup-success" (click)="resendCode()">
+                                        <span *ngIf="can_resend" class="hand_cursor">{{'Resend Code' | translate}}</span>
+                                        <span *ngIf="!can_resend" class="hand_cursor">{{'Wait' | translate}} {{wait_timer}} {{'Sec.' | translate}}</span>
+                                    </a>
+                                </div>
+                                <div class="margintop20 marginbuttom10 ">
+                                    <button type="submit" [disabled]="!vrification.code || vrification.code?.length!=6" class="form-control btn btn-default sign-button">
+                                        {{'Submit Code' | translate}} </button>
+                                </div>
+                                <div *ngIf="registerMessage" class="form-group-defult">
+                                    <p [ngClass]="{'has-error': !registerStatus,'has-success':registerStatus}">
+                                        {{registerMessage}}
+                                        <a *ngIf="registerStatus" class="others-btn" (click)="showLoginModal()">
+                                            <span class="hand_cursor">{{'Sign in' | translate}}</span>
+                                        </a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-6 separetor ">
+                        <div class="social-login ">
+                            <br>
+                            <br>
+                            <br>
+                            <facebook-login></facebook-login>
+                            <div class="text-10 ">
+                                <p>{{'Already have an account?' | translate}}
+                                    <a (click)="showLoginModal()">
+                                        <span class="hand_cursor">"{{'Sign in' | translate}} "</span>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer footer-deafult-modal ">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- create account end here -->

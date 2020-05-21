@@ -1,0 +1,225 @@
+@import '../../../../sass/conf';
+
+/*************************
+******* signup sass ******
+**************************/
+
+.modal-content{
+      border-radius: 0px;
+      margin-top: 12%;
+   }
+
+.login-header{ 
+      background: #ebebeb;
+  }
+
+.signin-logo{
+    img{ 
+         display: block; margin-left: auto; margin-right: auto;
+      }
+}
+
+.signup-head{
+    float: left;
+    p{
+        color: #4b4b4b; font-size: 12px;font-family: $font-family;
+      }
+}
+.modal-body{
+      padding: 8px 33px;
+   }
+.login-41{ 
+  p{
+      color: #4b4b4b; font-size: 12px;font-family: $font-family;
+    }
+  }
+
+.form-group-defult{
+      margin-bottom: 10px;
+  }
+
+  .others-btn{
+    padding-left: 20px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    background: rgba(19, 97, 177, 0.95);
+    padding: 8px;
+    border-radius: 4px;
+    color: white;
+  }
+
+.input-bo-form{ 
+    background-color: #e6e6e6; border: none; border-radius: 0px; box-shadow: none; color: #555; display: block; font-size: 14px;
+    &:focus{
+        box-shadow: none; border-color: none;
+    }
+  }
+
+ .sign-button{
+      background: $sign-button-bg !important; color: #fff !important;border-color:$border-color !important;
+      &:hover{
+        color: $sign-button-color-hover !important;background-color: #fff !important;
+      }
+ } 
+
+.separetor{
+      border-left: 1px solid #666; border-color: #e6e6e6;
+   }
+.social-login div{ 
+      margin-bottom: 10px;
+  }
+.text-14{ 
+      color: #a5a5a5; font-size: 12px;font-family: $font-family;
+  }
+.text-10{ 
+    color: #a5a5a5; font-size: 12px;font-family: $font-family; text-align: center;
+  }
+
+.footer-deafult-modal{ 
+    border-bottom: 8px solid $border-color; border-top: none;margin-top: 0px; padding: 4px 8px 0px; text-align: right;
+  }
+.login-41{
+       margin: 5px 0 13px;
+       p{
+         font-size: 14px; color: #4b4b4b;font-family: $font-family;
+       }
+   }
+   
+.forgot a{
+      color: #a5a5a5; font-size: 12px;font-family: $font-family;
+   }
+.remember{
+      color: #a5a5a5; font-size: 12px;font-family: $font-family;
+  }
+
+.btn-social {
+      font-size: 11px;
+  }
+
+.login{
+      margin-left:5px; color: $primary-color;cursor: pointer;
+      &:hover{
+          color: $sign-button-color-hover;cursor: pointer;transform: scale(1.1);
+          transition: .5s;
+      }
+  }
+
+
+.create-account{ 
+      margin-left:5px; color: $primary-color;cursor: pointer;
+      &:hover{
+        color: $sign-button-color-hover;cursor: pointer;
+      }
+  }
+
+.user-images{ 
+      margin-left:5px; color: #5198dd;//$sign-button-bg;
+      cursor: pointer;
+      &:hover{
+        color:$sign-button-color-hover;cursor: pointer;
+      }
+  }
+
+.log-out{
+      margin-left:5px; color: $google-focus-bg; cursor: pointer;
+      &:hover{
+        color: $sign-button-color-hover;cursor: pointer;
+        transform: scale(1.1);
+        transition: .5s;
+      }
+   }
+   
+.help-block {
+  color: red;  
+}
+
+.has-error {
+  color: red;  
+}
+
+.has-success {
+  color: #a0ce4e;  
+}
+
+.sinup-success {
+    padding-left: 20px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.hand_cursor{
+  cursor: pointer; 
+  cursor: hand;
+}
+
+.checkbox1 label:after, 
+.radio label:after {
+    content: '';
+    display: none;
+    clear: both;
+}
+
+.checkbox1 label::before, 
+.radio label:after {
+    content: '';
+    display: none;
+    clear: both;
+}
+
+.checkbox1 .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox1 .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox1 label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox1 label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox1 label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.sgn .nav-pills li a{
+    color: #333
+}
+
+.modal-dialog{
+    width: 750px;
+}
+  

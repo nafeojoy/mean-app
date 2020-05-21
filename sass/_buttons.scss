@@ -1,0 +1,160 @@
+
+/*************************
+******* button sass ********
+**************************/
+
+.btn-custome-success {
+    background-color: $btn-custom-success;
+    border-color: $border-color;
+    color: $btn-font-color;
+
+    &:hover,&:active,&.active,&:focus,&.focus{
+        background-color: $btn-font-color; border-color: $btn-border-color; color:  $btn-hover-color;background: $btn-hover-bg;
+    }
+
+    &.disabled:hover, &[disabled]:focus, [disabled], &.disabled.focus,fieldset[disabled]{
+        background-color: $disable-color;border-color: $disable-color;color: #fff !important;opacity: .90;
+    }
+}
+
+.btn-boi{ background-color: $btn-custom-success;border-color: $border-color; color:$btn-font-color; opacity: 1;}
+
+.btn{
+    &:hover, &:focus{
+            outline: none; box-shadow: none;color: $btn-hover-color;
+    }
+}
+
+.btn-facebook{
+        color:$btn-font-color !important;background-color:$facebook-color;border-color:rgba(0,0,0,0.2);
+        &:hover,&.focus,&:focus{
+            color:$btn-font-color !important;background-color:$facebook-color-hover;border-color:rgba(0,0,0,0.2);
+        }
+
+       &:active:hover,&.active:hover,&:active:focus,&.active:focus,&:active.focus,&.active.focus{
+           color:#fff;background-color:$facebook-active-bg;border-color:rgba(0,0,0,0.2)
+       } 
+
+}
+
+.open>.dropdown-toggle{
+    &.btn-facebook, &.btn-facebook:hover, &.btn-facebook:active.focus, &.btn-facebook:active.focus,&.btn-facebook:active:focus,
+    &.btn-facebook:hover{
+        color:$btn-font-color !important;background-color:$facebook-active-bg !important; border-color:rgba(0,0,0,0.2);
+    }
+}
+
+.btn-facebook.disabled:hover,.btn-facebook[disabled]:hover,fieldset[disabled] .btn-facebook:hover,.btn-facebook.disabled:focus,
+.btn-facebook[disabled]:focus,fieldset[disabled] .btn-facebook:focus,.btn-facebook.disabled.focus,
+.btn-facebook[disabled].focus,fieldset[disabled] .btn-facebook.focus{background-color:#3b5998;border-color:rgba(0,0,0,0.2)}
+.btn-facebook{
+    &.badge{
+        color:$facebook-color; background-color:$btn-font-color;
+    }
+}
+
+
+
+.btn-google{
+        color:$btn-font-color !important;background-color:$google-color;border-color:rgba(0,0,0,0.2);
+        &:hover,&.focus,&:focus{
+            color:$btn-font-color !important;background-color:$google-focus;border-color:rgba(0,0,0,0.2);
+        }
+
+       &:active:hover,&.active:hover,&:active:focus,&.active:focus,&:active.focus,&.active.focus{
+           color:#fff;background-color:$google-focus;border-color:rgba(0,0,0,0.2)
+       } 
+
+}
+
+.open>.dropdown-toggle{
+    &.btn-google, &.btn-google:hover, &.btn-google:active.focus, &.btn-google:active.focus,&.btn-google:active:focus,
+    &.btn-google:hover{
+        color:$btn-font-color !important;background-color:$google-focus-bg !important; border-color:rgba(0,0,0,0.2);
+    }
+}
+
+.btn-google.disabled:hover,.btn-google[disabled]:hover,fieldset[disabled] 
+.btn-google:hover,.btn-google.disabled:focus,.btn-google[disabled]:focus,fieldset[disabled] 
+.btn-google:focus,.btn-google.disabled.focus,.btn-google[disabled].focus,fieldset[disabled] 
+.btn-google.focus{background-color:$google-color;border-color:rgba(0,0,0,0.2)}
+
+.btn-google{
+    &.badge{
+        color:$google-color; background-color:#fff;
+    }
+}
+
+.btn-twitter{
+        color:$btn-font-color !important;background-color:$twitter-color;border-color:rgba(0,0,0,0.2);
+        &:hover,&.focus,&:focus{
+            color:$btn-font-color !important;background-color:$twitter-focus;border-color:rgba(0,0,0,0.2);
+        }
+
+       &:active:hover,&.active:hover,&:active:focus,&.active:focus,&:active.focus,&.active.focus{
+           color:#fff;background-color:$twitter-focus;border-color:rgba(0,0,0,0.2)
+       } 
+
+}
+
+.open>.dropdown-toggle{
+    &.btn-twitter, &.btn-twitter:hover, &.btn-twitter:active.focus, &.btn-twitter:active.focus,&.btn-twitter:active:focus,
+    &.btn-twitter:hover{
+        color:$btn-font-color !important;background-color:$twitter-focus-bg !important; border-color:rgba(0,0,0,0.2);
+    }
+}
+
+.btn-twitter.disabled:hover,.btn-twitter[disabled]:hover,fieldset[disabled] 
+.btn-twitter:hover,.btn-twitter.disabled:focus,.btn-twitter[disabled]:focus,fieldset[disabled] 
+.btn-twitter:focus,.btn-twitter.disabled.focus,.btn-twitter[disabled].focus,fieldset[disabled] 
+.btn-twitter.focus{background-color:$twitter-color;border-color:rgba(0,0,0,0.2)}
+
+.btn-twitter{
+    &.badge{
+        color:$twitter-color; background-color:#fff;
+    }
+}
+
+.value-add-button{
+    border-radius: 1px 12px 12px 0;margin-left: -16px; background: #ddd;
+}
+
+.value-sub-obutton{
+    border-radius: 12px 0px 0px 12px; background: #ddd;
+}
+
+.value-show-button{
+    border-radius: 1px; border-left: none; border-right: none;
+}
+
+.details-button{
+    margin-bottom: 40px; margin-top: 15px;
+}
+
+.details-button-view{
+    background: $primary-color; border-color: $border-color; color: #fff !important;
+    &:hover,&.hover,&.active,&:focus,&.focus{
+        color:$primary-hover !important;
+    }
+}
+
+.hover-color{
+    background:$primary-color; border-color: $border-color; color: #fff;
+    &:hover,&.hover,&.active,&:focus,&.focus{
+        color:$primary-hover !important;
+    }
+    
+}
+
+.details-button-view[disabled]{
+    background-color: $disable-color;border-color: $disable-color;color: #fff !important; opacity: .90;
+}
+
+.view-all-button{ float: right; margin-right: 39px; margin-top: 12px;}
+
+.menu-botton{
+    background:$primary-color; border-color: $border-color; color: #000000 !important;
+    &.hover,&:hover,&.focus,&:focus{
+             background: $sign-button-bg; border-color: $border-color; color: $secondary-color !important; 
+    }
+}

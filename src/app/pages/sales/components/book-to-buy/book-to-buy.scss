@@ -1,0 +1,138 @@
+.action-icon{
+    font-size: initial;
+    color: #373a3c;
+}
+
+.action-icon:hover{
+    font-size: x-large;
+    color: #373a3c;
+}
+
+.out-of-stock {
+    background: #e5c649;
+    color: black;
+    border-top: 0.3px solid white!important;
+}
+
+.out-of-print {
+    background: #e85656;
+    color: white;
+    border-top: 0.3px solid white!important;
+}
+
+.info-delay {
+    background: #818a91;
+    color: white;
+    border-top: 0.3px solid white!important;
+}
+
+.available{
+    color: white;
+    background: #5cb85c;
+    border-top: 0.3px solid white!important;
+}
+
+.print-out{
+    max-width: 15px;
+    min-height: 15px;
+    background: #e85656;
+    border-radius: 16px;
+}
+
+.stock-out{
+    max-width: 15px;
+    min-height: 15px;
+    background: #e5c649;
+    border-radius: 16px;
+}
+
+.delay{
+    max-width: 15px;
+    min-height: 15px;
+    background: #818a91;
+    border-radius: 16px;
+}
+
+.avbl{
+    max-width: 15px;
+    min-height: 15px;
+    background: #5cb85c;
+    border-radius: 16px;
+}
+
+.no-action{
+    max-width: 15px;
+    min-height: 15px;
+    border: 1px solid;
+    background: white;
+    border-radius: 16px;
+}
+
+.hint{
+    span{
+        font-size: 9px;
+    }
+}
+
+.radio-label{
+    font-size: 13px;
+}
+
+
+.form-radio
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    position: relative;
+    // background-color: #f1f1f1;
+    // color: #666;
+    top: 3px;
+    left: -17px;
+    height: 18px;
+    width: 18px;
+    border: 0;
+    border-radius: 13px;
+    cursor: pointer;
+    margin-right: 20px;
+    outline: none;
+}
+
+.all-filter{
+    background: #0275d8;
+    color: white;
+}
+
+.available-filter{
+    background: #5cb85c;
+    color: white;
+}
+
+.not-available-filter{
+    background: #e85656;
+    color: white;
+}
+
+.delay-filter{
+    background: #e5c649;
+    color: black;
+}
+
+.form-radio:checked::before
+{
+    position: absolute;
+    font: 13px/1 'Open Sans', sans-serif;
+    left: 6px;
+    top: 1px;
+    content: '\02143';
+    transform: rotate(40deg);
+}
+
+
+label
+{
+     font: 300 16px/1.7 'Open Sans', sans-serif;
+     color: #666;
+     cursor: pointer;
+}

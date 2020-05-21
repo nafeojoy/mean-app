@@ -1,0 +1,255 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button [routerLink]="['add']" class="add-icon ion-plus-round btn btn-success">Purchase with Requsition</button>
+                        </div>
+
+                        <!-- <div class="col-md-3"> -->
+                        <!-- <a [routerLink]="['../general-purchase']" class="add-icon ion-plus-round btn btn-primary"> General Purchase</a> -->
+                        <!-- </div>  -->
+                    </div>
+                    <br>
+                    <form (ngSubmit)="searchPurchase()">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Invoice No:</label>
+                                    <input name="name" type="number" [(ngModel)]="searchCriterion.invoice_no" class="form-control" placeholder="Invoice No">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Purchace Type:</label>
+                                    <select name="p_type" id="p_type" class="form-control" [(ngModel)]="searchCriterion.purchase_type">
+                    <option value="All">Select Type</option>
+                    <option value="order">Order Purchase</option>
+                    <option value="general">General Purchase</option>
+                  </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Purchace Mode:</label>
+                                    <select name="p_type" id="p_type" class="form-control" [(ngModel)]="searchCriterion.purchase_mode">
+                    <option value="All">Select Mode</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Credit">Credit</option>
+                  </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="name">Purchase Date Duration:</label>
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <input name="from" type="date" [(ngModel)]="searchCriterion.from_date" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="to" type="date" [(ngModel)]="searchCriterion.to_date" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="reset" class="btn btn-danger" (click)="reset()">Reset</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                    <button [disabled]="res_pending" type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <br>
+
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id" width="4%">#</th>
+                                    <th>Purchase Order</th>
+                                    <th>Purchase Invoice.</th>
+                                    <th>Purchased At</th>
+                                    <th>Purchase Cost</th>
+                                    <th style="text-align: center">View/Print</th>
+                                    <th *ngIf="authManager.canEdit" style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let purchased of purchaseList; let i=index">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{purchased.general_purchase? 'General Purchase': purchased.order_no}}</td>
+                                    <td>{{purchased.purchase_no}}</td>
+                                    <td>{{purchased.purchase_date | date: 'dd MMM-yyyy'}}</td>
+                                    <td>{{purchased.purchase_cost}} Tk.</td>
+                                    <td style="text-align: center">
+                                        <i class="fa fa-print" style="cursor: pointer" (click)="showPurchase(purchased)"></i>
+                                    </td>
+                                    <td>
+                                        <a (click)="set(purchased)" *ngIf="authManager.canEdit" [routerLink]="['edit',purchased._id]" style="display: block; text-align: center;">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #receiptModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sz">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row print-view-row" id="print-section">
+                    <table width="100%" style="font-size: 8px" class="table-headr">
+                        <tr>
+                            <td width="30%" style="text-align: left;">
+                                <img class='custom-image-size1' src="/assets/icon/boibazar-logo-color.png" alt="logo">
+                            </td>
+                            <td width="30%"></td>
+                            <td width="40%">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="40%" align="left">
+                                            Purchase No
+                                        </td>
+                                        <td width="10%" align="left">
+                                            :
+                                        </td>
+                                        <td width="50%" align="left">
+                                            {{purchase.purchase_no}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" align="left">
+                                            Purchase Date
+                                        </td>
+                                        <td width="10%" align="left">
+                                            :
+                                        </td>
+                                        <td width="50%" align="left">
+                                            {{purchase.purchase_date | date:'dd MMM-yyyy'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="40%" align="left">
+                                            Purchase Mode
+                                        </td>
+                                        <td width="10%" align="left">
+                                            :
+                                        </td>
+                                        <td width="50%" align="left">
+                                            {{purchase.purchase_mode}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <div class="row" style="margin-left: -3px;">
+                        <div class="col-md-12 purchase-item">
+                            <p>Purchase Items</p>
+                            <table width="100%" style="font-size: 8px" class="tbl-data">
+                                <thead class="product-head">
+                                    <tr>
+                                        <th width="1%">SL#</th>
+                                        <th width="40%" style="text-align: left;"> Name </th>
+                                        <th width="20%" style="text-align: left;"> Publisher </th>
+                                        <th width="4%" style="text-align: left;"> QTY </th>
+                                        <th width="5%" style="text-align: left;"> Rate </th>
+                                        <th width="5%" style="text-align: left;"> Price </th>
+                                        <th width="20%" style="text-align: left;">Supplier</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="product-body">
+                                    <tr *ngFor="let item of purchase.products; let i=index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{item.product_name}}-{{item.product_id?.import_id}}</td>
+                                        <td>{{item.publisher_id?.name}}</td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{item.rate}}</td>
+                                        <td>{{item.rate * item.quantity}}</td>
+                                        <td>{{item.supplier? item.supplier.name: 'Not Specified'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" style="font-size: 8px" class="table-headr">
+                                <tbody>
+                                    <tr>
+                                        <td width="10%"> Net Amount</td>
+                                        <td width="10%">:</td>
+                                        <td width="20%">{{purchase.net_amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%"> Convenience </td>
+                                        <td width="10%">:</td>
+                                        <td width="20%">{{purchase.convenience}}</td>
+                                        <td width="50%">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%" style="border-bottom: 0.5px dotted gray"> Courier Charge </td>
+                                        <td width="10%" style="border-bottom: 0.5px dotted gray">:</td>
+                                        <td width="20%" style="border-bottom: 0.5px dotted gray">{{purchase.courier_charge}}</td>
+                                        <td width="50%">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">
+                                            <h5>Purchase Cost </h5>
+                                        </td>
+                                        <td width="10%">:</td>
+                                        <td width="20%">
+                                            <h5>{{purchase.purchase_cost}}</h5>
+                                        </td>
+                                        <td width="50%">&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row" style="margin-left: -3px;">
+                        <div class="col-md-12">
+                            <table class="table-print" style="font-size: 8px">
+                                <tr>
+                                    <td class="payment-head-img">
+                                        <p>..........................</p>
+                                        <p>Manager</p>
+                                    </td>
+                                    <td class="payment-head-content">
+                                        <p>..........................</p>
+                                        <p>Recieved</p>
+                                    </td>
+                                    <td class="payment-head-content">
+                                        <p>..........................</p>
+                                        <p>Collector</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-btn" (click)="print()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>

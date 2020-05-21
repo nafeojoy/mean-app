@@ -1,0 +1,151 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Category List</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">Import Id</th>
+                  <th>Name</th>
+                  <th>Hierarchical Position</th>
+                  <th>Book Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input name="import_id" type="text" [(ngModel)]="searchCriterion.import_id" (ngModelChange)="searchCategory()" class="form-control"
+                      placeholder="Import Id">
+                  </td>
+                  <td>
+                    <input name="name" type="text" [(ngModel)]="searchCriterion.name" (ngModelChange)="searchCategory()" class="form-control"
+                      placeholder="Name">
+                  </td>
+                  <th>&nbsp;</th>
+                  <td>
+                    <button class="btn btn-default" (click)="searchCriterion={}">Clear</button>
+                  </td>
+                </tr>
+                <tr dnd-draggable [dragEnabled]="true" *ngFor="let category of categories; let i=index" [dragData]="category">
+                  <td>{{category.import_id}}</td>
+                  <td>{{category.name}}</td>
+                  <td>{{category.hierarchy_path}}</td>
+                  <td>{{category.book_count}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+              [boundaryLinks]="true" (click)="setPage()">
+            </pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Home Page Categories</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="panel panel-info" dnd-droppable class="panel panel-info" (onDropSuccess)="addToFeatured($event)"
+            class="panel panel-info">
+            <div class="panel-body scroll-list">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="black-muted-bg">
+                    <th width="10%" class="table-id">#</th>
+                    <th width="80%">Name</th>
+                    <th width="80%">Hierarchical Position</th>
+                    <th width="10%"></th>
+                  </tr>
+                </thead>
+                <tbody dnd-sortable-container [sortableData]="featured">
+                  <tr *ngFor="let category of featured; let i=index" dnd-sortable [sortableIndex]="i">
+                    <td>{{i + 1}}</td>
+                    <td>{{category.name}}</td>
+                    <td>{{category.hierarchy_path}}</td>
+                    <td (click)="remove(category, i)">x</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngFor="let alert of alerts">
+                <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+              </div>
+              <button class="btn btn-default category-save" (click)="save()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Middle</h5>
+          </div>
+        </div>
+        <div class="panel panel-info" dnd-droppable class="panel panel-info" (onDropSuccess)="addToFeatured('middleFeatured', $event)"
+          class="panel panel-info">
+          <div class="panel-body scroll-list">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th width="10%" class="table-id">#</th>
+                  <th width="80%">Name</th>
+                  <th width="10%"></th>
+                </tr>
+              </thead>
+              <tbody dnd-sortable-container [sortableData]="featured.middleFeatured">
+                <tr *ngFor="let category of featured.middleFeatured; let i=index" dnd-sortable [sortableIndex]="i">
+                  <td>{{i + 1}}</td>
+                  <td>{{category.name}}</td>
+                  <td (click)="remove(category, 'middleFeatured', i)">x</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Bottom</h5>
+          </div>
+        </div>
+        <div class="panel panel-info" dnd-droppable class="panel panel-info" (onDropSuccess)="addToFeatured('bottomFeatured', $event)"
+          class="panel panel-info">
+          <div class="panel-body scroll-list">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th width="10%" class="table-id">#</th>
+                  <th width="80%">Name</th>
+                  <th width="10%"></th>
+                </tr>
+              </thead>
+              <tbody dnd-sortable-container [sortableData]="featured.bottomFeatured">
+                <tr *ngFor="let category of featured.bottomFeatured; let i=index" dnd-sortable [sortableIndex]="i">
+                  <td>{{i + 1}}</td>
+                  <td>{{category.name}}</td>
+                  <td (click)="remove(category, 'bottomFeatured', i)">x</td>
+                </tr>
+              </tbody>
+            </table>
+            <div *ngFor="let alert of alerts">
+              <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+            </div>
+            <button class="btn btn-default category-save" (click)="save()">Save</button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>

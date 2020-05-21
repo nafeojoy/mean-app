@@ -1,0 +1,316 @@
+.product-previous-price {
+    padding-left: 8px;
+    font-size: 12px; 
+    color: #464646;
+    font-family: 'Roboto', sans-serif; 
+    text-transform: uppercase;
+    text-decoration: line-through;
+}
+
+.search-results {
+ height: 100%;
+ // overflow: scroll;
+}
+
+.free_delivery_title {
+    color: #5cb85c;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.free_delivery_title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 142px;
+    display: block;
+}
+.fixed-container-book {
+    height: 175px; 
+    width: 120px; 
+    overflow: hidden; 
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+    transition: .2s;  
+    //box-shadow:rgba(0,0,0,0.75) 0px 0px 4px 0px;
+  &:hover{
+    transform: scale(1.1);
+    transition: .2s;
+  }
+  }
+
+  .btn-letter {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-letter:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-letter:hover {
+    background-color: #3e8e41;
+}
+
+
+.discount-parcent-label-products {
+    position: absolute !important;
+    left: 75% !important;
+    top: 0% !important;
+  }
+  
+  .span-off-products {
+    position: absolute !important;
+    left: 25% !important;
+    font-size: 16px !important;
+    color: rgb(235, 2, 2) !important;
+    font-family: 'Architects Daughter', cursive !important;
+    top: 6px;
+  }
+
+  #new-board-btn1 {
+    white-space: normal;
+}
+
+#new-board-btn2 {
+    white-space: normal;
+}
+
+.m_high {
+    max-height: 400px;
+    min-height: 400px;
+}
+
+.middleBtn {
+    position: relative;
+    transform: translateY(-50%);
+}
+
+.middleBtnDiv {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.glyphicon {
+    margin-right: 5px;
+}
+
+.thumbnail>img,
+.thumbnail a>img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+}
+
+.prod_price {
+    padding-left: 2px;
+    font-size: 13px;
+    color: #000000;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    text-decoration: line-through;
+
+
+}
+
+
+.thumbnail {
+    margin-bottom: 20px;
+    padding: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.item.list-group-item {
+    float: none;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.item.list-group-item:nth-of-type(odd):hover,
+.item.list-group-item:hover {
+    background: #428bca;
+}
+
+.item.list-group-item .list-group-image {
+    margin-right: 10px;
+}
+
+.item.list-group-item .thumbnail {
+    margin-bottom: 0px;
+}
+
+.item.list-group-item .caption {
+    padding: 9px 9px 0px 9px;
+}
+
+.item.list-group-item:nth-of-type(odd) {
+    background: #eeeeee;
+}
+
+.item.list-group-item:before,
+.item.list-group-item:after {
+    display: table;
+    content: " ";
+}
+
+.item.list-group-item img {
+    float: left;
+}
+
+.item.list-group-item:after {
+    clear: both;
+}
+
+.list-group-item-text {
+    margin: 0 0 11px;
+}
+
+.products_height {
+    max-height: 350px;
+}
+
+.line_nowrap_prod {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    width: 180px !important;
+    padding-top: 3px !important;
+    &:hover{
+        white-space: normal !important;
+    }
+}
+.author-about h2{
+    margin-bottom: 0px !important;
+    color: #929292 !important;
+    font-size: 12px !important;
+    font-family: 'Roboto',sans-serif !important;
+}
+
+.item.list-group-item:before,
+.item.list-group-item:after {
+    display: table;
+    content: " ";
+}
+
+.item.list-group-item img {
+    float: left;
+}
+
+.item.list-group-item:after {
+    clear: both;
+}
+
+.list-group-item-text {
+    margin: 0 0 11px;
+}
+
+.products_height {
+    max-height: 350px;
+}
+
+.list-group-category {
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 12px -2px;
+    overflow-y: auto;
+    padding-left: 10px;
+    background-color: rgba(113, 141, 178, 0.1);
+}
+
+.offer-image-prod {
+    max-height: 70px !important;
+    margin-top: 25% !important;
+    max-width: unset !important;
+    margin-left: -15px !important;
+}
+.details-button-view{
+    line-height: 1.5 !important;
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    &:hover{
+        color: white !important;
+        background-color: #428bca !important;  
+    }
+}
+
+.printout-button-view{
+    line-height: 1.5 !important;
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    &:hover{
+        color: white !important;
+        background-color: #428bca !important;  
+    }
+}
+
+h1{
+    font-size: 25px !important;
+    margin: 0px !important;
+}
+
+
+.book-details-section-area-all{
+    border:1px solid #dddddd; margin-bottom: 20px;
+}
+.book-specification-section{
+    background: #d8d8d8;
+  }
+  
+.book-details-section{
+    margin-bottom: 10px;
+    padding: 20px;
+ }
+ .look-inside-label {
+    position: absolute !important;
+    margin-top: 0px !important;
+    max-height: 52px !important;
+    top: 75%;
+    max-width: 50px !important;
+  }

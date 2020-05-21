@@ -1,0 +1,76 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Add New Query
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form class="form-horizontal place-order" (ngSubmit)="submitQuery(query, 'bookQueryModal')">
+                                <div class="form-group row">
+                                    <label for="contact-name" class="col-md-4 control-label"> Name
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" [(ngModel)]="query.name" (ngModelChange)="validate('name')" class="form-control" name="name" id="name"
+                                            placeholder="Name" required>
+                                        <span *ngIf="validation.name?.required_error" style="color:red;" class="help-block sub-little-text">Name is required</span>
+                                        <span *ngIf="validation.name?.length_error" style="color:red;" class="help-block sub-little-text">Name should be minimum 4 characters</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="contact-name" class="col-md-4 control-label"> Book
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" [(ngModel)]="query.book" (ngModelChange)="validate('book')" class="form-control" name="name" id="book"
+                                            placeholder="Book" required>
+                                        <span *ngIf="validation.book?.required_error" style="color:red;" class="help-block sub-little-text">Book name is required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="contact-name" class="col-md-4 control-label">Book Author</label>
+                                    <div class="col-md-8">
+                                        <input type="text" [(ngModel)]="query.author" class="form-control" name="name" id="author" placeholder="Book Author">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="message" class="col-md-4 control-label">
+                                        Message
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea [(ngModel)]="query.message" (ngModelChange)="validate('message')" name="message" class="form-control" placeholder="Message">
+        
+                                                </textarea>
+                                        <span *ngIf="validation.message?.required_error" style="color:red;" class="help-block sub-little-text">Message is required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="altphone" class="col-md-4 control-label"> </label>
+                                    <div class="col-md-8">
+                                        <button [disabled]="validation.message?.required_error || !query.message  || validation.book?.required_error || !query.name || validation.name?.length_error"
+                                            type="submit" class="btn btn-default comment-button">Submit Query</button>
+                                        <br>
+                                        <br>
+                                        <div *ngFor="let alert of alerts">
+                                            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

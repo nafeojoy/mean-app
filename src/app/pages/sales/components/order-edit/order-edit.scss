@@ -1,0 +1,51 @@
+// table tbody tr td img{ width: 50px; height: 48px;border-radius: 57%; border-style: none;}
+.total-price {
+    float: right;
+    margin-right: 12%;
+}
+
+table {
+    width: 100%;
+}
+
+h5 {
+    text-align: left !important;
+}
+
+.custom-image-size {
+    margin-left: 20px !important;
+    width: 50% !important;
+}
+
+// .status span {
+//     display: inline-block;
+//     font-weight: normal;
+//     line-height: 1.25;
+//     text-align: center;
+//     white-space: nowrap;
+//     vertical-align: middle;
+//     cursor: pointer;
+//     user-select: none;
+//     border: 1px solid transparent;
+//     padding: 5px;
+//     border-radius: 5px;
+//     font-size: 18px;
+//     margin-bottom: 7px;
+//     max-height: 35px;
+//     min-width: 186px;
+// }
+
+// .badge{
+
+// }
+
+.info-table table tbody tr td {
+    border-top: none !important;
+}
+
+.btn_size{
+    min-width: 150px;
+    max-width: 180px;
+    margin-left:10px;
+    margin-bottom: 5px;
+}

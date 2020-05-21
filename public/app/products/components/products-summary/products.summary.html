@@ -1,0 +1,40 @@
+<style>
+    
+</style>
+
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="book-details-section-area-all">
+                    <div class="book-specification-section">
+                        <div class="book-details-section">
+                            <h1> {{data?.name}} </h1>
+                        </div>
+                    </div>
+                    <div class="book-details-section-inline">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="image-box">
+                                    <img src="{{data?.image}}" class="img-responsive">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="author-details-section">
+                                    <div class="author-about">
+                                        <!-- <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}"> -->
+                                        <h2 [innerHTML]="data?.description"></h2>
+                                        <!-- </div> -->
+                                        <!--add read more feature-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

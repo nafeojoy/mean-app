@@ -1,0 +1,23 @@
+<div class="container-wrapper">
+  <div class="row">
+    <div class="col-md-1" style="height: 350px; ">
+      <button [disabled]="selectedFiles.length<1 || imgIndex==0" class="btn btn-default" (click)="previous()" style="margin-top: 140px;">
+        <i style="font-size: 30px" class="fa fa-caret-left"></i>
+      </button>
+    </div>
+    <div class="col-md-10">
+      <input *ngIf="!settings.noFileInput" #selector type="file" (change)="fileChangeListener($event)" accept="image/*"
+        multiple>
+      <canvas #cropcanvas (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mousemove)="onMouseMove($event)" (mouseleave)="onMouseUp($event)"
+        (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd($event)" (touchstart)="onTouchStart($event)">
+      </canvas>
+    </div>
+
+    <div class="col-md-1" style="height: 350px; ">
+      <button [disabled]="selectedFiles.length<1 || imgIndex==(selectedFiles.length-1)" class="btn btn-default" (click)="next()"
+        style="margin-top: 140px;">
+        <i style="font-size: 30px" class="fa fa-caret-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

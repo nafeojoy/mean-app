@@ -1,0 +1,143 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Purchase History Report" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-8 type-block">
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-2">Select Date</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="query_date">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="report_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <table class="table-print">
+                                    <tr>
+                                        <td class="payment-head-img">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                            <p>{{query_date}}</p>
+                                        </td>
+                                        <td>
+                                            <h4>Product Update Info</h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th>SL#</th>
+                                        <th>Update By</th>
+                                        <th style="text-align:center">Total Update</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td style="text-align:left">{{item.uploader}}</td>
+                                        <td style="text-align:center">{{item.products?.length}}</td>
+                                        <td>
+                                            <a (click)="showDetail(item)">View Updates</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #updatesModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updatesModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3>{{selected.uploader}}</h3>
+                        <h5>{{selected.products?.length}} items upload.</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <button style="float: right;" class="close" aria-label="Close" (click)="closeDetail()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table width="100%" class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th>SL#</th>
+                                    <th style="text-align:left">Import Id</th>
+                                    <th style="text-align:left">Updated</th>
+                                    <th style="text-align:left">Name</th>                                   
+                                    <th style="text-align:left">Publisher</th>                                    
+                                    <th style="text-align:left">Site Url</th>                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of selected.products; let j=index">
+                                    <td>{{j+1}}</td>
+                                    <td style="text-align:left">{{item.import_id}}</td>
+                                    <td style="text-align:left">{{item.updated_at | date: 'dd MMM-yyyy hh:mm a'}}</td>
+                                    <td style="text-align:left">{{item.name}}</td>
+                                    <td style="text-align:left">{{item.publisher}}</td>
+                                    <td style="text-align:left">
+                                        <a target="_blank" href="{{item.url}}">Go to Site</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

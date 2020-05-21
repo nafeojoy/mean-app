@@ -1,0 +1,40 @@
+<style>
+    .carousel-indicators {
+        bottom: 0px;
+    }
+
+    .center-align {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+    #bannarCar .carousel .carousel-inner:hover {
+        box-shadow: #1361b1 0px 2px 4px -1px !important;
+    }
+</style>
+<section class="margintop30_" style="position:relative;bottom:80px;margin-bottom: -50px;margin-top:80px">
+    <div class="container" style="margin-top: 180px;">
+        <div class="row">
+
+            <carousel [interval]="myInterval" [noWrap]="noWrapSlides" [(activeSlide)]="activeSlideIndex" id="bannarCar">
+                <slide *ngFor="let banner of banners; let index=index">
+                    <div *ngIf="banner.click_url">
+                        <a href="{{banner.click_url}}" target="_blank">
+                            <img src="/image/banner/{{banner.image}}" onerror="this.src='assets/images/banner-no-image.png'" alt="image slide" style="display: block; width: 100%;">
+                        </a>
+                    </div>
+                    <div *ngIf="!banner.click_url">
+                        <img src="/image/banner/{{banner.image}}" onerror="this.src='assets/images/banner-no-image.png'" alt="image slide" style="display: block; width: 100%;">
+                    </div>
+                </slide>
+
+            </carousel>
+
+        </div>
+    </div>
+
+
+
+</section>

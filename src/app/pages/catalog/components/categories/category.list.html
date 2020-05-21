@@ -1,0 +1,73 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" *ngIf="authManager.canAdd">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <input #searchInput type="text" class="form-control" placeholder="Search by name" (keyup)="search($event.target.value)">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Name</th>
+                                    <th>Hierarchy</th>
+                                    <th style="text-align: center">No Of Book</th>
+                                    <th class="align-right" *ngIf="authManager.canAdd">Add Child</th>
+                                    <th class="align-right" *ngIf="authManager.canEdit">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let category of categories | async; let i = index" class="no-top-border">
+                                    <td class="table-id">{{i + 1}}</td>
+                                    <td>{{category.name}}</td>
+                                    <td>{{category.hierarchy_path}}</td>
+                                    <td *ngIf="category.book_list" style="text-align: center">{{category.book_list.length}}</td>
+                                    <td class="align-right" *ngIf="authManager.canAdd">
+                                        <button class="btn btn-warning" [routerLink]="['add', category._id]">Add</button>
+                                    </td>
+                                    <td class="align-right" *ngIf="authManager.canEdit">
+                                        <button (click)="set(category)" class="btn btn-success" [routerLink]="['edit', category._id]">Edit</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems | async" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="maxSize"
+                            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+                            [boundaryLinks]="true" (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Category Delete Modal -->
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-label="Close" (click)="deleteModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Delete Category</h4>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this category?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-btn" (click)="deleteCategory()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

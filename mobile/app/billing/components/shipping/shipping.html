@@ -1,0 +1,201 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="shipping-header">
+                    <h1>  {{'Shipping Address' | translate}} </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="continue-shopping">
+                    <p>
+                        <i class="fa fa-angle-left"></i>
+                        <a [routerLink]="['../cart']">{{'Back' | translate}}  </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="place-order-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div [hidden]="!hasPrimaryAddress">
+                                <h2 class="place-order-head">{{'Your primary address is following' | translate}}</h2>
+                                <div class="form-horizontal place-order-13" >
+                                    <div class="form-group">
+                                        <label for="contact-name" class="col-md-4 control-label"> {{'Contact Name' | translate}} </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.contact_name}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="city" class="col-md-4 control-label"> {{'District' | translate}} </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.district}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip" class="col-md-4 control-label"> {{'Thana' | translate}} </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.thana}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address" class="col-md-4 control-label"> {{'Address' | translate}} </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.address}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone-number" class="col-md-4 control-label"> {{'Mobile' | translate}} {{'Number' | translate}}  </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.phone_number}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="shipping.alter_phone" class="form-group">
+                                        <label for="alt_phone-number" class="col-md-4 control-label"> {{'Alternate' | translate}} {{'Number' | translate}} </label>
+                                        <div class="col-md-8">
+                                            {{primaryAddress.alter_phone}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="alt_phone-number" class="col-md-4 control-label"> </label>
+                                        <div class="col-md-8">
+                                            <button class="btn btn-default address-button" style="   white-space: normal;"  (click)="useAsPresentAddress(primaryAddress)">{{'Use This Address' | translate}} {{'&' | translate}} {{'Continue' | translate}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form [hidden]="hasPrimaryAddress" class="form-horizontal place-order-13" (ngSubmit)="save(shipping)">
+
+                                <div class="form-group">
+                                    <label for="contact-name" class="col-md-4 control-label"> {{'Contact Name' | translate}}
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input type="text" [(ngModel)]="shipping.contact_name" (ngModelChange)="validate('contact_name')" class="form-control" name="contact_name"
+                                            id="contact_name" placeholder="Contact Name" required>
+                                        <span *ngIf="validation.contact_name?.length_error" class="help-block sub-little-text">{{'Contact Name' | translate}} {{'should be minimum 4 characters' | translate}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="city" class="col-md-4 control-label"> {{'District' | translate}} </label>
+                                    <div *ngIf="!shipping.thana" class="col-md-8">
+                                        <select name="city" class="form-control" [(ngModel)]="shipping.district" (change)="selectDistrict()" required>
+                                            <option *ngFor="let district of districts" [ngValue]="district.DISTRICT_NO">
+                                                {{district.DISTRICTT_NAME}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="shipping.thana" class="col-md-8">
+                                        <select name="city" class="form-control" [(ngModel)]="shipping.district" (change)="selectDistrictAgain()" required>
+                                            <option *ngFor="let district of districts" [ngValue]="district.DISTRICT_NO">
+                                                {{district.DISTRICTT_NAME}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="zip" class="col-md-4 control-label"> {{'Thana' | translate}}
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select name="city" class="form-control" [(ngModel)]="shipping.thana" required>
+                                            <option *ngFor="let thana of thanas" [ngValue]="thana.THANA_NAME">
+                                                {{thana.THANA_NAME}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address" class="col-md-4 control-label"> {{'Address' | translate}}
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <textarea [(ngModel)]="shipping.address" (ngModelChange)="validate('address')" name="address" class="form-control" placeholder="Address"
+                                            required></textarea>
+                                        <span *ngIf="validation.address?.length_error" class="help-block sub-little-text">{{'Address' | translate}} {{'should be minimum 4 characters' | translate}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone-number" class="col-md-4 control-label"> {{'Mobile' | translate}} {{'Number' | translate}} 
+                                        <span style="color: red; font-size: 15px">*</span>
+                                    </label>
+                                    <div class="col-md-8">
+                                        <ng-input [(inputModel)]="shipping.phone_number"></ng-input>
+                                        <span *ngIf="shipping.phone_number && shipping.phone_number.length!=11" class="help-block sub-little-text">{{'Wrong' | translate}} {{'Mobile' | translate}} {{'Number' | translate}} </span>
+                                    </div>
+                                </div>
+
+                                <div  class="form-group">
+                                    <label for="alt_phone-number" class="col-md-4 control-label">{{'Alternate' | translate}} {{'Number' | translate}}  </label>
+                                    <div class="col-md-8">
+                                        <ng-input [(inputModel)]="shipping.alter_phone"></ng-input>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="alt_phone-number" class="col-md-4 control-label"> {{'Use it as primary' | translate}} </label>
+                                    <div class="col-md-8">
+                                        <ui-switch name="is_enabled" [(ngModel)]="shipping.is_primary"></ui-switch>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="alt_phone-number" class="col-md-4 control-label"> </label>
+                                    <div class="col-md-8">
+                                        <button [disabled]="!shipping.contact_name || !shipping.thana || !shipping.address || shipping.address.length<4 ||  validation.contact_name?.length_error || shipping.phone_number?.length<11 || validation.phone_number?.invalid || validation.address?.length_error"
+                                            type="submit" class="btn btn-default address-button">{{'Save' | translate}}  & {{'Continue' | translate}} </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="place-order-new-address" [hidden]="!hasPrimaryAddress" align="center">
+                                <button class="btn btn-default address-button" (click)="newAddress()">{{'Use New Address' | translate}}</button>
+                                <div class="background-payment">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <order-summary></order-summary>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="continue-shopping">
+                    <p>
+                        <i class="fa fa-angle-left"></i>
+                        <a [routerLink]="['../cart']">{{'Back' | translate}} </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

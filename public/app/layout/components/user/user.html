@@ -1,0 +1,22 @@
+<div [hidden]="!authService.isLoggedIn()" class="header_right_44" style="float: left;">
+    <div class="shop-menu">
+        <div>
+            <span class="user-images" [routerLink]="['../subscriber/view']" style="float: left; padding: 10px">
+                <i class="fa fa-user" style="padding-right: 3px;"></i>
+                <span> {{authService.getUserFirstname()}} </span>
+
+                <!-- <span> {{username}} </span> -->
+            </span>
+            <!-- &nbsp; -->
+            <br>
+
+            <span [routerLink]="['/contents/purchase-list']" class="purchase_history">
+                <i class="fa fa-book" aria-hidden="true"></i> {{ 'Order List' | translate }}
+            </span>
+            <br>
+            <span class="log-out" (click)="logout()" style="float: left; padding: 10px">
+                <i class="fa fa-sign-out"></i> {{'Log Out' | translate}} </span>
+
+        </div>
+    </div>
+</div>

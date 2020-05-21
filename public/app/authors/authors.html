@@ -1,0 +1,127 @@
+<style type="text/css">
+    .glyphicon {
+        margin-right: 5px;
+    }
+
+    .thumbnail>img,
+    .thumbnail a>img {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 10%;
+    }
+
+
+    .thumbnail {
+        margin-bottom: 20px;
+        padding: 0px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+
+    }
+
+    .item.list-group-item {
+        float: none;
+        width: 100%;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .item.list-group-item:nth-of-type(odd):hover,
+    .item.list-group-item:hover {
+        background: #428bca;
+    }
+
+    .item.list-group-item .list-group-image {
+        margin-right: 10px;
+    }
+
+    .item.list-group-item .thumbnail {
+        margin-bottom: 0px;
+    }
+
+    .item.list-group-item .caption {
+        padding: 9px 9px 0px 9px;
+    }
+
+    .item.list-group-item:nth-of-type(odd) {
+        background: #eeeeee;
+    }
+
+    .item.list-group-item:before,
+    .item.list-group-item:after {
+        display: table;
+        content: " ";
+    }
+
+    .item.list-group-item img {
+        float: left;
+    }
+
+    .item.list-group-item:after {
+        clear: both;
+    }
+
+    .list-group-item-text {
+        margin: 0 0 11px;
+    }
+
+    .p_m_high {
+
+        max-height: 303px;
+    }
+
+    .fixed-container-author {
+        height: 240px !important;
+    }
+</style>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-tab">
+                    <a class="breadcrumb-item" href="#">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                    <a class="breadcrumb-item">Authors</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-10 padding-right busy-loading">
+                <div class="category-tab_" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true,minDuration: 200}">
+                    <div class="tab-content">
+                        <div class="tab-pane_" *ngFor="let author of authors; let i = index">
+                            <div class="col-12 col-lg-3 p_m_high">
+                                <a (click)="getSelectedProduct(author.seo_url)" style="cursor: pointer">
+                                    <div class="thumbnail fixed-container-author" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20"
+                                        style="width: 200px; margin-right:10px; float: left;">
+                                        <img src="{{author.image}}" onError="this.src='assets/images/author-no-photo.png'" alt="" />
+                                        <div class="caption">
+                                            <h4 class="group inner list-group-item-heading">
+                                                <div>
+                                                    <p style="text-align: center; "> {{author.name}}</p>
+                                                </div>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

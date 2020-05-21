@@ -1,0 +1,134 @@
+@import '../../../../sass/conf';
+
+.companyinfo{
+    margin-top: 30px;margin-bottom: 15px;
+    h2{
+      color: $primary-color;font-family: abel;font-size: 27px;text-transform: uppercase; text-align: right;
+        span{
+          color:$primary-color;
+        }
+    }
+    p{
+      color: $primary-color;font-family: $font-family;font-size: 12px;font-weight: 300;
+    }
+}
+// background: #a8c9ff2b;
+
+.service-section{ 
+    background: #a8c9ff2b; padding-top: 30px; padding-bottom: 0px;
+  }
+.circle-areaall{ 
+    left: 0px; right: 0px; display: block; text-align: center;
+  }
+.btn-circle.btn-lg {
+    width: 80px;height: 80px;padding: 10px 16px;font-size: 18px;line-height: 1.33; border-radius: 46px; background: $primary-color;border-color:$primary-color;
+  }
+.circle-area i{ padding-top: 14px;}
+.service-title h2{ color: $secondary-color; font-weight: 300px; font-size: 20px;}
+.service-support h2{color: $primary-color; font-weight: 300px; font-size: 26px;}
+.service-time p{color: black; font-weight: 300px; font-size: 14px;}
+
+.text-center ul li { float: left; margin-right: 10px;}
+
+.payment ul li {
+  img{
+  width: 100%;
+}
+}
+
+/*************************
+*******  Testmonials sass left and right icon ********
+**************************/
+
+.testmonials{
+      margin-bottom: 68px;
+  }
+
+.testmonials_head{ 
+      border: 2px solid $border-color;padding:25px 58px;
+  }
+  
+.testmonials_background{ 
+     padding:25px 86px;
+  }
+
+.testmonials_title{
+    h2{
+      color: $primary-color; font-family: $font-family; font-size: 20px; font-weight: 500; text-align: center; text-transform: uppercase;
+      }
+}
+.testmonials_img{
+    left: 0; right: 0; display: block;
+  }
+
+.testmonials_content {
+    p{ 
+      text-align: center; color: #4e4e4e; font-size: 16px;font-family: $font-family;
+    }
+}
+.img-circle{ 
+      border:3px solid $border-color;
+  }
+
+.carousel-control{ 
+      width: 0px;opacity: 1; cursor: pointer;
+    }
+
+
+.item {
+     p {
+       color:#4e4e4e; font-size:16px; font-family: $font-family; padding-top: 5px; text-align: left;
+  }
+}
+
+.carousel-indicators{ 
+        bottom: -17px;
+    }
+
+.carousel-indicators li{ 
+     background:$primary-color;
+  }
+
+#slider { 
+   padding-bottom: 45px;
+  }
+
+  .testmonials_background .carousel-indicators{ display: block;}
+
+.carousel-caption{ 
+    position: relative !important; text-shadow: none; left: 0%; height: 110px;
+  }
+
+.carousel-indicators {
+  li{
+    background: $secondary-color-light;
+    &.active{
+      background: $primary-color;
+    }
+  }
+}
+
+.pricing { position: absolute; right: 40%;top: 52%;}
+
+.girl { 
+      margin-left: 0;
+  }
+
+.control-carousel { 
+      position: absolute;top: 50%;font-size: 60px;color: #C2C2C1;
+      &:hover{
+        color: $secondary-color;
+      }
+  }
+
+
+
+.category-products { 
+      border: 1px solid #F7F7F0; margin-bottom: 35px; padding-bottom: 20px; padding-top: 15px;
+  }
+
+  .border-con
+  {
+    border-top: 1px solid #1361b1; border-bottom: 1px solid #1361b1;
+  }
+  

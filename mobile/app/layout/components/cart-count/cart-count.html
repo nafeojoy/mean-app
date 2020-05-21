@@ -1,0 +1,42 @@
+<!-- <div class="header_right_46">
+    <div class="cart_header">
+        <div>
+            <a (click)="showCart()">
+                <i class="fa fa-shopping-cart" style="padding-right: 3px;"></i>
+                <span> {{'Cart' | translate}} ({{cartItems}})</span>
+            </a>
+        </div>
+    </div>
+</div> -->
+
+
+<div [routerLink]="['/billing/cart']">
+    <a >
+        <img class="crt-icon" src="/assets/images/cart-icon-50X50.png" style="margin-top: 2px;
+        width: 35px;
+        margin-left: 6px;">
+        <div *ngIf="cartItems>0">
+            <span style="margin-right: 10px; white-space: nowrap; color: white; font-size: 12px !important">
+                {{'Cart' | translate}} ({{cartItems | numberConvert}})
+            </span>
+            <!-- <span >
+                {{ cartCost | priceConvert }}
+            </span> -->
+        </div>
+
+
+        <div *ngIf="cartItems==0">
+            <span style="margin-right: 10px;  white-space: nowrap; color: white; font-size: 12px !important">
+                {{'Cart' | translate}} (0)
+            </span>
+            <!-- <span >
+                {{'Tk.' | translate}} 0
+            </span> -->
+        </div>
+
+    </a>
+</div>
+
+
+
+<!--[routerLink]="['../billing/cart']"-->

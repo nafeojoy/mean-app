@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="alert_messages_chart">
+                    <div *ngFor="let alert of alerts">
+                        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button [disabled]="!data1.image || is_uploading" class="form-control" (click)="up()">Upload</button>
+                <spinner *ngIf="is_uploading" [tickness]="1" [size]="20"></spinner>
+            </div>
+        </div>
+    </div>
+</div>

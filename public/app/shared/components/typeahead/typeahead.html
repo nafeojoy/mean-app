@@ -1,0 +1,44 @@
+<div>
+    <input id="searchBox" type="text" [(ngModel)]="searchText" (keyup)="typed($event.target.value)" (keyup.enter)="searchedProducts($event.target.value)" placeholder="{{ searchLn }}">
+    <div [class]='ulClass'>
+        <ul *ngIf="items.length>0 && !hide" class="dropdown-menu type_head_drop" style="margin: 0% auto;
+                left: -45px;
+                right: 0;">
+            <li *ngFor="let item of items" class="typeahead-hover" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                <div class="row" (click)="getDetail(item)">
+                    <div class="col-md-1">
+                        <div class="type-head-padding">
+                            <p class="type-head-image">
+                                <img *ngIf="image && item.click_url=='author-books'" src="{{item.image}}" alt="" onError="this.src='assets/images/author-no-photo.png'">
+                                <img *ngIf="image && item.click_url=='book'" src="{{item.image}}" alt="" onError="this.src='assets/images/book-no-photo.jpg'">
+                                <img *ngIf="image && item.click_url=='publisher-books'" src="{{item.image}}" alt="" onError="this.src='assets/images/publisher-no-photo.jpg'">
+                                <img *ngIf="image && item.click_url=='category-books'" src="{{item.image}}" alt="" onError="this.src='assets/images/category-no-photo.png'">
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="type-head-padding">
+                            <p class="result-name"> {{item.name}} </p>
+                            <p class="author-name-title">
+                                <span *ngIf='item.authorObj'>{{item.authorObj.name}}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="type-head-padding">
+                            <p class="result-name">
+                                <span *ngIf='item.price'> {{item.price | priceConvert}}</span>
+                            </p>
+                            <p class="">
+                                <star-rating [rating]="item.rating" viewSize="small"></star-rating>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        `
+    </div>
+</div>

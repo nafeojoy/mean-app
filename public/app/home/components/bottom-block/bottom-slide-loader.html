@@ -1,0 +1,96 @@
+<style type="text/css">
+    #item-name {
+        white-space: nowrap;
+        overflow: hidden;
+        width: 200px;
+        padding-top: 3px !important;
+    }
+
+    .test_n {
+        position: absolute;
+        margin-top: -5px !important;
+        margin-left: -5px !important;
+        margin-top: 0px;
+        max-height: 64px!important;
+        max-width: 64px;
+    }
+</style>
+<div class="col-lg-12">
+    <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: false, minDuration: 200}">
+        <div *ngFor="let item of inputItems; let i = index" class="tab-pane fade active in">
+            <div class="col-12 col-md-3 mn_hight">
+                <a>
+                    <div class="thumbnail home-thumbnail small-check" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20">
+                        <label *ngIf="item.free_delivery" class="current-offer-label">
+                            <img class="offer-image-home" src="image/offer/{{item.current_offer}}">
+                        </label>
+                        <label *ngIf="item.preview_images > 0" class="look-inside-label">
+                            <img style="max-height: 80px !important; width: 80%;" src="assets/images/look-inside.png">
+                        </label>
+                        <div class="fixed-container-book">
+                            <a [routerLink]="['../'+ nextRoute, item.seo_url]">
+                                <img *ngIf='!gifshow' class="group list-group-image" style=" margin-top: 0px" src="{{item[imageField]}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                    alt="{{item.name}}">
+                                <img *ngIf='gifshow && gifProductId != item._id' class="group list-group-image" style=" margin-top: 0px" src="{{item[imageField]}}"
+                                    onError="this.src='assets/images/book-no-photo.jpg'" alt="{{item.name}}">
+                                <img *ngIf='gifshow && gifProductId == item._id' src="assets/images/cartadd.gif" style="transform: scale(1.2);
+                                margin-top: 20%;">
+                            </a>
+                        </div>
+                        <!-- For Off -->
+                        <label *ngIf="item.previous_price && item.previous_price !=0 && !(item.price >= item.previous_price) " class="discount-parcent-label">
+                            <img style="max-height: 80px !important; width: 80%;" src="assets/images/off.png">
+                            <span class="span-off">{{this.Math.round(((item.previous_price - item.price)/item.previous_price)*100) | numberConvert}}%</span>
+                            <span class="span-off" style="top: 25px;">{{'OFF' | translate}}</span>
+
+                        </label>
+                        <div class="caption">
+                            <h4 id="item-name" class="group inner list-group-item-heading small-item">
+                                <div>
+                                    <p style="text-align: center;  "> {{item.name}} </p>
+                                </div>
+                            </h4>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-xs-12">
+                                    <p class="lead" style="text-align: center; margin-bottom: 5px">
+                                        <span *ngIf="item.price" class="tk_home">{{item.price | priceConvert}}</span>
+                                        <span *ngIf="!item.price" class="tk_home"> NA</span>
+                                        <span *ngIf="item.previous_price && item.price && (item.previous_price>item.price)" class="prev-price-home">{{item.previous_price | priceConvert}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <h4 class="author-h4">
+                                <div>
+                                    <span *ngIf='item.author' class="author-name"> {{item.author.name}}
+                                        <i *ngIf="item.already_added" class="fa fa-shopping-cart cart-added-icon"></i>
+                                    </span>
+                                </div>
+                            </h4>
+                            <h4 *ngIf="!item.already_added && !item.is_out_of_print" class="cart-add" (click)="addToCart(item, i)" style="cursor: pointer">
+                                <a class="fa fa-shopping-cart"> {{'add_to_cart'| translate}}</a>
+                            </h4>
+                            <h4 *ngIf="item.already_added" class="cart-added">
+                                <a class="fa fa-shopping-cart"> {{'added_to_cart'| translate}}</a>
+                            </h4>
+                            <h4 *ngIf="item.is_out_of_print" class="out-of-print">
+                                <a class="fa fa-exclamation-triangle"> {{'out_of_print'| translate}}</a>
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a [ngClass]="currentPage>1 ? 'left section-arrow-left-4 carousel-control' : 'left section-arrow-left-4 carousel-control disabled'"
+    (click)="prev()">
+    <i class="fa fa-caret-left angle_left arrow-color"></i>
+</a>
+<a [ngClass]="checkCurrentPage>7 ? 'right section-arrow-right-4 carousel-control' : 'right section-arrow-right-4 carousel-control disabled'"
+    (click)="next()">
+    <i class="fa fa-caret-right angle_right arrow-color"></i>
+</a>

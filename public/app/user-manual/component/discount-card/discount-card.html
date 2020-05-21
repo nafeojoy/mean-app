@@ -1,0 +1,88 @@
+<style>
+    #myModal {
+        width: 90% !important;
+        height: 85% !important;
+        overflow: scroll !important;
+        background-color: #00000073 !important;
+        margin-top: 5% !important;
+    }
+</style>
+<section>
+    <div class="container">
+        <img src="/assets/images/promo-code.png">
+        <div class="col-md-6">
+            <h4>Discount Card টি ব্যবহার করতে নিচের নির্দেশনা অনুসরণ করুনঃ </h4>
+            <ol>
+                <li>
+                    BoiBazar.com হতে আপনার পছন্দের বইগুলো ‘Shopping Cart’ এ যুক্ত করুন।
+                </li>
+                <li>
+                    কার্ডটি স্ক্র্যাচ করুন।
+                </li>
+                <li>
+                    চেক আউটের পূর্বে কুপক কোড ঘরে Promo Code টি Apply
+                </li>
+                <li>
+                    কোডটি ব্যবহারের পর স্বয়ংক্রিয়ভাবে Gift Discount সংযোজিত
+                </li>
+            </ol>
+            <h6>কিভাবে বই অর্ডার করবেন তা জানতে এখানে করুন। </h6>
+
+            <button id="book-page-btn" (click)="showPdf('bn')">How To Order
+                <i class="fa fa-binoculars"></i>
+            </button>
+        </div>
+        <!-- <div class="col-md-6">
+            <h4>Discount Card টি ব্যবহার করতে নিচের নির্দেশনা অনুসরণ করুনঃ </h4>
+            <ol>
+                <li>
+                    BoiBazar.com হতে আপনার পছন্দের বইগুলো ‘Shopping Cart’ এ যুক্ত করুন।
+                </li>
+                <li>
+                    কার্ডটি স্ক্র্যাচ করুন।
+                </li>
+                <li>
+                    চেক আউটের পূর্বে কুপক কোড ঘরে Promo Code টি Apply
+                </li>
+                <li>
+                    কোডটি ব্যবহারের পর স্বয়ংক্রিয়ভাবে Gift Discount সংযোজিত
+                </li>
+            </ol>
+            <h6>কিভাবে বই অর্ডার করবেন তা জানতে এখানে করুন। </h6>
+            <button id="book-page-btn" (click)="showPdf('en')">English
+                <i class="fa fa-binoculars"></i>
+            </button>
+
+        </div> -->
+
+        <!-- 
+        <pdf-viewer *ngIf="pdfLang =='bn'" [src]="pdfSrcBn" [render-text]="true" style="display: block;"></pdf-viewer>
+        <pdf-viewer *ngIf="pdfLang =='en'" [src]="pdfSrcEn" [render-text]="true" style="display: block;"></pdf-viewer> -->
+
+
+
+
+        <!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+        <div bsModal #imageModal="bs-modal" class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div id='myModal' class="modal-dialog " role="document">
+                <div class="modal-content" style="margin: auto;
+                width: 80%;">
+                    <div *ngIf="pdfLang =='bn'" class="login-header" style="padding: 20px;">
+                        <div class="busy-loading" *ngFor="let image of banglaImages" style="padding: 10px;">
+                            <img style="width: 100%" src={{image}}>
+                        </div>
+                    </div>
+                    <div *ngIf="pdfLang =='en'" class="login-header" style="padding: 20px;">
+                        <div class="busy-loading" *ngFor="let image of englishImages" style="padding: 10px;">
+                            <img style="width: 100%"src={{image}}>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+
+    </div>
+</section>

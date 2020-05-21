@@ -1,0 +1,37 @@
+<div class="widgets">
+
+    <div class="row">
+        <div class="col-md-6">
+            <ba-card title="Add Promo Code" baCardClass="with-scroll">
+                <form (ngSubmit)="addPromotionalCode(promo)">
+                    <div class="form-group">
+                        <label for="promo_code">Promo Code</label>
+                        <input name="promo_code" type="text" class="form-control" [(ngModel)]="promo.promo_code" placeholder="Promo Code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">Discount</label>
+                        <input name="discount" type="number" class="form-control" [(ngModel)]="promo.discount" placeholder="Discount(%)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start">Start Date</label>
+                        <input name="start" type="date" class="form-control" [(ngModel)]="promo.start_date" placeholder="Start Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End Date</label>
+                        <input name="end" type="date" class="form-control" [(ngModel)]="promo.end_date" placeholder="End Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="target_no">Target No of Users</label>
+                        <input name="target_no" type="number" class="form-control" [(ngModel)]="promo.target_no" placeholder="Target Users" required>
+                    </div>
+                  
+                    <button type="submit" class="btn btn-warning">Add Promo</button>
+                </form>
+            </ba-card>
+        </div>
+
+    </div>
+
+    <!--<simple-notifications></simple-notifications>-->
+
+</div>

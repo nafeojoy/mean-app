@@ -1,0 +1,78 @@
+<products-breadcrumb type={{breadcrumbType}} name={{productSummaryData?.name}} count={{Count}}>
+</products-breadcrumb>
+
+<products-summary *ngIf="breadcrumbType != 'category'" [data]="productSummaryData"></products-summary>
+<section>
+    <div class="container">
+        <div class="row">
+            <products-filter [attributes]="filterData.attributes" [categories]="filterData.category" [authors]="filterData.author" [publishers]="filterData.publisher"
+                [checkBoxData]="checkBoxData"></products-filter>
+            <br>
+            <div class="col-md-10 col-sm-10 padding-right busy-loading" style="margin-top: 10px ">
+                <div [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                    <div *ngFor="let product of products; let i = index" class="tab-pane fade active in">
+                        <div class="col-12 col-md-3 product_height" style="width: 160px; float: left">
+                            <div class="thumbnail container-book" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20">
+                                <label *ngIf="product.current_offer" class="offer-label">
+                                    <a [routerLink]="true" (click)="getSelectedProduct(product)">
+                                        <img class="offer-image-prod" src="image/offer/{{product.current_offer}}">
+                                    </a>
+                                </label>
+                                <a [routerLink]="true" (click)="getSelectedProduct(product)">
+                                    <div class="fixed-container-book">
+                                        <img class="list-group-image" src="{{productService.publicImageBaseUrl}}{{product.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt="">
+                                    </div>
+                                </a>
+                                <!-- For Off -->
+                                <label *ngIf="product.previous_price && product.previous_price !=0 && !(product.price >= product.previous_price) " class="discount-parcent-label-products">
+                                    <img style="max-height: 64px !important; width: 100%" src="assets/images/off.png">
+                                    <span class="span-off-products">{{this.Math.round(((product.previous_price - product.price)/product.previous_price)*100)
+                                        | numberConvert}}%
+                                    </span>
+                                    <span class="span-off-products" style="top: 25px;">{{'OFF' | translate}}</span>
+                                </label>
+
+                                <div class="caption">
+                                    <h4 class="line_nowrap group inner list-group-item-heading">
+                                        <p style="text-align: center; padding-top: 2px "> {{product.name}} </p>
+                                    </h4>
+                                    <h4 class="line_nowrap" style="margin-bottom: 0px">
+                                        <div>
+                                            <p style="text-align: center;  "> {{product.authorObj.name}} </p>
+                                        </div>
+                                    </h4>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-xs-12">
+                                            <p class="lead" style="text-align: center; margin-bottom: 0px; margin-top: 0px">
+                                                <span *ngIf="product.price" class="tk_home" style="font-size: 14px; font-weight: bold">{{product.price | priceConvert}}</span>
+                                                <span *ngIf="!product.price" class="tk_home"> NA</span>
+                                                <span *ngIf="product.previous_price && product.price && (product.previous_price>product.price)" class="prev_price">{{product.previous_price | priceConvert}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card_system middleBtnDiv" style="margin-top:0px ">
+                                        <button *ngIf="!product.already_added && !product.is_out_of_print" id="new-board-btn1" class="btn btn-default details-button-view"
+                                            (click)="addToCart(product, i)">
+                                            <span class="fa fa-shopping-cart"> {{'add_to_cart'|translate}} </span>
+                                        </button>
+                                        <button *ngIf="product.already_added" id="new-board-btn2" [disabled]="true" class="btn btn-default details-button-view">
+                                            <span class="fa fa-shopping-cart">{{'added_to_cart'|translate}}</span>
+                                        </button>
+                                        <button *ngIf="product.is_out_of_print" id="new-board-btn2" [disabled]="true" class="btn btn-danger printout-button-view">
+                                            <span class="fa fa-exclamation-triangle">{{'out_of_print'|translate}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf='products.length != 0 && totalItems>products.length' style="text-align: center">
+                    <button class="btn-primary details-button-view" style="margin-bottom: 10px;" (click)='viewMoreBtn()'>
+                        {{'View More Books...' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

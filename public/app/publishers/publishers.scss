@@ -1,0 +1,167 @@
+
+@import '../../sass/conf';
+
+.publisher-name { text-align: center;}
+.payment-method ul li img { float: left; padding-right: 15px; padding-top: 9px;}
+
+.breadcrumb-tab{ 
+    margin-top: 10px; margin-bottom: 10px;
+    a{
+        color: #8a8a8a; font-size: 14px; font-family:$font-family;
+    }
+    span{
+        color: #8a8a8a; font-family:$font-family; padding-left: 5px; padding-right: 5px;
+    }
+    
+}
+
+.book-details-section-area-all{
+    border:1px solid #dddddd; margin-bottom: 20px;
+}
+
+.book-details-section{
+    padding: 20px;
+}
+.details-images-21{
+    img{ 
+        width: 100%; border:6px solid $border-color;
+    }
+}
+.details-title-23{
+    border-bottom:1px solid #ddd;
+    h3{
+      color: $primary-color;margin-top: 0px;font-family: $font-family; font-size: 18px;
+    }
+}
+.details-author{
+    h3{
+      color: #7a7a7a;margin-top: 0px;font-family: $font-family; font-size: 15px;
+    }
+}
+
+.details-title-24{
+    border-bottom:1px solid #ddd; padding-top: 16px; padding-bottom: 35px;
+  }
+.details-title-25{
+   border-top:1px solid #ddd; padding-top: 10px; padding-bottom: 10px;
+}
+
+.details-ratings{
+    span{
+        i{ 
+          color: $primary-color;
+        }
+    }
+}
+
+.details-price{
+    p{
+        font-size: 13px; color: #7a7a7a; font-family: $font-family; margin-bottom: 10px; font-weight: bold;
+    }
+}
+
+.details-shipping{
+    p{
+      font-size: 13px; color: #7a7a7a; font-family: $font-family;margin-bottom: 10px;
+    }
+}
+
+.quentity span{font-size: 13px; color: #7a7a7a; font-family: $font-family; margin-right: 10px;}
+.details-category{
+    p{ 
+      color: #7a7a7a;font-size: 13px; font-family: $font-family;
+    }
+    span{
+      color: $primary-color;font-size: 12px; font-family: $font-family;
+    }
+}
+
+.details-publisher{
+    p{
+        color: #7a7a7a;font-size: 13px; font-family: $font-family;
+    }
+    span{
+      color: $primary-color;font-size: 12px; font-family: $font-family;
+    }
+}
+
+.return-policy-title{
+    color: #7a7a7a;font-size: 14px; font-family:$font-family; font-weight: 400;
+  }
+
+.return-policy-text{ 
+    color: #9c9b9b; font-size: 14px; font-family:$font-family;
+  }
+
+.delivery-policy{
+    margin-top: 15px;
+}
+.delivery-policy-title{
+    color: #4e4e4e;font-size: 14px; font-family:$font-family; font-weight: 400;
+}
+.delivery-policy-text{
+    color: #4e4e4e; font-size: 14px; font-family:$font-family;
+}
+
+.details-payment-section{
+    border-top: 1px solid $border-color; background: #f4ffe8;
+}
+
+.payment-title-option{
+    h2{
+      color: $primary-color; font-size: 14px; font-family: $font-family; text-align: right;
+    }
+}
+
+.payment-img{
+    margin-top:11px;
+}
+
+.payment-img{
+    img{
+        display:block; margin-left: auto; margin-right: auto; vertical-align: middle;
+      }
+}
+
+.book-specification-section{
+    background: #d8d8d8;
+  }
+
+.book-details-section{
+   margin-bottom: 10px;
+}
+
+.book-details-section-inline{
+    margin: 10px 20px;
+}
+
+.book-details-section{
+    h2{
+        margin: 0px; color: #585858;font-size: 14px; font-family:$font-family;
+    }
+}
+
+.ct-u-displayTableCell{
+    float: left; width: 40%;
+}
+
+.ct-u-displayCulmanCellLeft{
+  color: #7d7d7d;font-size: 12px; font-family:$font-family; font-weight: 500;
+}
+
+.ct-u-displayCulmanCellRight{
+  color: #424141;font-size: 12px; font-family:$font-family;
+}
+
+
+.author-name{
+    p{ 
+      font-size: 14px; color: #333333;font-family:$font-family; font-weight: bold;
+    }
+}
+.author-about{
+    margin-top: 15px;
+    p{
+      font-size: 12px;color: #929292;font-family:$font-family;
+    }
+}

@@ -1,0 +1,77 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Image</th>
+                                    <th>URL</th>
+                                    <th>Active</th>
+                                    <!-- <th class="align-right">View</th> -->
+                                    <th class="align-right">Edit</th>
+                                    <th class="align-right">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let uploaded_image of uploaded_images | async; let i = index" class="no-top-border">
+                                    <td class="table-id">{{i + 1}}</td>
+                                    <td>
+                                        <img style="width: 50px; height: 48px; border-radius: 57%; border-style: none;" src="/image/uploaded-images/{{uploaded_image.image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';"
+                                            alt="">
+                                    </td>
+                                    <td>
+                                        http://m.boibazar.com/image/uploaded-images/{{uploaded_image.image}}
+                                    </td>
+                                    <td>
+                                        {{uploaded_image.is_enabled? "Yes": "No"}}
+                                    </td>
+                                    <td class="align-right">
+                                        <button class="btn btn-success" [routerLink]="['edit', uploaded_image._id]">Edit</button>
+                                    </td>
+                                    <td class="align-right">
+                                        <button class="btn btn-success" (click)="delete(uploaded_image._id)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- UploadedImages Delete Modal -->
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-label="Close" (click)="deleteModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Delete Images</h4>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this uploaded image?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-btn" (click)="deleteUploadedImages()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

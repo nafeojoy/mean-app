@@ -1,0 +1,497 @@
+<ba-card title="Create Order" baCardClass="with-scroll heading-widget">
+  <div class="row">
+    <div class="col-md-4">
+      <ba-card title="Shipping Address" baCardClass="with-scroll heading-widget">
+        <form class="form-horizontal place-order-13">
+          <div class="form-group row">
+            <label for="phone-number" class="col-md-4 control-label"> Phone Number
+              <span style="color:red">*</span>
+            </label>
+            <div class="col-md-8">
+              <search-typeahead [items]="customerList" (dataLoader)="searchCustomer$.next($event)"
+                (selectedLoader)="selectedCustomer($event)" (textEmit)="getText($event)"></search-typeahead>
+              <!-- <input type="text" [(ngModel)]="shipping.phone_number" (blur)="validate('phone_number')"
+                name="phone_number" class="form-control" placeholder="Phone Number" maxlength="11" required> -->
+              <span *ngIf="validation.phone_number?.invalid" class="help-block sub-little-text">Phone no should be
+                minimum 11 Numbers</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="contact-name" class="col-md-4 control-label"> Contact Name
+              <span style="color:red">*</span>
+            </label>
+            <div class="col-md-8">
+              <input type="text" [(ngModel)]="shipping.contact_name" (blur)="validate('contact_name')"
+                class="form-control" name="contact_name" id="contact_name" placeholder="Contact Name" required>
+              <span *ngIf="validation.contact_name?.length_error" class="help-block sub-little-text">Contact Name
+                should
+                be minimum 4 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="district" class="col-md-4 control-label"> District
+              <span style="color:red">*</span>
+            </label>
+            <div class="col-md-8">
+              <select name="district" class="form-control" [(ngModel)]="shipping.district" (change)="selectDistrict()"
+                required>
+                <option *ngFor="let district of districts" [ngValue]="district.DISTRICTT_NAME">
+                  {{district.DISTRICTT_NAME}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="thana" class="col-md-4 control-label">Thana
+              <span style="color:red">*</span>
+            </label>
+            <div class="col-md-8">
+              <select name="thana" class="form-control" [(ngModel)]="shipping.thana" required>
+                <option *ngFor="let thana of thanas" [ngValue]="thana.THANA_NAME">
+                  {{thana.THANA_NAME}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="address" class="col-md-4 control-label"> Address
+              <span style="color:red">*</span>
+            </label>
+            <div class="col-md-8">
+              <textarea [(ngModel)]="shipping.address" (blur)="validate('address')" name="address" class="form-control"
+                placeholder="Address" required></textarea>
+              <span *ngIf="validation.address?.length_error" class="help-block sub-little-text">Address should be
+                minimum
+                4 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="alt_phone-number" class="col-md-4 control-label"> Alternate Number
+            </label>
+            <div class="col-md-8">
+              <input type="text" [(ngModel)]="shipping.alter_phone" name="alt_phone_number" class="form-control"
+                placeholder="Alternate Number">
+            </div>
+          </div>
+        </form>
+      </ba-card>
+    </div>
+    <div class="col-md-8">
+      <ba-card title="Search Items">
+        <div class="form-group row">
+          <div class="row">
+            <div class="col-md-6">
+              <span style="font-size: 16px;">Search Product:</span>
+              <search-typeahead [clearField]="isClear" [items]="dataList" (dataLoader)="searchProduct$.next($event)"
+                (selectedLoader)="getSelected($event)"></search-typeahead>
+              <button class="btn btn-default" (click)="addItemToList()">
+                <i class="fa fa-plus-circle plus-icon">&nbsp;&nbsp;Add</i>
+              </button>
+            </div>
+            <div class="col-md-6">
+              <span style="font-size: 16px;">Book Url:</span>
+              <input class="form-control" type="text" name="seo_url" [(ngModel)]="seo_url"
+                (keyup.enter)="getItemByUrl()">
+              <br>
+              <button class="btn btn-default" (click)="getItemByUrl()">
+                <i class="fa fa-plus-circle plus-icon">&nbsp;&nbsp;Add</i>
+              </button>
+            </div>
+          </div>
+          <br><br>
+          <div class="col-md-6">
+            <div *ngFor="let alert of alerts">
+              <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="selectedItems.length>0" class="horizontal-scroll">
+          <h3>Item List:</h3>
+          <table class="table table-hover">
+            <tbody>
+              <tr class="black-muted-bg">
+                <td class="table-id" width="3%">#</td>
+                <td width="12%">Image</td>
+                <td width="40%">Name</td>
+                <td width="15%">Qty</td>
+                <td width="15%">Rate</td>
+                <td width="5%">Total</td>
+                <td width="5%">Edit</td>
+                <td width="5%">Remove</td>
+              </tr>
+              <tr *ngFor="let item of selectedItems; let i=index">
+                <td>{{i + 1}}</td>
+                <td (click)="viewImage(item)">
+                  <img style="width: 50px; height: 48px; border-radius: 57%; border-style: none;"
+                    src="{{item.item_image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';" alt="">
+                </td>
+                <td>{{item.item_name}}</td>
+                <td>
+                  <span *ngIf="!item.is_edit">{{item.item_qty}}</span>
+                  <input (change)="updateTotalCost()" class="form-control" *ngIf="item.is_edit"
+                    [(ngModel)]="item.item_qty" type="number">
+                </td>
+                <td>
+                  <span *ngIf="!item.is_edit">{{item.item_rate}}</span>
+                  <input (change)="updateTotalCost()" class="form-control" [(ngModel)]="item.item_rate"
+                    *ngIf="item.is_edit" type="number">
+                </td>
+                <td>{{item.item_qty * item.item_rate}}</td>
+                <td>
+                  <i *ngIf="!item.is_edit" (click)="edit(item, i)" class="fa fa-pencil-square-o change-ico"></i>
+                  <i *ngIf="item.is_edit" (click)="edited(item, i)" class="fa fa-plus-square change-ico"
+                    aria-hidden="true"></i>
+                </td>
+                <td>
+                  <i (click)="remove(item, i)" class="fa fa-trash change-ico" aria-hidden="true"></i>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5"></td>
+                <td colspan="3">Total Cost: {{total_cost}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <form class="form-horizontal place-order-13" (ngSubmit)="submitOrder()">
+            <ba-card title="Charges" baCardClass="with-scroll heading-widget">
+              <div class="form-group row">
+                <label for="order_source" class="col-md-4 control-label"> Send Sms</label>
+                <div class="col-md-8">
+                  <ui-switch name="hide_on_public" class="form-control" [(ngModel)]="order.send_sms"></ui-switch>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="order_source" class="col-md-4 control-label"> Order Source
+                  <span style="color:red">*</span>
+                </label>
+                <div class="col-md-8">
+                  <select name="order_source" class="form-control" [(ngModel)]="order.created_from">
+                    <option *ngFor="let source of order_sources" [ngValue]="source">
+                      {{source}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="shipping_charge" class="col-md-4 control-label"> Shipping Charge(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.delivery_charge" class="form-control" name="shipping_charge"
+                    id="shipping_charge" placeholder="Shipping Charge">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="discount" class="col-md-4 control-label"> Discount(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.discount" class="form-control" name="discount"
+                    placeholder="Discount">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="wrapping_charge" class="col-md-4 control-label"> Wrapping Charge(TK.): </label>
+                <div class="col-md-8">
+                  <input type="number" [(ngModel)]="order.wrapping_charge" class="form-control" name="wrapping_charge"
+                    placeholder="Wrapping Charge">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="wrapping_charge" class="col-md-4 control-label"></label>
+                <div class="col-md-8">
+                  <h5>Summary: {{total_cost+order.delivery_charge+order.wrapping_charge-order.discount}}
+                    TK.
+                  </h5>
+                </div>
+              </div>
+            </ba-card>
+            <br>
+            <button class="btn btn-default">Submit</button>
+          </form>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+</ba-card>
+<!-- <ba-card title="Create Order" baCardClass="with-scroll heading-widget">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div>
+                <tabset type="pills">
+                    <tab heading="Create Subscriber" id="tab1">
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <ba-card title="Subscriber Create" baCardClass="heading-widget">
+                                    <div>
+                                        <label for="country-name" class="control-label">
+                                            <h4>Search Subscriber with Phone: </h4>
+                                        </label>
+                                        <div style="width:50%">
+                                            <search-typeahead [clearField]="isClear" [items]="phoneList" (dataLoader)="getSubscribers($event)" (selectedLoader)="getSelectedSubsCriber($event)"></search-typeahead>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <form (ngSubmit)="signup(subscriber)">
+                                        <div class="form-group row">
+                                            <label for="contact-name" class="col-md-4 control-label"> Name </label>
+                                            <div class="col-md-8">
+                                                <input [(ngModel)]="subscriber.first_name" (blur)="validate('first_name')" type="text" class="form-control" name="firstName"
+                                                    id="firstName" placeholder="Name" required>
+                                                <span *ngIf="validation.first_name?.required_error" class="help-block sub-little-text ">Name is required</span>
+                                                <span *ngIf="validation.first_name?.length_error" class="help-block sub-little-text">Name should be minimum 4 characters</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="contact-name" class="col-md-4 control-label"> Email/Phone </label>
+                                            <div class="col-md-8">
+                                                <input [(ngModel)]="subscriber.email" (keyup)="validate('email')" type="email" name="email" class="form-control " id="email "
+                                                    placeholder="Email/Phone" required>
+                                                <span *ngIf="(subscriber.email || subscriber.email!='') && validation.email?.invalid" class="help-block sub-little-text ">{{validation.email.error_message}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="contact-name" class="col-md-4 control-label"> Password </label>
+                                            <div class="col-md-8">
+                                                <input [(ngModel)]="subscriber.password" (blur)="validate('password')" type="password" name="password" class="form-control"
+                                                    id="password" placeholder="Password" required>
+                                                <span *ngIf="validation.password?.required_error" class="help-block sub-little-text ">Password is required</span>
+                                                <span *ngIf="validation.password?.length_error" class="help-block sub-little-text ">Password should be minimum 6 characters</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="contact-name" class="col-md-4 control-label"> Confirm Password </label>
+                                            <div class="col-md-8">
+                                                <input [(ngModel)]="subscriber.repeatPassword" (focus)="repeatPassword()" (keyup)="checkMatch($event.target.value)" type="password"
+                                                    name="repeatPassword" class="form-control" id="repeatPassword" placeholder="Confirm Password"
+                                                    required>
+                                                <span *ngIf="passowrd_match_error" class="help-block sub-little-text ">Passwords don't match.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <p style="color: red"> {{registerMessage}}</p>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button *ngIf="!hasSubsCriber" type="submit" [disabled]="validation.first_name?.length_error || validation.email?.invalid || validation.password?.length_error || passowrd_match_error"
+                                                    class="btn btn-default"> Submit </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </ba-card>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Save Addresss">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ba-card title="Address Create" baCardClass="with-scroll heading-widget">
+                                    <form class="form-horizontal place-order-13" (ngSubmit)="saveAddress()">
+                                        <div class="form-group row">
+                                            <label for="contact-name" class="col-md-4 control-label"> Contact Name
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" [(ngModel)]="shipping.contact_name" (blur)="validate('contact_name')" class="form-control" name="contact_name"
+                                                    id="contact_name" placeholder="Contact Name" required>
+                                                <span *ngIf="validation.contact_name?.length_error" class="help-block sub-little-text">Contact Name should be minimum 4 characters</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="district" class="col-md-4 control-label"> District
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select name="district" class="form-control" [(ngModel)]="shipping.district" (change)="selectDistrict()" required>
+                                                    <option *ngFor="let district of districts" [ngValue]="district.DISTRICTT_NAME">
+                                                        {{district.DISTRICTT_NAME}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="thana" class="col-md-4 control-label">Thana
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <select name="thana" class="form-control" [(ngModel)]="shipping.thana" required>
+                                                    <option *ngFor="let thana of thanas" [ngValue]="thana.THANA_NAME">
+                                                        {{thana.THANA_NAME}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="address" class="col-md-4 control-label"> Address
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <textarea [(ngModel)]="shipping.address" (blur)="validate('address')" name="address" class="form-control" placeholder="Address"
+                                                    required></textarea>
+                                                <span *ngIf="validation.address?.length_error" class="help-block sub-little-text">Address should be minimum 4 characters</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="phone-number" class="col-md-4 control-label"> Phone Number
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" [(ngModel)]="shipping.phone_number" (blur)="validate('phone_number')" name="phone_number" class="form-control"
+                                                    placeholder="Phone Number" maxlength="11" required>
+                                                <span *ngIf="validation.phone_number?.invalid" class="help-block sub-little-text">Phone no should be minimum 11 Numbers</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="alt_phone-number" class="col-md-4 control-label"> Alternate Number
+                                                <span style="color:red">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" [(ngModel)]="shipping.alter_phone" name="alt_phone_number" class="form-control" placeholder="Alternate Number">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="alt_phone-number" class="col-md-4 control-label">
+                                                <p style="color: red"> {{registerMessage}}</p>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <button *ngIf="!hasAddress" [disabled]="" type="submit" class="btn btn-default"> Submit</button>
+                                                <button *ngIf="hasAddress" type="submit" class="btn btn-default"> Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </ba-card>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Product">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ba-card title="Select Product">
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <span style="font-size: 16px;">Filter With Author:</span>
+                                            <search-typeahead [clearField]="isClear" [items]="authorDataList"  (dataLoader)="getAuthorData($event)" (selectedLoader)="getSelectedAuthor($event)"></search-typeahead>
+                                            
+                                            <span style="font-size: 16px;">Search Product:</span>
+                                            <search-typeahead [clearField]="isClear" [items]="dataList" [image]="show_image" (dataLoader)="getData($event)" (selectedLoader)="getSelected($event)"></search-typeahead>
+                                            <button class="btn btn-default" style="padding: 8px; float: right;" (click)="addItemToList()">
+                                                <i class="fa fa-plus-circle plus-icon">&nbsp;&nbsp;Add</i>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p style="color: red"> {{registerMessage}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selectedItems.length>0" class="horizontal-scroll">
+                                        <h3>Item List:</h3>
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr class="black-muted-bg">
+                                                    <td class="table-id" width="3%">#</td>
+                                                    <td width="12%">Image</td>
+                                                    <td width="40%">Name</td>
+                                                    <td width="15%">Qty</td>
+                                                    <td width="15%">Rate</td>
+                                                    <td width="5%">Total</td>
+                                                    <td width="5%">Edit</td>
+                                                    <td width="5%">Remove</td>
+                                                </tr>
+                                                <tr *ngFor="let item of selectedItems; let i=index">
+                                                    <td>{{i + 1}}</td>
+                                                    <td (click)="viewImage(item)">
+                                                        <img style="width: 50px; height: 48px; border-radius: 57%; border-style: none;" src="{{item.item_image}}" onerror="this.src='assets/img/theme/book-no-photo.jpg';"
+                                                            alt="">
+                                                    </td>
+                                                    <td>{{item.item_name}}</td>
+                                                    <td>
+                                                        <span *ngIf="!item.is_edit">{{item.item_qty}}</span>
+                                                        <input (change)="updateTotalCost()" class="form-control" *ngIf="item.is_edit" [(ngModel)]="item.item_qty" type="number">
+                                                    </td>
+                                                    <td>
+                                                        <span *ngIf="!item.is_edit">{{item.item_rate}}</span>
+                                                        <input (change)="updateTotalCost()" class="form-control" [(ngModel)]="item.item_rate" *ngIf="item.is_edit" type="number">
+                                                    </td>
+                                                    <td>{{item.item_qty * item.item_rate}}</td>
+                                                    <td>
+                                                        <i *ngIf="!item.is_edit" (click)="edit(item, i)" class="fa fa-pencil-square-o change-ico"></i>
+                                                        <i *ngIf="item.is_edit" (click)="edited(item, i)" class="fa fa-plus-square change-ico" aria-hidden="true"></i>
+                                                    </td>
+                                                    <td>
+                                                        <i (click)="remove(item, i)" class="fa fa-trash change-ico" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5"></td>
+                                                    <td colspan="3">Total Cost: {{total_cost}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <form class="form-horizontal place-order-13" (ngSubmit)="submitOrder()">
+                                            <ba-card title="Charges" baCardClass="with-scroll heading-widget">
+                                                <div class="form-group row">
+                                                    <label for="order_source" class="col-md-4 control-label"> Order Source
+                                                        <span style="color:red">*</span>
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <select name="order_source" class="form-control" [(ngModel)]="order.created_from">
+                                                            <option *ngFor="let source of order_sources" [ngValue]="source">
+                                                                {{source}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="shipping_charge" class="col-md-4 control-label"> Shipping Charge(TK.): </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" [(ngModel)]="order.delivery_charge" class="form-control" name="shipping_charge" id="shipping_charge"
+                                                            placeholder="Shipping Charge">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="discount" class="col-md-4 control-label"> Discount(TK.): </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" [(ngModel)]="order.discount" class="form-control" name="discount" placeholder="Discount">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="wrapping_charge" class="col-md-4 control-label"> Wrapping Charge(TK.): </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" [(ngModel)]="order.wrapping_charge" class="form-control" name="wrapping_charge" placeholder="Wrapping Charge">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="wrapping_charge" class="col-md-4 control-label"></label>
+                                                    <div class="col-md-8">
+                                                        <h5>Summary: {{total_cost+order.delivery_charge+order.wrapping_charge-order.discount}}
+                                                            TK.
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </ba-card>
+                                            <br>
+                                            <button class="btn btn-default">Submit</button>
+                                        </form>
+                                    </div>
+                                </ba-card>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</ba-card> -->

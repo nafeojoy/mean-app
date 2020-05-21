@@ -1,0 +1,48 @@
+<div class="widgets">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-6">
+                <ba-card title="Add Order Status" baCardClass="with-scroll">
+                    <form [formGroup]="form" (ngSubmit)="editGift()">
+    
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control" [formControl]="form.controls['name']" />
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" class="form-control"
+                                [formControl]="form.controls['description']"></textarea>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="gift_cost">Gift Cost</label>
+                            <input type="number" name="gift_cost" class="form-control"
+                                [formControl]="form.controls['gift_cost']" />
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="estimated_qty">Estimated Qty.</label>
+                            <input type="estimated_qty" name="estimated_qty" class="form-control"
+                                [formControl]="form.controls['estimated_qty']" />
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="allocated_qty">Allocated Qty.</label>
+                            <input type="allocated_qty" name="allocated_qty" class="form-control"
+                                [formControl]="form.controls['allocated_qty']" />
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="is_enabled">Active</label>
+                            <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']">
+                            </ui-switch>
+                        </div>
+    
+                        <button [disabled]="!form.valid" type="submit" class="btn btn-warning">Submit</button>
+                    </form>
+                </ba-card>
+            </div>
+        </div>
+    </div>

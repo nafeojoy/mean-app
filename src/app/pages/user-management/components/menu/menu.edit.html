@@ -1,0 +1,79 @@
+<div class="widgets">
+    <div class="row">
+        <form style="margin-top: 21px" (ngSubmit)="updateMenu()" class="form-horizontal">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6">
+                <ba-card title="Update Menu" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="parent" class="col-sm-2 control-label">Parent</label>
+                        <div class="col-sm-10">
+                            <input [disabled]="true" type="text" name="parent" [(ngModel)]="menu.parent.name" class="form-control"
+                                id="parent" placeholder="Parent" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="path" class="col-sm-2 control-label">Path</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="path" [(ngModel)]="menu.path" class="form-control" id="path" placeholder="Path" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" [(ngModel)]="menu.data.menu.title" class="form-control" id="title" placeholder="Title" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="permission" class="col-sm-2 control-label">Permission</label>
+                        <div class="col-sm-10">
+                            <ss-multiselect-dropdown name="s" [texts]="myTexts" [options]="permissions" [(ngModel)]="optionsModel" (ngModelChange)="onChange($event)">
+
+                            </ss-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="icon" class="col-sm-2 control-label">Icon</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="icon" id="icon" [(ngModel)]="menu.data.menu.icon">
+                                <option *ngFor="let icon of icons" [value]="icon.name">
+                                        {{icon.name}}
+                                </option>
+                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_enabled" class="col-sm-2 control-label">Is Enabled</label>
+                        <div class="col-sm-2">
+                            <ui-switch name="is_enabled" class="form-control" [(ngModel)]="menu.is_enabled"></ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="selected" class="col-sm-2 control-label">Is Selected</label>
+                        <div class="col-sm-2">
+                            <ui-switch name="selected" class="form-control" [(ngModel)]="menu.data.menu.selected"></ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="expanded" class="col-sm-2 control-label">Is Expanded</label>
+                        <div class="col-sm-2">
+                            <ui-switch name="expanded" class="form-control" [(ngModel)]="menu.data.menu.expanded"></ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div *ngFor="let alert of alerts">
+                                <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <button style="float:right" type="submit" class="btn btn-warning">Update</button>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </form>
+    </div>
+</div>

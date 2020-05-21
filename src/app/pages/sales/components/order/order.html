@@ -1,0 +1,1525 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Summary
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-2 status" *ngFor="let status of statuses">
+                                <div [ngClass]="{
+                  'btn-primary': status.name==='Confirmed' || status.name==='All' || status.name==='IndianBooks' || status.name==='Emergency', 
+                  'btn-info': status.name==='Pending' || status.name==='Dispatch' || status.name==='Returned',
+                  'btn-success': status.name==='Delivered' || status.name==='OrderClosed' || status.name==='PreOrder',
+                  'btn-warning': status.name==='Inshipment'  || status.name==='ReturnRequest',
+                  'btn-danger': status.name==='Cancelled' || status.name==='BackOrder' || status.name==='OutStock' || status.name==='OutPrint'
+              }" (click)="getSelectedType(status)">
+                                    <span>{{status.name}}
+                                    </span>
+                                    <i *ngIf="status.name !=  'IndianBooks' && status.name !=  'OutStock' && status.name !=  'OutPrint' && status.name !=  'Emergency'" class="badge">{{status.count}}</i>
+                                    <i *ngIf="status.name ==  'IndianBooks'" class="badge">{{IndianBooksCount}}</i>
+                                    <i *ngIf="status.name ==  'OutStock'" class="badge">{{OutStockCount}}</i>
+                                    <i *ngIf="status.name ==  'OutPrint'" class="badge">{{OutPrintCount}}</i>
+                                    <i *ngIf="status.name ==  'Emergency'" class="badge">{{EmergencyCount}}</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <h3 style="color:#1361b1">{{selectedStatus}} Orders</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input #searchInput id='order_no' type="text" class="form-control" placeholder="Order No (Type Full No)" style="background-color: #f5e5e5;" (keyup)="typed($event.target.id, $event.target.value)">
+                                </div>
+                                <div class="col-sm-4 ">
+                                    <input #searchInput id='cus_name' type="text" class="form-control" placeholder="Customer Name" (keyup)="typed($event.target.id, $event.target.value)">
+                                </div>
+                                <div class="col-sm-4 ">
+                                    <input #searchInput id='cus_mobile' type="text" class="form-control" placeholder="Customer Mobile No" (keyup)="typed($event.target.id, $event.target.value)">
+                                </div>
+                                <div class="col-sm-6 ">
+                                    <br> From :
+                                    <input #searchInput id='fromDate' type="date" class="form-control" value="From Date" placeholder="From Date" style="background-color: aliceblue" (change)="typed($event.target.id, $event.target.value)">
+                                </div>
+                                <div class="col-sm-6 ">
+                                    <br> To :
+                                    <input #searchInput id='toDate' type="date" class="form-control" placeholder="To Date" style="background-color: aliceblue" (change)="typed($event.target.id, $event.target.value)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row ages">
+                                <button type="button" class="btn btn-success col-md-3">
+                                    One Day <span class="badge badge-light">{{age_data.one?age_data.one:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-success col-md-3">
+                                    Two Days <span class="badge badge-light">{{age_data.two?age_data.two:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-primary col-md-3">
+                                    Three Days <span
+                                        class="badge badge-light">{{age_data.three?age_data.three:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-primary col-md-3">
+                                    Four Days <span class="badge badge-light">{{age_data.four?age_data.four:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-warning col-md-3">
+                                    Five Days <span class="badge badge-light">{{age_data.five?age_data.five:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-warning col-md-3">
+                                    Six Days <span class="badge badge-light">{{age_data.six?age_data.six:0}}</span>
+                                </button>
+                                <button type="button" class="btn btn-danger col-md-3">
+                                    Seven Days + <span
+                                        class="badge badge-light">{{age_data.default?age_data.default:0}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th style="font-weight:bold">Order at</th>
+                                    <th *ngIf="selectedStatus=='Inshipment'" style="font-weight:bold">Inshipment Since
+                                    </th>
+                                    <th *ngIf="selectedStatus=='Inshipment'" style="font-weight:bold">Delay</th>
+                                    <th *ngIf="selectedStatus=='Inshipment'" style="font-weight:bold">Carrier</th>
+                                    <th style="font-weight:bold">Order No</th>
+                                    <th>Customer Name</th>
+                                    <th style="font-weight:bold">Customer Mobile</th>
+                                    <th style="font-weight:bold">Payable Amount</th>
+                                    <th>Paid</th>
+                                    <th>Due Amount</th>
+                                    <th>Book Count</th>
+                                    <th *ngIf="selectedStatus!='PreOrder' && selectedStatus!='OutStock' && selectedStatus!='OutPrint'">
+                                        Status</th>
+                                    <th colspan="2" *ngIf="selectedStatus=='ReturnRequest'" style="font-weight:bold">
+                                        Action</th>
+                                    <th *ngIf="selectedStatus!='Pending' && selectedStatus!='Returned'">View</th>
+                                    <th *ngIf="selectedStatus == 'Returned'">
+                                        <button class="btn btn-success" (click)="viewReturnInvoice(order)">Double
+                                            Invoice</button>
+                                    </th>
+                                    <th *ngIf="selectedStatus == 'Returned'">
+                                        Print Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="selectedStatus=='Inshipment'">
+                                    <td colspan="3">
+
+                                    </td>
+                                    <td>
+                                        <select name="delay_time" [(ngModel)]="inship_filter.delay_day" (ngModelChange)="filterOrder(inship_filter, 1)">
+                                            <option value="">Filter with Delay</option>
+                                            <option value="0,2"> Delay
+                                                <=2 Days </option> <option value="2,3"> 2
+                                                    < Delay <=3 Days </option> <option value="3,5"> 3
+                                                        < Delay <=5 Days </option> <option value="6,7"> 6
+                                                            < Delay <=7 Days </option> <option value="7,~"> Delay >=7
+                                                                Days</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="carrier" [(ngModel)]="inship_filter.carrier" (ngModelChange)="filterOrder(inship_filter, 1)">
+                                            <option value="">Filter with Delay</option>
+                                            <option *ngFor="let carrier of carriers" [ngValue]="carrier._id">
+                                                {{carrier.name}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td colspan="7"></td>
+                                    <td>
+                                        <button (click)="clearFilter()">Clear Filter</button>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let order of orders; let i=index" [ngStyle]="{
+                                    'font-weight': order.view && order.view.is_unread ? '900' : '400',
+                                    'background' : order.products && order.products[0].product_id && order.products[0].product_id.current_offer=='5a04423d83536d7069b10c8f'? 'darksalmon': selectedStatus=='PreOrder'? 'darkseagreen' : 'white'
+                                }" (dblclick)="rowSelected(order, i)" tooltip="{{order.customer_contact_info && order.customer_contact_info.other_contact_history.length>0? order.customer_contact_info.other_contact_history[order.customer_contact_info.other_contact_history.length-1].contact_note: 'Not contact yet'}}">
+                                    <td>{{ (currentPage - 1) * 10 + (i + 1)}}</td>
+                                    <td>{{order.order_at | date:'dd MMM-yyyy h:mma'}}</td>
+                                    <td *ngIf="selectedStatus=='Inshipment'">
+                                        {{order.current_order_status?.updated_at | date:'dd MMM-yyyy h:mma'}}
+                                    </td>
+                                    <td *ngIf="selectedStatus=='Inshipment'">
+                                        {{getDelaySinceLastStatusChange(order.current_order_status.updated_at)}}</td>
+                                    <td *ngIf="selectedStatus=='Inshipment'">{{order.carrier?.name}}</td>
+                                    <td>{{order.order_no}}</td>
+                                    <td *ngIf="order.delivery_address.sender_name">
+                                        {{order.delivery_address.sender_name}}</td>
+                                    <td *ngIf="!order.delivery_address.sender_name">
+                                        {{order.delivery_address.contact_name}}</td>
+
+                                    <td *ngIf="order.delivery_address.sender_mobile">
+                                        {{order.delivery_address.sender_mobile}}</td>
+                                    <td *ngIf="!order.delivery_address.sender_mobile">
+                                        {{order.delivery_address.phone_number}}</td>
+                                    <td>{{order.payable_amount.toFixed(2)}}</td>
+                                    <td>{{order.payment_collection?.total_paid}}</td>
+                                    <td>{{(order.payable_amount-order.payment_collection?.total_paid).toFixed(2)}}</td>
+                                    <td>{{order.total_book}}</td>
+                                    <td *ngIf="order?.current_order_status?.status_name != 'PreOrder'">
+                                        {{order.current_order_status.status_name}}</td>
+                                    <td *ngIf="selectedStatus=='ReturnRequest'">
+                                        <button class="btn btn-success" (click)="reconfirmReturnOrder(order)">Reconfirm
+                                            Order</button>
+                                    </td>
+                                    <td *ngIf="selectedStatus=='ReturnRequest'">
+                                        <button class="btn btn-danger" (click)="acceptReturnOrder(order)">Accept
+                                            Return</button>
+                                    </td>
+                                    <td *ngIf="selectedStatus!='Pending' && selectedStatus!='Returned'">
+                                        <button class="btn btn-success" (click)="viewInvoice(order)">Invoice</button>
+                                    </td>
+                                    <!-- <td *ngIf="selectedStatus=='Returned'">
+                                        <button class="btn btn-success" (click)="viewReturnInvoice(order)">Double
+                                            Invoice</button>
+                                    </td> -->
+                                    <td *ngIf="selectedStatus == 'Returned'">
+                                        <input type="checkbox" (change)=selectReturnInvoices($event.target.checked,order) />
+                                    </td>
+                                    <td *ngIf="selectedStatus == 'Returned'">
+                                        <label *ngIf='order.current_order_status.is_print_return'>Printed</label>
+                                        <button (click)=printStatusUpdate(order) *ngIf='!order.current_order_status.is_print_return'>No </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage()">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div bsModal #orderViewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="oredrViewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" (click)="cancel()">&times;</button>
+                        <h4 class="modal-title">Order Detail & Processing</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Actions
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="horizontal-scroll info-table">
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="text-align: left">Order No</td>
+                                                                <td style="text-align: left">:</td>
+                                                                <td style="text-align: left">
+                                                                    {{selectedOrder.order_no}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left">Created At</td>
+                                                                <td style="text-align: left">:</td>
+                                                                <td style="text-align: left">
+                                                                    {{selectedOrder.order_at | date: 'dd MMM-yyyy hh:mma'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left">Created From</td>
+                                                                <td style="text-align: left">:</td>
+                                                                <td style="text-align: left">
+                                                                    {{selectedOrder.created_from?selectedOrder.created_from: 'Not Defined'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="selectedOrder.carrier && selectedOrder.carrier.name">
+                                                                <td style="text-align: left">Recommended Carrier</td>
+                                                                <td style="text-align: left">:</td>
+                                                                <td style="text-align: left">
+                                                                    {{selectedOrder.carrier.name}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="selectedOrder.gift_id && selectedOrder.gift_id.name">
+                                                                <td style="text-align: left">Gift</td>
+                                                                <td style="text-align: left">:</td>
+                                                                <td style="text-align: left">
+                                                                    {{selectedOrder.gift_id.name}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div *ngIf="(selectedOrder.payment_collection && selectedOrder.payment_collection.is_full_collected && selectedOrder.current_order_status?.status_name=='Delivered') || selectedOrder.current_order_status?.status_name!='Delivered'" class="row">
+                                                    <label for="phone_note">Comment:<span
+                                                            style="color:red;">*</span></label>
+                                                    <textarea class="form-control" name="phone_note" id="phone_note" [(ngModel)]="comment" cols="30" rows="10"></textarea>
+                                                </div>
+                                                <br>
+                                                <!-- <div *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='PreOrder'" class="row"> -->
+                                                <div *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='Confirmed' || selectedOrder.current_order_status?.status_name=='Dispatch' || selectedOrder.current_order_status?.status_name=='Inshipment' || selectedOrder.current_order_status?.status_name=='PreOrder'"
+                                                    class="row">
+                                                    <label for="carrier">Recommended Courier: <span
+                                                            style="color:red;">*</span></label>
+                                                    <select name="carrier" class="form-control" [(ngModel)]="selectedOrder.carrier._id" (ngModelChange)="updateFlags(selectedOrder.carrier._id, 'carrier')">
+                                                        <!-- <select name="carrier" class="form-control" [(ngModel)]="selectedOrder.carrier._id"> -->
+                                                        <option *ngFor="let carrier of carriers"
+                                                            [ngValue]="carrier._id">
+                                                            {{carrier.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <br>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="indian">Indian Book </label>
+                                                        <input type="checkbox" [ngModel]="selectedOrder.indian_book_available" (change)="updateFlags($event.target.checked, 'indian_book_available')" class="check_box">
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="corporate">Corporate Sale </label>
+                                                        <input type="checkbox" [ngModel]="selectedOrder.corporate_sale" (change)="updateFlags($event.target.checked, 'corporate_sale')" class="check_box">
+                                                    </div>
+
+                                                </div>
+                                                <br>
+
+
+                                                <div *ngIf="selectedOrder.current_order_status?.status_name=='Pending'" class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="emergency">Emergency Delivery</label>
+                                                        <input type="checkbox" [(ngModel)]="selectedOrder.emergency_delivery" class="check_box">
+                                                    </div>
+
+                                                    <div *ngIf="selectedOrder.emergency_delivery" class="col-md-6">
+                                                        <input [(ngModel)]="selectedOrder.emergency_date" id='emergencyDate' type="date" class="form-control" value="Date" placeholder="Date" style="background-color: aliceblue">
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+
+                                                <div *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='PreOrder'" class="row">
+                                                    <label for="carrier">Gift: </label>
+                                                    <select name="carrier" class="form-control" [(ngModel)]="selectedOrder.gift_id">
+                                                        <option ngValue="">No Gift</option>
+                                                        <option *ngFor="let gift of gifts" [ngValue]="gift._id">
+                                                            {{gift.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="(selectedOrder.payment_collection && !selectedOrder.payment_collection.is_full_collected && selectedOrder.current_order_status?.status_name=='Delivered')" class="row">
+                                            <h3>Payment is not collected yet. You can't close order before collecting payment.
+                                            </h3>
+                                        </div>
+                                        <br>
+                                        <h4 [ngStyle]="{'color':is_success? 'green' : 'red'}">{{resMessage}}</h4>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <!-- || current_user.role=='Development' || current_user.role=='Admin' -->
+                                                <button *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='PreOrder' || selectedOrder.current_order_status?.status_name=='Confirmed' || current_user.role=='Development' || (current_user.role=='Development' && (selectedOrder.current_order_status?.status_name=='Dispatch' || selectedOrder.current_order_status?.status_name=='Inshipment' || selectedOrder.current_order_status?.status_name=='Delivered' || selectedOrder.current_order_status?.status_name=='OrderClosed'))"
+                                                    class="btn btn-success" [routerLink]="['edit',selectedOrder._id ]">Update Order</button>
+
+                                                <button *ngIf="selectedOrder?.current_order_status?.status_name=='Inshipment' || selectedOrder?.current_order_status?.status_name=='Dispatch'" class="btn btn-danger" (click)="partiallyReturn()">Return
+                                                    Partially&nbsp;
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <button *ngIf="selectedOrder?.current_order_status?.status_name=='Pending' || selectedOrder?.current_order_status?.status_name=='PreOrder'" [disabled]="res_pending1" class="btn btn-primary" (click)="confirmWithComment()">Confirm with
+                                                            Comment&nbsp;</button>
+                                                        <button *ngIf="selectedOrder?.current_order_status?.status_name=='Inshipment' || selectedOrder?.current_order_status?.status_name=='Dispatch'" [disabled]="res_pending2" class="btn btn-warning" (click)="returnWithComment()">Return
+                                                            Request&nbsp;
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <spinner *ngIf="res_pending" [tickness]="1" [size]="20">
+                                                        </spinner>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <button [disabled]="res_pending1" class="btn btn-default" (click)="commentOnly()">Only add a
+                                                            Comment&nbsp;</button>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <spinner *ngIf="res_pending1" [tickness]="1" [size]="20">
+                                                        </spinner>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <button *ngIf="selectedOrder?.current_order_status?.status_name!='Cancelled' && selectedOrder?.current_order_status?.status_name=='Delivered'" [disabled]="res_pending2" class="btn btn-primary" (click)="closeWithComment()">{{selectedOrder.payment_collection
+                          && selectedOrder.payment_collection.is_full_collected? 'Close with Comment' : 'Collect
+                          Payment'}}&nbsp;</button>
+                                                        <button *ngIf="selectedOrder?.current_order_status?.status_name=='PreOrder' || selectedOrder?.current_order_status?.status_name=='Pending' || selectedOrder?.current_order_status?.status_name=='Confirmed'" [disabled]="res_pending2" class="btn btn-danger"
+                                                            (click)="cancelWithComment()">Cancel with
+                                                            Comment&nbsp;</button>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <spinner *ngIf="res_pending2" [tickness]="1" [size]="20">
+                                                        </spinner>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Customer Info
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll info-table">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    <tr *ngIf="selectedOrder.delivery_address?.sender_name">
+                                                        <td>Sender Name</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_address?.sender_name}} (contact to confirm)
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.delivery_address?.sender_mobile">
+                                                        <td>Sender Mobile</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_address?.sender_mobile}} (contact to confirm)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Name</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_address?.contact_name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mobile</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_address?.phone_number}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.created_by && selectedOrder.created_by.email">
+                                                        <td>Email</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.created_by?.email}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Address</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Order Items
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll">
+                                            <table class="table table-hover" style="width:100%;font-size: 12px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:1%;">SL#</th>
+                                                        <th style="width:49%;">Name</th>
+                                                        <th style="width:25%;"> Publisher</th>
+                                                        <th style="width:5%;">Site Link</th>
+                                                        <th style="width:5%;">Order QTY </th>
+                                                        <th *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='Confirmed'" style="width:5%;">Available </th>
+                                                        <th style="width:5%;">Unit Price </th>
+                                                        <th style="width:5%;">Total Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody *ngIf="selectedOrder.current_order_status?.status_name=='Pending' || selectedOrder.current_order_status?.status_name=='Confirmed'">
+                                                    <tr *ngFor="let item of selectedOrder.products; let i=index">
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:1%;">{{i+1}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:44%;text-align: left;">{{item.name}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:15%;">{{item.publisher?.name}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:5%;">
+                                                            <a target="_blank" href="{{item.site_link}}">Go
+                                                                to Site</a>
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:5%;">{{item.quantity}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:5%;">
+                                                            {{item.stock_qty}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:5%;">{{item.price}}
+                                                        </td>
+                                                        <td [ngClass]="item.stock_qty>=item.quantity?'available': 'not-available'" style="width:5%;">BDT {{item.price * item.quantity}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody *ngIf="selectedOrder.current_order_status?.status_name!='Pending' && selectedOrder.current_order_status?.status_name!='Confirmed'">
+                                                    <tr *ngFor="let item of selectedOrder.products; let i=index">
+                                                        <td style="width:1%;">{{i+1}}</td>
+                                                        <td style="width:44%;text-align: left;">{{item.name}}</td>
+                                                        <td style="width:15%;">{{item.publisher?.name}}</td>
+                                                        <td style="width:5%;">
+                                                            <a target="_blank" href="{{item.site_link}}">Go to Site</a>
+                                                        </td>
+                                                        <td style="width:5%;">{{item.quantity}}</td>
+                                                        <td style="width:5%;">
+                                                            {{item.stock_qty}}</td>
+                                                        <td style="width:5%;">{{item.price}}</td>
+                                                        <td style="width:5%;">BDT {{item.price * item.quantity}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Phone call Info
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll" *ngIf="selectedOrder.customer_contact_info && selectedOrder.customer_contact_info.other_contact_history.length>0">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Contact By</th>
+                                                        <th>Contact At</th>
+                                                        <th>Note</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let info of selectedOrder.customer_contact_info.other_contact_history; let i=index">
+                                                        <td>{{i+1}}</td>
+                                                        <td>{{info.contact_by?.first_name}} {{info.contact_by?.last_name}}
+                                                        </td>
+                                                        <td *ngIf='info.contact_note=="Delivered(Auto Comment)"'>
+                                                            {{selectedOrder.delivered_at | date:'dd MMM-yyyy'}} At {{selectedOrder.delivered_at | date:'h:mma'}}
+                                                        </td>
+                                                        <td *ngIf='info.contact_note!="Delivered(Auto Comment)"'>
+                                                            {{info.contact_at | date:'dd MMM-yyyy'}} At {{info.contact_at | date:'h:mma'}}
+                                                        </td>
+                                                        <td>
+                                                            {{info.contact_note}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div *ngIf="selectedOrder.customer_contact_info && selectedOrder.customer_contact_info.other_contact_history.length==0">
+                                            <h3>No phone call yet!</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Order Charges
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll info-table">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="text-align:left;">Item Price</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.total_price}} Tk.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Delivery Charge</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.delivery_charge}} Tk.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Wrapping Charge</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.wrapping_charge}} Tk.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Wallet Amount</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.wallet_amount || 0}} Tk.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Discount</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.discount}} Tk.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">
+                                                            <b>Payble Amount</b>
+                                                        </td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            <b>
+                                                                {{selectedOrder.total_price+selectedOrder.delivery_charge+selectedOrder.wrapping_charge-selectedOrder.discount}}
+                                                                Tk.
+                                                            </b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Payment Info
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll info-table">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Paid</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payable_amount>=selectedOrder.payment_collection?.total_paid">
+                                                        <td>Due Amount</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payable_amount-selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payable_amount<selectedOrder.payment_collection?.total_paid">
+                                                        <td>Customer Overpaid</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_collection?.total_paid - selectedOrder.payable_amount}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_collection?.collection_info[0]?.collected_at">
+                                                        <td>Transaction Date</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_collection?.collection_info[0]?.collected_at | date: 'dd MMM-yyyy'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_collection?.collection_info[0]?.gateway_ref?.name">
+                                                        <td>Payment Type</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_collection?.collection_info[0]?.gateway_ref?.name}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr *ngIf="selectedOrder.payment_collection?.collection_info[0]?.collected_by?.first_name">
+                                                        <td>Collected By</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_collection?.collection_info[0]?.collected_by?.first_name}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr *ngIf="selectedOrder.payment_information?.card_type">
+                                                        <td>Card Type</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information?.card_type}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_information?.card_brand">
+                                                        <td>Card Brand</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information?.card_brand}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_information?.card_issuer">
+                                                        <td>Card Issuer</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information?.card_issuer}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr *ngIf="selectedOrder.bkash_payment_id">
+                                                        <td>bKash Payment ID</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder?.bkash_payment_id}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr *ngIf="selectedOrder.payment_information && selectedOrder.payment_information.status=='VALID'">
+                                                        <td>Paid Amount</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information.currency_amount}} TK.
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_information && selectedOrder.payment_information.status=='VALID'">
+                                                        <td>Status</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information.status}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_information && selectedOrder.payment_information.status!='VALID' && selectedOrder.payment_collection && !selectedOrder.payment_collection.is_full_collected">
+                                                        <td>Payment Status</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information.status}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedOrder.payment_information && selectedOrder.payment_information.status!='VALID' && selectedOrder.payment_collection && !selectedOrder.payment_collection.is_full_collected">
+                                                        <td>Message</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedOrder.payment_information.message}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div bsModal #returnInvoiceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="returnInvoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="max-width: 80%!important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" (click)="returnClose()">&times;</button>
+                        <button (click)="printEnvelop('return')" class="btn btn-primary">Print</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="widgets">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                                <div class="card-body">
+                                                    <div id="print-section-return">
+                                                        <div id="page_1">
+
+
+
+                                                            <div *ngFor="let selectedOrder of selectedReturns; let j=index">
+                                                                <p *ngIf="selectedStatus == 'Returned'" class="copy-for">
+                                                                    Return Copy </p>
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="t111">
+                                                                                <div class="logo-image">
+                                                                                    <img src="assets/icon/boibazar-logo-color.png">
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="t112">
+                                                                                <div class="vl"></div>
+                                                                            </td>
+                                                                            <td class="t113">
+                                                                                <p class="p1 p112">30/A, VIP Road, Naya Paltan, Dhaka-1000.</p>
+                                                                                <p class="p1 p112">Phone: 09611 262020
+                                                                                </p>
+                                                                            </td>
+                                                                            <td class="t114">
+                                                                                <p class="p114">
+                                                                                    {{selectedOrder.carrier?.name}}</p>
+                                                                                <p class="p3 p114">
+                                                                                    {{current_date | date:'dd MMM-yyyy, hh:mm a'}} ({{current_user.name}})
+                                                                                </p>
+                                                                                <p class="p4 p114">Payment Mode: <span class="s4">{{selectedOrder.is_paid? 'Online,
+                                                      Paid': 'Not Paid'}}</span></p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <table class="main-info">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="order-details">
+                                                                                <table width="100%">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Order Details
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">&nbsp;</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Order No.
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.order_no}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Order Date
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.order_at | date: 'dd MMM-yyyy'}}
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                        <tr *ngIf="selectedStatus == 'Returned'">
+                                                                                            <td class="t2h">Return Date
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.current_order_status.updated_at | date: 'dd MMM-yyyy'}}
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                        <tr>
+                                                                                            <td class="t2h">Total Items
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.total_book}} Item (s)</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                            <td class="qr-code">
+
+                                                                            </td>
+                                                                            <td class="delivery-details">
+                                                                                <table>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Delivery Info
+                                                                                            </td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">&nbsp;</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Name</td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.delivery_address?.contact_name}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Mobile</td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.delivery_address?.phone_number}}, {{selectedOrder.delivery_address?.alter_phone}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="t2h">Address</td>
+                                                                                            <td class="t2c">:</td>
+                                                                                            <td class="t2i">
+                                                                                                {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <table class="product-table">
+                                                                    <thead class="item-head">
+                                                                        <tr>
+                                                                            <th class="ih0">SL</th>
+                                                                            <th class="ih1">Name</th>
+                                                                            <th class="ihp">Publisher</th>
+                                                                            <th class="ih2">Price</th>
+                                                                            <th class="ih3">Qty</th>
+                                                                            <th class="ih4">Total</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="item-body">
+                                                                        <tr *ngFor="let item of selectedOrder.products; let j=index">
+                                                                            <td class="id0">{{j+1}}</td>
+                                                                            <td class="id1">
+                                                                                {{item.name}}({{item.product_id?.import_id}})
+                                                                            </td>
+                                                                            <td class="idp">{{item.publisher}}</td>
+                                                                            <td class="id2">{{item.price}}</td>
+                                                                            <td class="id3">{{item.quantity}}</td>
+                                                                            <td class="id4">{{item.price*item.quantity}}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="summary-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="si0">
+                                                                                <div class="decliration01">
+                                                                                    <p>-----------------------------------
+                                                                                    </p>
+                                                                                    <p>Boibazar Authority</p>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="si1">
+                                                                                <div class="decliration02">
+                                                                                    <p>------------------------------------
+                                                                                    </p>
+                                                                                    <p>Customer</p>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="si2">
+                                                                                <table class="summary-data">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Subtotal
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.total_price}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Delivery Charge
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.delivery_charge}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Wrapping Charge
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.wrapping_charge}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Discount
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.discount}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Total Payable
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.payable_amount }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td class="sd0">Paid</td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.payment_collection?.total_paid}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr *ngIf="selectedOrder.payable_amount>=selectedOrder.payment_collection?.total_paid">
+                                                                                            <td class="sd0">Due</td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.payable_amount - selectedOrder.payment_collection?.total_paid}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr *ngIf="selectedOrder.payable_amount<selectedOrder.payment_collection?.total_paid">
+                                                                                            <td class="sd0">Customer Overpaid
+                                                                                            </td>
+                                                                                            <td class="sd1">:</td>
+                                                                                            <td class="sd2">
+                                                                                                {{selectedOrder.payment_collection?.total_paid - selectedOrder.payable_amount}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                                                                <br>
+                                                                <br>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div bsModal #invoiceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" style="max-width: 80%!important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" (click)="this.invoiceModal.hide()">&times;</button>
+                        <button (click)="printEnvelop('usual')" class="btn btn-primary">Print</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="widgets" *ngIf="selectedOrder.products && selectedOrder.products.length>0">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                                <div class="card-body">
+                                                    <div id="print-section">
+                                                        <div id="page_1">
+
+                                                            <p *ngIf="selectedStatus == 'Returned'" class="copy-for">
+                                                                Return Copy </p>
+                                                            <p *ngIf="selectedStatus != 'Returned'" class="copy-for">
+                                                                Courier Copy </p>
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="t111">
+                                                                            <div class="logo-image">
+                                                                                <img src="assets/icon/boibazar-logo-color.png">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="t112">
+                                                                            <div class="vl"></div>
+                                                                        </td>
+                                                                        <td class="t113">
+                                                                            <p class="p1 p112">30/A, VIP Road, Naya Paltan, Dhaka-1000.</p>
+                                                                            <p class="p1 p112">Phone: 09611 262020</p>
+                                                                        </td>
+                                                                        <td class="t114">
+                                                                            <p class="p114">
+                                                                                {{selectedOrder.carrier?.name}}</p>
+                                                                            <p class="p3 p114">
+                                                                                {{current_date | date:'dd MMM-yyyy, hh:mm a'}} ({{current_user.name}})
+                                                                            </p>
+                                                                            <p class="p4 p114">Payment Mode: <span class="s4">{{selectedOrder.is_paid? 'Online,
+                                      Paid': 'Not Paid'}}</span></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="main-info">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="order-details">
+                                                                            <table width="100%">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order Details
+                                                                                        </td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order No.</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.order_no}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order Date</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.order_at | date: 'dd MMM-yyyy'}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedStatus == 'Returned'">
+                                                                                        <td class="t2h">Return Date</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.current_order_status.updated_at | date: 'dd MMM-yyyy'}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Total Items</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.total_book}} Item (s)</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                        <td class="qr-code">
+
+                                                                        </td>
+                                                                        <td class="delivery-details">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Delivery Info
+                                                                                        </td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Name</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.contact_name}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Mobile</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.phone_number}}, {{selectedOrder.delivery_address?.alter_phone}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Address</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="product-table">
+                                                                <thead class="item-head">
+                                                                    <tr>
+                                                                        <th class="ih0">SL</th>
+                                                                        <th class="ih1">Name</th>
+                                                                        <th class="ihp">Publisher</th>
+                                                                        <th class="ih2">Price</th>
+                                                                        <th class="ih3">Qty</th>
+                                                                        <th class="ih4">Total</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="item-body">
+                                                                    <tr *ngFor="let item of selectedOrder.products; let j=index">
+                                                                        <td class="id0">{{j+1}}</td>
+                                                                        <td class="id1">
+                                                                            {{item.name}}({{item.product_id?.import_id}})
+                                                                        </td>
+                                                                        <td class="idp">{{item.publisher}}</td>
+                                                                        <td class="id2">{{item.price}}</td>
+                                                                        <td class="id3">{{item.quantity}}</td>
+                                                                        <td class="id4">{{item.price*item.quantity}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <table class="summary-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="si0">
+                                                                            <div class="decliration01">
+                                                                                <p>-----------------------------------
+                                                                                </p>
+                                                                                <p>Boibazar Authority</p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="si1">
+                                                                            <div class="decliration02">
+                                                                                <p>------------------------------------
+                                                                                </p>
+                                                                                <p>Customer</p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="si2">
+                                                                            <table class="summary-data">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Subtotal</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.total_price}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Delivery Charge
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.delivery_charge}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Wrapping Charge
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.wrapping_charge}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Discount</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.discount}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Total Payable
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payable_amount }}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Paid</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payment_collection?.total_paid}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedOrder.payable_amount>=selectedOrder.payment_collection?.total_paid">
+                                                                                        <td class="sd0">Due</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payable_amount - selectedOrder.payment_collection?.total_paid}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedOrder.payable_amount<selectedOrder.payment_collection?.total_paid">
+                                                                                        <td class="sd0">Customer Overpaid
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payment_collection?.total_paid - selectedOrder.payable_amount}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <hr style="height:1px;border:none;color:#333;background-color:#333;">
+
+                                                            <p *ngIf="selectedStatus == 'Returned'" class="copy-for">
+                                                                Return Copy </p>
+                                                            <p *ngIf="selectedStatus != 'Returned'" class="copy-for">
+                                                                Customer Copy </p>
+
+                                                            <table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="t111">
+                                                                            <div class="logo-image">
+                                                                                <img src="assets/icon/boibazar-logo-color.png">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="t112">
+                                                                            <div class="vl"></div>
+                                                                        </td>
+                                                                        <td class="t113">
+                                                                            <p class="p1 p112">30/A, VIP Road, Naya Paltan, Dhaka-1000.</p>
+                                                                            <p class="p1 p112">Phone: 09611 262020</p>
+                                                                        </td>
+                                                                        <td class="t114">
+                                                                            <p class="p3 p114">
+                                                                                {{current_date | date:'dd MMM-yyyy, hh:mm a'}} ({{current_user.name}})
+                                                                            </p>
+                                                                            <p class="p4 p114">Payment Mode: <span class="s4">{{selectedOrder.is_paid? 'Online,
+                                      Paid': 'Not Paid'}}</span></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="main-info">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="order-details">
+                                                                            <table width="100%">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order Details
+                                                                                        </td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order No.</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.order_no}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Order Date</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.order_at | date: 'dd MMM-yyyy'}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedStatus == 'Returned'">
+                                                                                        <td class="t2h">Return Date</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.current_order_status.updated_at | date: 'dd MMM-yyyy'}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Total Items</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.total_book}} Item (s)</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                        <td class="qr-code">
+
+                                                                        </td>
+                                                                        <td class="delivery-details">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Delivery Info
+                                                                                        </td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">&nbsp;</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Name</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.contact_name}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Mobile</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.phone_number}}, {{selectedOrder.delivery_address?.alter_phone}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="t2h">Address</td>
+                                                                                        <td class="t2c">:</td>
+                                                                                        <td class="t2i">
+                                                                                            {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="product-table">
+                                                                <thead class="item-head">
+                                                                    <tr>
+                                                                        <th class="ih0">SL</th>
+                                                                        <th class="ih1">Name</th>
+                                                                        <th class="ihp">Publisher</th>
+                                                                        <th class="ih2">Price</th>
+                                                                        <th class="ih3">Qty</th>
+                                                                        <th class="ih4">Total</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="item-body">
+                                                                    <tr *ngFor="let item of selectedOrder.products; let j=index">
+                                                                        <td class="id0">{{j+1}}</td>
+                                                                        <td class="id1">
+                                                                            {{item.name}}({{item.product_id?.import_id}})
+                                                                        </td>
+                                                                        <td class="idp">{{item.publisher}}</td>
+                                                                        <td class="id2">{{item.price}}</td>
+                                                                        <td class="id3">{{item.quantity}}</td>
+                                                                        <td class="id4">{{item.price*item.quantity}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <table class="summary-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="si0">
+                                                                            <div class="decliration01">
+                                                                                <p>-----------------------------------
+                                                                                </p>
+                                                                                <p>Boibazar Authority</p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="si1">
+                                                                            <div class="decliration02">
+                                                                                <p>{{selectedOrder.carrier?.name}}</p>
+                                                                                <p>------------------------------------
+                                                                                </p>
+                                                                                <p>Courier</p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="si2">
+                                                                            <table class="summary-data">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Subtotal</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.total_price}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Delivery Charge
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.delivery_charge}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Wrapping Charge
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.wrapping_charge}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Discount</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.discount}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Total Payable
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payable_amount }}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="sd0">Paid</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payment_collection?.total_paid}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedOrder.payable_amount>=selectedOrder.payment_collection?.total_paid">
+                                                                                        <td class="sd0">Due</td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payable_amount - selectedOrder.payment_collection?.total_paid}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr *ngIf="selectedOrder.payable_amount<selectedOrder.payment_collection?.total_paid">
+                                                                                        <td class="sd0">Customer Overpaid
+                                                                                        </td>
+                                                                                        <td class="sd1">:</td>
+                                                                                        <td class="sd2">
+                                                                                            {{selectedOrder.payment_collection?.total_paid - selectedOrder.payable_amount}}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

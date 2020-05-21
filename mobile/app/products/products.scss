@@ -1,0 +1,127 @@
+.product-previous-price {
+    padding-left: 14px;
+    font-size: 12px; 
+    color: #464646;
+    font-family: 'Roboto', sans-serif; 
+    text-transform: uppercase;
+    text-decoration: line-through;
+}
+
+.search-results {
+ height: 100%;
+ // overflow: scroll;
+}
+
+.free_delivery_title {
+    color: #5cb85c;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.free_delivery_title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 142px;
+    display: block;
+}
+
+#new-board-btn1 {
+    white-space: normal;
+}
+
+#new-board-btn2 {
+    white-space: normal;
+}
+
+.m_high {
+    max-height: 400px;
+    min-height: 400px;
+}
+
+.middleBtn {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.middleBtnDiv {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.product_height {
+    max-height: 350px;
+}
+
+.line_nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 110px;
+}
+
+.prev_price {
+    padding-left: 2px;
+    font-size: 12px;
+    color: #000000;
+    font-family: 'Times New Roman', Times, serif;
+    text-transform: uppercase;
+    text-decoration: line-through;
+}
+
+.thumbnail {
+    margin-bottom: 20px;
+    padding: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.thumbnail>img,
+.thumbnail a>img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+}
+.fixed-container-book {
+    height: 175px; 
+    width: 120px; 
+    overflow: hidden; 
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10%;
+    //box-shadow:rgba(0,0,0,0.75) 0px 0px 4px 0px;
+  }
+
+  
+.discount-parcent-label-products {
+    position: absolute !important;
+    left: 75% !important;
+    top: 0% !important;
+  }
+  
+  .span-off-products {
+    position: absolute !important;
+    left: 25% !important;
+    font-size: 16px !important;
+    color: rgb(235, 2, 2) !important;
+    font-family: 'Architects Daughter', cursive !important;
+    top: 6px;
+  }
+
+  .container-book{
+    width: 140px; margin-right: 10px; max-height: 320px; min-height: 320px;
+  }
+.offer-image-prod{
+    max-height: 64px !important; 
+    max-width: unset !important;     
+    margin-top: 7px !important;
+    margin-left: -25px !important;
+}
+
+.offer-label{
+    position: absolute;margin-top:0px;max-height: 64px!important;max-width: 64px;    z-index: 1 !important; 
+}

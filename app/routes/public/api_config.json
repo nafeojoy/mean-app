@@ -1,0 +1,115 @@
+{
+  "name": {
+    "en": "$name",
+    "bn": {
+      "$arrayElemAt": [
+        "$lang.content.name",
+        0
+      ]
+    }
+  },
+  "publisher": {
+    "en": {
+      "name": "$accessories.publisher_en.name",
+      "seo_url": "$accessories.publisher_en.seo_url",
+      "_id": "$publisher"
+    },
+    "bn": {
+      "name": "$accessories.publisher_bn.name",
+      "seo_url": "$accessories.publisher_en.seo_url",
+      "_id": "$publisher"
+    }
+  },
+  "single_author": {
+    "en": {
+      "_id": {
+        "$arrayElemAt": [
+          "$author",
+          0
+        ]
+      },
+      "name": {
+        "$arrayElemAt": [
+          "$accessories.authors_bn.name",
+          0
+        ]
+      },
+      "seo_url": {
+        "$arrayElemAt": [
+          "$accessories.authors_en.seo_url",
+          0
+        ]
+      }
+    },
+    "bn": {
+      "_id": {
+        "$arrayElemAt": [
+          "$author",
+          0
+        ]
+      },
+      "name": {
+        "$arrayElemAt": [
+          "$accessories.authors_bn.name",
+          0
+        ]
+      },
+      "seo_url": {
+        "$arrayElemAt": [
+          "$accessories.authors_en.seo_url",
+          0
+        ]
+      }
+    }
+  },
+  "all_author": {
+    "en": "$accessories.authors_en",
+    "bn": "$accessories.authors_bn"
+  },
+  "single_category": {
+    "en": {
+      "_id": {
+        "$arrayElemAt": [
+          "$category",
+          0
+        ]
+      },
+      "name": {
+        "$arrayElemAt": [
+          "$accessories.categories_en.name",
+          0
+        ]
+      },
+      "seo_url": {
+        "$arrayElemAt": [
+          "$accessories.categories_en.seo_url",
+          0
+        ]
+      }
+    },
+    "bn": {
+      "_id": {
+        "$arrayElemAt": [
+          "$category",
+          0
+        ]
+      },
+      "name": {
+        "$arrayElemAt": [
+          "$accessories.categories_bn.name",
+          0
+        ]
+      },
+      "seo_url": {
+        "$arrayElemAt": [
+          "$accessories.categories_en.seo_url",
+          0
+        ]
+      }
+    }
+  },
+  "all_category": {
+    "en": "$accessories.categories_en",
+    "bn": "$accessories.categories_bn"
+  }
+}

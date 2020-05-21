@@ -1,0 +1,26 @@
+<style>
+        .default-content img {
+            width: 100%;
+            height: auto;
+        }
+    
+        .default-content {
+            text-align: justify;
+        }
+    </style>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{articles.title}}</h1>
+                <p>Created At: {{articles.created_at | date: 'dd MMM-yyyy'}}</p>
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col-md-8">
+                <div class="default-content" [innerHTML]="articles.content"></div>
+            </div>
+        </div>
+    </div>
+</section>

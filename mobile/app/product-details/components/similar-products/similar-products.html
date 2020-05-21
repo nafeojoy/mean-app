@@ -1,0 +1,59 @@
+<style>
+    .prev_price {
+        padding-left: 2px;
+        font-size: 12px;
+        color: #000000;
+        font-family: 'Times New Roman', Times, serif;
+        text-transform: uppercase;
+        text-decoration: line-through;
+    }
+
+    .sim_book_height {
+        width: 140px;
+        margin-right: 10px;
+        min-height: 243px;
+        max-height: 243px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="similar-book-scroll">
+            <div class="col-md-12">
+                <div class="similar-product">
+                    <span> {{'SIMILAR BOOKS YOU MIGHT LIKE' | translate}} </span>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 padding-right busy-loading" style="margin-top: 10px ">
+                <div>
+                    <div *ngFor="let item of relatedProduct; let i = index" class="tab-pane fade active in">
+                        <div class="col-12 col-md-3 p_m_high_p" style="width: 160px; float: left">
+                            <div class="thumbnail sim_book_height" aria-hidden="false" role="option" tabindex="-1" data-slick-index="0" aria-describedby="slick-slide20">
+
+                                <a (click)="getSelectedProduct(item.seo_url)">
+                                    <img class="list-group-image" src="{{productService.publicImageBaseUrl}}{{item.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt="">
+                                </a>
+
+                                <div class="caption">
+                                    <h4 class="line_nowrap group inner list-group-item-heading">
+                                        <p style="text-align: center; white-space: nowrap; overflow: hidden;"> {{item.name}} </p>
+                                    </h4>
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-xs-12">
+                                            <p class="lead" style="text-align: center; margin-bottom: 0px; margin-top: 0px">
+                                                <span *ngIf="item.price" class="tk_home" style="font-size: 14px; font-weight: bold">{{item.price | priceConvert}}</span>
+                                                <span *ngIf="!item.price" class="tk_home"> NA</span>
+                                                <span *ngIf="item.previous_price && item.price && (item.previous_price>item.price)" class="prev_price">{{item.previous_price | priceConvert}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-6">
+            <ba-card title="Add Weight Class" baCardClass="with-scroll">
+                <form [formGroup]="form" (ngSubmit)="addWeightClass()">
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['title'].valid && form.controls['title'].touched), 'has-success': (form.controls['title'].valid && form.controls['title'].touched)}">
+                        <label for="title">Title</label>
+                        <input name="title" type="text" class="form-control" [formControl]="form.controls['title']" placeholder="Title">
+                        <span *ngIf="form.controls['title'].hasError('required') && form.controls['title'].touched" class="help-block sub-little-text">Title is required</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['unit'].valid && form.controls['unit'].touched), 'has-success': (form.controls['unit'].valid && form.controls['unit'].touched)}">
+                        <label for="unit">Unit</label>
+                        <input name="unit" type="text" class="form-control" [formControl]="form.controls['unit']" placeholder="Unit">
+                        <span *ngIf="form.controls['unit'].hasError('required') && form.controls['unit'].touched" class="help-block sub-little-text">Unit is required</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="value">Value</label>
+                        <input name="value" type="text" class="form-control" [formControl]="form.controls['value']" placeholder="Value">
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']"></ui-switch>
+                    </div>
+                    <button [disabled]="!form.valid" type="submit" class="btn btn-warning">Add Weight Class</button>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+</div>

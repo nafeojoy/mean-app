@@ -1,0 +1,105 @@
+<div class="widgets">
+    <form [formGroup]="form" (ngSubmit)="updatePublisher()">
+        <div class="row">
+            <div class="col-md-6">
+                <ba-card title="Edit Publisher" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [inputValue]="publisher_name" [type]="'text'" [name]="'name'" [label]="'Name'"
+                            [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <multi-language-input [parentGroup]="form.controls['description']" [inputValue]="publisher_description" [type]="'ckeditor'"
+                            [name]="'description'" [label]="'Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['phone'].valid && form.controls['phone'].touched), 'has-success': (form.controls['phone'].valid && form.controls['phone'].touched)}">
+                        <label for="phone">Phone</label>
+                        <input [formControl]="form.controls['phone']" type="text" class="form-control" id="phone" placeholder="Phone">
+                        <span *ngIf="form.controls['phone'].hasError('required') && form.controls['phone'].touched" class="help-block sub-little-text">Phone number is required</span>
+                        <span *ngIf="form.controls['phone'].hasError('minlength') && form.controls['phone'].touched" class="help-block sub-little-text">Phone number should be minimum 8 characters</span>
+                    </div>
+
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['email'].valid && form.controls['email'].touched), 'has-success': (form.controls['email'].valid && form.controls['email'].touched)}">
+                        <label for="inputEmail3">Email</label>
+                        <input [formControl]="form.controls['email']" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                        <span *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" class="help-block sub-little-text">Email is required</span>
+                        <span *ngIf="!form.controls['email'].hasError('required') && form.controls['email'].touched && !form.controls['email'].valid"
+                            class="help-block sub-little-text">Email is invalid</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['address'].valid && form.controls['address'].touched), 'has-success': (form.controls['address'].valid && form.controls['phone'].touched)}">
+                        <label for="address">Address</label>
+                        <input [formControl]="form.controls['address']" type="text" class="form-control" id="address" placeholder="Address">
+                        <span *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="help-block sub-little-text">Address is required</span>
+                    </div>
+                    <div class="form-group" [ngClass]="{'has-error': (!form.controls['page_url'].valid && form.controls['page_url'].touched), 'has-success': (form.controls['page_url'].valid && form.controls['page_url'].touched)}">
+                        <label for="page_url">Boibazar Page Url</label>
+                        <input name="page_url" type="text" class="form-control" [formControl]="form.controls['page_url']" placeholder="Page Url"
+                            asyncValidator>
+                        <span *ngIf="form.controls['page_url'].hasError('required') && form.controls['page_url'].touched" class="help-block sub-little-text">Page Url is required</span>
+                        <span *ngIf="form.controls['page_url'].errors && form.controls['page_url'].errors['exist']">This URL is taken, try another</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_author">Is Author</label>
+                        <ui-switch name="is_author" class="form-control" [formControl]="form.controls['is_author']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <typeahead [parentGroup]="form.controls['author']" [display]="'name'" [items]="authorList" (dataLoader)="searchAuthor($event)">
+                        </typeahead>
+                    </div>
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input name="website" type="text" class="form-control" [formControl]="form.controls['website']" placeholder="Website">
+                    </div>
+                    <div class="form-group">
+                        <label for="order">Order</label>
+                        <input name="order" type="number" class="form-control" [formControl]="form.controls['order']" placeholder="Order">
+                    </div>
+                    <div class="form-group">
+                        <label for="is_enabled">Active</label>
+                        <ui-switch name="is_enabled" class="form-control" [formControl]="form.controls['is_enabled']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="is_featured">Is Featured</label>
+                        <ui-switch name="is_featured" class="form-control" [formControl]="form.controls['is_featured']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="featured_order">Feature Order</label>
+                        <input name="featured_order" type="number" class="form-control" [formControl]="form.controls['featured_order']" placeholder="Feature Order">
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="SEO Info & Image" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="meta_tag_title">Meta Tag Title</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_title']" [inputValue]="publisher_meta_tag_title" [type]="'text'"
+                            [name]="'meta_tag_title'" [label]="'Meta Tag Title'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_description">Meta Tag Description</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_description']" [inputValue]="publisher_meta_tag_description"
+                            [type]="'textarea'" [name]="'meta_tag_description'" [label]="'Meta Tag Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_keywords">Meta Tag Keywords</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_keywords']" [inputValue]="publisher_meta_tag_keywords" [type]="'text'"
+                            [name]="'meta_tag_keywords'" [label]="'Meta Tag Keywords'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="seo_url">SEO Url</label>
+                        <multi-language-input [parentGroup]="form.controls['seo_url']" [inputValue]="publisher_seo_url" [type]="'text'" [name]="'seo_url'"
+                            [label]="'SEO Url'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+                        (isImageChosen)="isImageChosen($event)"></bb-image-uploader>
+                    <!--<simple-notifications></simple-notifications>-->
+                </ba-card>
+            </div>
+        </div>
+        <button type="submit" [disabled]="!form.valid || res_pending" class="btn btn-warning">Save</button>
+        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+    </form>
+</div>

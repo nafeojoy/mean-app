@@ -1,0 +1,79 @@
+<section class="marginbottm30">
+	<div class="clearfix"></div>
+	<div class="contact-map">
+		<div class="contact-us" style="height: 470px;"></div>
+	</div>
+	<div>
+		<div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+			<div id="contact-page" class="container">
+				<div class="bg">
+					<div class="row">
+						<div class="col-sm-8">
+							<div class="contact-form">
+								<h2 class="title text-left"> {{'get_In_Touch'|translate}}</h2>
+								<div class="clearfix"></div><br>
+								<div class="status alert alert-success" style="display: none"></div>
+								<form id="main-contact-form" class="contact-form row" name="contact-form" method="post" (ngSubmit)="feedback(CustomerFB)">
+									<div class="form-group col-md-6">
+										<input type="text" name="name" (blur)="validate('name')" [(ngModel)]="CustomerFB.name" class="form-control" required="required" placeholder="Name">
+										<span *ngIf="validation.name?.required_error" class="help-block sub-little-text ">Name is required</span>
+									</div>
+									<div class="form-group col-md-6">
+										<input type="email" name="email" (blur)="validate('email')" [(ngModel)]="CustomerFB.email" class="form-control" required="required" placeholder="Email">
+										<span *ngIf="validation.email?.required_error" class="help-block sub-little-text ">Email is required</span>
+										<span *ngIf="validation.email?.invalid" class="help-block sub-little-text ">Email is invalid</span>
+									</div>
+									<div class="form-group col-md-12">
+										<input type="text" name="subject"  (blur)="validate('subject')" [(ngModel)]="CustomerFB.subject" class="form-control" required="required" placeholder="Subject">
+										<span *ngIf="validation.subject?.required_error" class="help-block sub-little-text ">Subject is required</span>
+									</div>
+									<div class="form-group col-md-12">
+										<textarea name="message" id="message" (blur)="validate('message')" [(ngModel)]="CustomerFB.message" required="required" class="form-control" rows="8" placeholder="Your Message Here"></textarea>
+										<span *ngIf="validation.message?.required_error" class="help-block sub-little-text ">Message is required</span>
+									</div>
+									<div class="form-group col-md-12">
+										<input type="submit" [disabled]="validation.name?.required_error || validation.subject?.required_error || validation.email?.invalid || validation.message?.required_error" name="submit" class="btn btn-dafult details-button-view pull-right" value="Submit">
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<div class="contact-info">
+								<h2 class="title text-left">{{'contact_Info'|translate}}</h2>
+								<div class="clearfix"></div>
+								<br>
+								<address>
+									<p>{{'boibazar'|translate}}</p>
+									<p>{{'address'|translate}}</p>
+									<p>{{'mobile'|translate}}{{'contact_no'|translate}}</p>
+									<p>{{'email'|translate}}<img src="assets/images/mail-info-contact.png" alt="" /></p>
+								</address>
+
+								<div class="social-networks">
+									<h2 class="title text-left">{{'social_Networking'|translate}}</h2>
+									<div class="clearfix"></div>
+									<ul>
+										<li>
+											<a href="https://www.facebook.com/MyBoiBazar" target="_blank"><i class="fa fa-facebook"></i></a>
+										</li>
+										<li>
+											<a href="https://twitter.com/myboibazar" target="_blank"><i class="fa fa-twitter"></i></a>
+										</li>
+										<li>
+											<a href="https://plus.google.com/109139666657902762570" target="_blank"><i class="fa fa-google-plus"></i></a>
+										</li>
+										<li>
+											<a href="https://www.youtube.com/channel/UCYqvw2_4CqjYC_CdOEr_3uQ" target="_blank"><i class="fa fa-youtube"></i></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>

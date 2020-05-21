@@ -1,0 +1,115 @@
+<div class="widgets">
+    <form [formGroup]="form" (ngSubmit)="addAuthor()">
+        <div class="row">
+            <div class="col-md-6">
+                <ba-card title="Add Author" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <multi-language-input [parentGroup]="form.controls['name']" [type]="'text'" [name]="'name'" [label]="'Name'" [isRequired]="true"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth">Birth Date</label>
+                        <input name="birth" type="date" class="form-control" [formControl]="form.controls['birth_at']" placeholder="Birth Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="is_featured">Is Featured</label>
+                        <ui-switch name="is_featured" class="form-control" [formControl]="form.controls['is_featured']"></ui-switch>
+                    </div>
+                    <div class="form-group">
+                        <label for="featured_order">Feature Order</label>
+                        <input name="featured_order" type="number" class="form-control" [formControl]="form.controls['featured_order']" placeholder="Feature Order">
+                    </div>
+                    <div class="form-group">
+                        <label for="birth_place">Birth Place</label>
+                        <multi-language-input [parentGroup]="form.controls['birth_place']" [type]="'text'" [name]="'birth_place'" [label]="'Birth Place'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="occupation">Occupation</label>
+                        <multi-language-input [parentGroup]="form.controls['occupation']" [type]="'text'" [name]="'occupation'" [label]="'Occupation'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <select name="nationality" class="form-control" [formControl]="form.controls['nationality']" required>
+                            <option *ngFor="let nationality of nationalities" 
+                                    [ngValue]="nationality" >{{nationality}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="died">Died</label>
+                        <input name="died_at" type="date" class="form-control" [formControl]="form.controls['died_at']" placeholder="Died">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <multi-language-input [parentGroup]="form.controls['description']" [type]="'ckeditor'" [name]="'description'" [label]="'Description'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="SEO Info & Image" baCardClass="with-scroll">
+                    <div class="form-group">
+                        <label for="meta_tag_title">Meta Tag Title</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_title']" [type]="'text'" [name]="'meta_tag_title'" [label]="'Meta Tag Title'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_description">Meta Tag Description</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_description']" [type]="'textarea'" [name]="'meta_tag_description'"
+                            [label]="'Meta Tag Description'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_tag_keywords">Meta Tag Keywords</label>
+                        <multi-language-input [parentGroup]="form.controls['meta_tag_keywords']" [type]="'text'" [name]="'meta_tag_keywords'" [label]="'Meta Tag Keywords'"
+                            [isRequired]="false"></multi-language-input>
+                    </div>
+                    <div class="form-group">
+                        <label for="seo_url">SEO Url</label>
+                        <multi-language-input [parentGroup]="form.controls['seo_url']" [type]="'text'" [name]="'seo_url'" [label]="'SEO Url'" [isRequired]="false"></multi-language-input>
+                    </div>
+                    <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+                        (isImageChosen)="isImageChosen($event)"></bb-image-uploader>
+                </ba-card>
+            </div>
+        </div>
+
+        <!--Awards-->
+        <ba-card title="Add Award" baCardClass="with-scroll">
+            <div formArrayName="awards">
+                <div *ngFor="let award of getAwards(form); let i=index" class="panel panel-default">
+                    <div class="panel-heading">
+                        <span>Awards {{i + 1}}</span>
+                        <span class="btn btn-danger pull-right" *ngIf="form.controls.awards.controls.length > 1" (click)="removeAwards(i)">Remove</span>
+                    </div>
+                    <div class="row panel-body" [formGroupName]="i">
+                        <div class="form-group col-md-4">
+                            <label>Title</label>
+                            <input type="text" class="form-control" formControlName="title">
+                            <small [hidden]="form.controls.awards.controls[i].controls.title.valid" class="text-danger">
+                                Title is required
+                            </small>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Date</label>
+                            <input type="date" class="form-control" formControlName="date">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Reason</label>
+                            <input type="text" class="form-control" formControlName="reason">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="margin-20">
+                <a (click)="addAwards()" class="btn btn-success"> Add More Award</a>
+            </div>
+        </ba-card>
+        <br>
+        <br>
+        <button type="submit" [disabled]="!form.valid || res_pending" class="btn btn-warning">Save</button>
+        <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+        <!-- <simple-notifications></simple-notifications> -->
+    </form>
+</div>

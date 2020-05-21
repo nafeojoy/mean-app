@@ -1,0 +1,40 @@
+<div class="widgets">
+        <div class="row">
+            <div class="col-md-6">
+                <ba-card title="Update Promo Code" baCardClass="with-scroll">
+                    <form (ngSubmit)="updatePromoCode(promo)">
+                        <div class="form-group">
+                            <label for="promo_code">Promo Code</label>
+                            <input name="promo_code" type="text" class="form-control" [(ngModel)]="promo.promo_code" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="discount">Discount</label>
+                            <input name="discount" type="text" class="form-control" [(ngModel)]="promo.discount" placeholder="Discount">
+                        </div>
+                        <div class="form-group">
+                            <label for="target_no">Target No</label>
+                            <input name="target_no" type="text" class="form-control" [(ngModel)]="promo.target_no" placeholder="Target No">
+                        </div>
+                        <div class="form-group">
+                            <label for="applied_no">Applied No</label>
+                            <input name="applied_no" type="text" class="form-control" [(ngModel)]="promo.applied_no" placeholder="Applied No" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <textarea name="start_date" class="form-control" [(ngModel)]="promo.start_date" disabled></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input  type="date" ui-date-format="mm/dd/yyyy" name="end_date" class="form-control" [(ngModel)]="promo.end_date"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_active">Active</label>
+                            <ui-switch name="is_active" class="form-control" [(ngModel)]="promo.is_active"></ui-switch>
+                        </div>
+                        <button type="submit" class="btn btn-warning">SAVE</button>
+                    </form>
+                </ba-card>
+            </div>
+            
+        </div>
+    </div>

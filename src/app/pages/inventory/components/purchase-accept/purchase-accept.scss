@@ -1,0 +1,41 @@
+.author_img{ width:100%;}
+.author_img img{display: block; display: block;margin-left: 7%; margin-right: 0px; width: 61%;}
+.list-inline li{margin-bottom: 2px; float: left;}
+.titile_author { font-size: 15px; padding:1px 0;}
+.table tbody tr td img{ width: 50px; height: 48px;border-radius: 57%; border-style: none;}
+
+
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+
+  .purchase-info p{
+        text-align: -webkit-right;
+  }
+
+  .pi_action{
+    color: #0275d8;
+    font-size: 26px;
+    margin-top: 6px;
+  }
+
+.card > .card-body {
+    overflow-y: initial !important;
+}
+.purchase-item table tbody tr td{
+  padding: 8px;
+}
+.purchase-item table thead tr th{
+  padding: 8px;
+}
+
+.modal-sz{
+  max-width: 1104px !important;
+}

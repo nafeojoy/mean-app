@@ -1,0 +1,43 @@
+@import '../../../../sass/conf';
+
+.place-order-12{border: 1px solid #999999; padding: 0px !important;}
+.place-order-13{padding: 0px 35px;}
+.place-order-head{ margin:0px; padding:11px 20px; font-size: 18px; font-family:$font-family; text-align: center;}
+.place-order-new-address{padding-right:15px; padding-top:11px;}
+.shipping-address-padding-10{padding: 0px 7px; margin-top:56px;}
+
+.address-button{ background: $primary-color !important; color: #fff !important;}
+.address-button:hover{ color: $primary-hover-color !important;background-color: $secondary-hover-color !important; }
+.shipping-header {border-bottom: 1px solid #ddd;}
+.shipping-header h1{ color: #333333; font-size: 15px;font-family: $font-family; margin-bottom: 5px;}
+
+.order-summary-title{
+        background: #f3f3f3; border-bottom: 1px solid #ddd; padding: 12px 5px;font-family: $font-family;
+    p{
+        text-align: center; font-weight: bold;color: #464646; font-size: 12px;font-family: $font-family;
+    }
+}
+
+.order-summary-price{
+    border-bottom: 1px solid #d3d3d3; padding-bottom: 6px; padding-top: 6px;
+    &:last-child{
+        border-bottom: none;
+    }
+   span{
+      color: #464646; font-size: 12px; 
+   } 
+}
+
+.order-summary-left{ 
+    float: left;
+}
+
+.order-summary-right{ 
+    float: right;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

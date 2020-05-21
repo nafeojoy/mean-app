@@ -1,0 +1,50 @@
+.total-price{ float: right; margin-right: 12%; }
+
+table{
+width: 200%;
+}
+h5{text-align: left !important;}
+
+.custom-image-size1{
+    width: 45%;
+    height: 70px;
+    margin-left: 12px;
+    border-radius: 0px!important;
+    border-style: none;
+}
+.info-table{
+    margin: 14px;
+}
+th,td {
+    width: 100px;
+  }
+
+.status{
+    text-align: center;
+    line-height: 11px;
+    p{
+        margin-top: 8px;
+    }
+}
+
+.seocnd-label{
+    background-color: #dcdcdc59;
+    padding: 1px;
+}
+
+.order-item table tbody tr td{
+    padding: 10px;
+}
+.order-item table thead tr th{
+    padding: 10px;
+}
+
+.modal-sz{
+    max-width: 1104px !important;
+}
+
+.card-title{
+    span{
+        margin-left: 35%;
+    }
+}

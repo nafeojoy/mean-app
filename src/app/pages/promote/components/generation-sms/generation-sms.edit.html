@@ -1,0 +1,55 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-md-6">
+      <ba-card title="Update Generated Sms" baCardClass="with-scroll">
+        <form (ngSubmit)="updateGeneratedSms(smsList)">
+
+
+          <div class="form_group" style="width: 100%;">
+            <span>Select Message Template: </span>
+            <select name="temp_msg" style="width: 100%" name="status" class="form-control" [(ngModel)]="selectedMsg" (ngModelChange)="selectMsg($event)">
+              <option *ngFor="let temp_msg of message_template" [ngValue]="temp_msg">{{temp_msg.template_name}}</option>
+            </select>
+          </div>
+          <br>
+          <div class="form-group">
+              <label for="message_text">Message Text<span style="color: red">*</span> </label>
+              <textarea name="message_text" type="text" class="form-control" [(ngModel)]="smsList.message_text" placeholder="Message Text"
+                  required></textarea>
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="promo_code">Promo Code</label>
+            <input name="promo_code" type="text" class="form-control" [(ngModel)]="sms.promo_code" readonly>
+          </div>
+          <div class="form-group">
+            <label for="discount">Discount</label>
+            <input name="discount" type="text" class="form-control" [(ngModel)]="sms.discount" placeholder="Discount">
+          </div>
+          <div class="form-group">
+            <label for="target_no">Target No</label>
+            <input name="target_no" type="text" class="form-control" [(ngModel)]="sms.target_no" placeholder="Target No">
+          </div>
+          <div class="form-group">
+            <label for="applied_no">Applied No</label>
+            <input name="applied_no" type="text" class="form-control" [(ngModel)]="sms.applied_no" placeholder="Applied No" disabled>
+          </div>
+          <div class="form-group">
+            <label for="start_date">Start Date</label>
+            <textarea name="start_date" class="form-control" [(ngModel)]="sms.start_date" disabled></textarea>
+          </div>
+          <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input type="date" ui-date-format="mm/dd/yyyy" name="end_date" class="form-control" [(ngModel)]="sms.end_date" />
+          </div>
+          <div class="form-group">
+            <label for="is_active">Active</label>
+            <ui-switch name="is_active" class="form-control" [(ngModel)]="sms.is_active"></ui-switch>
+          </div> -->
+          <button type="submit" class="btn btn-warning">UPDATE</button>
+        </form>
+      </ba-card>
+    </div>
+
+  </div>
+</div>

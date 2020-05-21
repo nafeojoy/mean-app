@@ -1,0 +1,298 @@
+<section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6" [@stateChange]="profileStateExpression">
+                    <div class="profile-block">
+                        <div class="profile-title">
+                            <h4> General Information </h4>
+                        </div>
+                        <div *ngIf="isChange">
+                            <img style="width: 25%;" src="{{profile.picture}}" alt="">
+                            <!--<bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions" (isImageChosen)="isImageChosen($event)"></bb-image-uploader>-->
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Name </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{subscriber.first_name}} {{subscriber.last_name}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div *ngIf="subscriber.phone_number" class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Phone </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{subscriber.phone_number}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div *ngIf="subscriber.email" class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Email </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{subscriber.email}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <button style="margin-top: 30px;" class="btn btn-default" (click)="change()">Update Info</button>
+                        </div>
+                        <div *ngIf="!isChange">
+                            <!-- <bb-image-uploader #imageUploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"
+                                (isImageChosen)="isImageChosen($event)"></bb-image-uploader> -->
+                            <div *ngIf="!isChangePass">
+                                <div class="address-block2">
+                                    <div class="order-summary-left">
+                                        <span> First Name </span>
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <input class="form-control" type="text" [(ngModel)]="subscriber.first_name">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div *ngIf="subscriber.provider!='local_mail'" class="address-block2">
+                                    <div class="order-summary-left">
+                                        <span>Email</span>
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <input class="form-control" type="email" [(ngModel)]="subscriber.email">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div *ngIf="subscriber.provider!='local_phone'" class="address-block2">
+                                    <div class="order-summary-left">
+                                        <span>Phone</span>
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <input class="form-control" maxlength="11" OnlyNumber="true" [(ngModel)]="subscriber.phone_number">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+    
+                                <div class="address-block2">
+                                    <div class="order-summary-left">
+                                        &nbsp;
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <a style="color: cornflowerblue; cursor: pointer;" (click)="changePass()">Change Password</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div *ngIf="isChangePass">
+                                <div class="address-block2">
+                                    <div class="order-summary-left">
+                                        <span>Old Password </span>
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <input class="form-control" type="password" [(ngModel)]="subscriber.old_password">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="address-block2">
+                                    <div class="order-summary-left">
+                                        <span>New Password </span>
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <input class="form-control" type="password" [(ngModel)]="subscriber.new_password">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="address-block2">
+                                    <div class="order-summary-left">
+                                        &nbsp;
+                                    </div>
+                                    <div class="order-summary-right">
+                                        <a (click)="cancelPassChng()">Cancel</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <h3 style="color: red">{{message}}</h3>
+                            <button style="margin-top: 30px;" class="btn btn-default" (click)="update()">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" [@stateChange]="addressStateExpression">
+                    <div class="summarypaddingtopbuttom10">
+                        <div class="profile-title">
+                            <h4 *ngIf="isPrimary"> Primary Shipping Address</h4>
+                            <h4 *ngIf="!isPrimary"> Other Shipping Addresses
+                                <span (click)="showPrimary()" class="show-primary">Show Primary Address</span>
+                            </h4>
+                        </div>
+                        <div *ngIf="!isAddressChange && isAddressAvailable">
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Contact Name </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.contact_name}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> District </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.district}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Thana </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.thana}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Address </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.address}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Phone Number </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.phone_number}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="address-block">
+                                <div class="order-summary-left">
+                                    <span> Alternative Phone </span>
+                                </div>
+                                <div class="order-summary-right">
+                                    <span class="price"> {{viewAddress.alter_phone}} </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="row" *ngIf="!isPrimary">
+                                <div class="col-md-6">
+                                    <button class="btn btn-default" style="margin-top: 20px;" (click)="makePrimary(viewAddress)">Set as Primary</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-default" style="margin-top: 20px;" [disabled]="hasPrevious" (click)="previous()">View Previous</button>
+                                </div>
+                                <div class="col-md-5">
+                                    <button class="btn btn-default" style="margin-top: 20px;" (click)="changeAddress()">Update Info</button>
+                                </div>
+    
+                                <div class="col-md-3">
+                                    <button class="btn btn-default" style="margin-top: 20px; float: right;" [disabled]="hasMore" (click)="more()">View More</button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- edit view for shipping address-->
+    
+                        <div *ngIf="isAddressChange && isAddressAvailable">
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> Contact Name
+                                        <span style="color:red">*</span>
+                                    </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <input class="form-control" type="text" [(ngModel)]="currentShippingAddress.contact_name" (ngModelChange)="validate('contact_name')">
+                                    <!-- <span *ngIf="!currentShippingAddress.contact_name" class="help-block sub-little-text " style="color: red">Contact Name is required</span> -->
+                                    <span *ngIf="currentShippingAddress.contact_name && validation.contact_name?.length_error" class="help-block sub-little-text"
+                                        style="color: red">Contact Name should be minimum 4 characters</span>
+                                </div>
+                            </div>
+    
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> District
+                                        <span style="color:red">*</span>
+                                    </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <select name="district" class="form-control" [(ngModel)]="currentShippingAddress.district" (change)="selectDistrict()">
+                                        <option *ngFor="let district of districts" [value]="district.DISTRICT_NO">
+                                            {{district.DISTRICTT_NAME}}
+                                        </option>
+                                    </select>
+                                    <!-- <span *ngIf="!currentShippingAddress.district" class="help-block sub-little-text " style="color: red">District is required</span> -->
+                                </div>
+                            </div>
+    
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> Thana
+                                        <span style="color:red">*</span>
+                                    </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <select name="thana" class="form-control" [(ngModel)]="currentShippingAddress.thana" required>
+                                        <option *ngFor="let thana of thanas" [ngValue]="thana.THANA_NAME">
+                                            {{thana.THANA_NAME}}
+                                        </option>
+                                    </select>
+                                    <!-- <span *ngIf="!currentShippingAddress.thana" class="help-block sub-little-text" style="color: red">Thana is required</span> -->
+                                </div>
+                            </div>
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> Address
+                                        <span style="color:red">*</span>
+                                    </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <textarea rows="3" name="address" class="form-control" type="text" [(ngModel)]="currentShippingAddress.address" (ngModelChange)="validate('address')"></textarea>
+                                    <!-- <span *ngIf="!currentShippingAddress.address" class="help-block sub-little-text " style="color: red">Address is required</span> -->
+                                    <span *ngIf="currentShippingAddress.address && validation.address?.length_error" class="help-block sub-little-text" style="color: red">Address minimum 4 characters</span>
+                                </div>
+                            </div>
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> Phone Number
+                                        <span style="color:red">*</span>
+                                    </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <input name="phone_number" maxlength="11" OnlyNumber="true" class="form-control" type="text" [(ngModel)]="currentShippingAddress.phone_number">
+                                    <!-- <span *ngIf="!currentShippingAddress.phone_number" class="help-block sub-little-text " style="color: red">Phone Number is required</span> -->
+                                    <span *ngIf="currentShippingAddress.phone_number && currentShippingAddress.phone_number.length!=11" class="help-block sub-little-text"
+                                        style="color: red">Phone no should be minimum 11 Numbers</span>
+                                </div>
+                            </div>
+    
+                            <div class="address-block row">
+                                <div class="order-summary-left col-md-4">
+                                    <span> Alter Number </span>
+                                </div>
+                                <div class="order-summary-right col-md-8">
+                                    <input name="alter_phone" maxlength="11" OnlyNumber="true" class="form-control" type="text" [(ngModel)]="currentShippingAddress.alter_phone">
+                                </div>
+                            </div>
+    
+                            <h3 style="color: red">{{message}}</h3>
+                            <button [disabled]="!currentShippingAddress.contact_name || validation.phone_number?.invalid || validation.contact_name?.length_error || currentShippingAddress.phone_number?.length<11 || validation.phone_number?.invalid || validation.address?.length_error || validation.thana?.length_error || validation.area?.length_error || !currentShippingAddress.thana"
+                                style="margin-top: 30px;" class="btn btn-default" (click)="saveAddress()">Save</button>
+    
+                            <button style="margin-top: 30px;" class="btn btn-default" (click)="cancelAddress()">Cancel</button>
+                        </div>
+    
+                        <!-- edit view ended -->
+                        <div *ngIf="!isAddressAvailable">
+                            <h3>You didn't set any address yet!</h3>
+                            <button class="btn btn-primary" (click)="setNow()">Set Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

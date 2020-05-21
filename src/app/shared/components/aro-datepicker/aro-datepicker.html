@@ -1,0 +1,8 @@
+<div class="date_picker_root">
+    <input type="text" class="form-control" [(ngModel)]="date_time" [ngModelOptions]="{standalone: true}" [readonly]="true">
+    <i class="fa fa-calendar fa-lg" (click)="datepickerOpen()"></i>
+    <div class="date_picker" *ngIf="opened">
+        <datepicker [(ngModel)]="dt" [ngModelOptions]="{standalone: true}" (selectionDone)="onSelectionDone($event)">
+        </datepicker>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Customer List" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-8 type-block">
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button (click)="downloadData()" [disabled]="res_pending" class="btn btn-warning"> Download Data </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        Total Customer {{totalItems}}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Provider</th>
+                                    <th>Total Order</th>
+                                    <th>Order Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let customer of customers; let i=index">
+                                    <td>{{ (currentPage - 1) * itemsPerPage + (i + 1)}}</td>
+                                    <td>{{customer.first_name}}</td>
+                                    <td>{{customer.phone_number && customer.phone_number!=""? customer.phone_number: 'Unpecified'}}</td>
+                                    <td>{{customer.email && customer.email!=""? customer.email: 'Unpecified'}}</td>
+                                    <td>{{customer.provider}}</td>
+                                    <td>{{customer.success_order_info?.total_order}}</td>
+                                    <td>{{customer.success_order_info?.order_value}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;"
+                            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true"
+                            (click)="setPage()">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

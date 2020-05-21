@@ -1,0 +1,37 @@
+<div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)" [ngClass]="{scrolled: isScrolled}">
+  <a routerLink="/pages/dashboard" class="al-logo clearfix">
+    <img style="width:150px " src="/assets/icon/boibazar-logo.png" width="150" />
+  </a>
+  <!--<a routerLink="/pages/dashboard" class="al-logo clearfix"><span>ng2-</span>admin</a>-->
+  <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
+
+  <div class="search">
+    <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
+    <input id="searchInput" type="text" placeholder="Search for...">
+  </div>
+
+  <div class="user-profile clearfix">
+    <div class="dropdown al-user-profile">
+      <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+        <img src="{{ ( 'settings' | baProfilePicture ) }}">
+      </a>
+      <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+        <li class="dropdown-item">
+          <i class="dropdown-arr"></i>
+        </li>
+        <li class="dropdown-item">
+          <a href>
+            <i class="fa fa-user"></i>{{loggedInBy.name}} ({{loggedInBy.role}})</a>
+        </li>
+        <li class="dropdown-item">
+          <a href>
+            <i class="fa fa-cog"></i>Settings</a>
+        </li>
+        <li class="dropdown-item">
+          <a (click)="logOut()" class="signout">
+            <i class="fa fa-power-off"></i>Sign out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

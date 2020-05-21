@@ -1,0 +1,142 @@
+<div class="book-details-section-area-all">
+    <!-- /Customer review -->
+    <div class="book-specification-section">
+        <div class="book-details-section">
+            <h2> {{'Customer' | translate}} {{'Review' | translate}} </h2>
+        </div>
+    </div>
+
+    <div class="book-details-section-inline">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="overall-ratings">
+                    <star-rating [rating]="rating_avg"></star-rating>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div *ngIf="overall_rating" class="overall-ratings">
+                    <p class="rating-text"> {{'Overall Ratings' | translate}} ({{overall_rating}}) </p>
+                </div>
+            </div>
+            <div *ngIf="!reviewCheck" class="col-md-5">
+                <button (click)="showModal()" class="btn btn-success btn-custome-success" style="float: right;">
+                    <span>
+                        <i class="fa fa-file-text"></i> {{'write_review' | translate}} </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="book-details-section-inline">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                    <div *ngFor="let review of previousReviews">
+                        <div class="review-area-full">
+                            <div class="col-md-2">
+                                <div class="review-user-img">
+                                    <img src="{{product.image}}" class="img-responsive">
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="review-description">
+                                    <div *ngIf="!review.approved" class="review-user-name">
+                                        <p> Status:
+                                            <span>Pending</span>
+                                            <span class="edit-review" (click)="showReviewToUpdate(review)">Update</span>
+                                        </p>
+                                    </div>
+                                    <div class="review-user-name">
+                                        <p> By:
+                                            <span> {{review.first_name}} {{review.last_name}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="review-date">
+                                        <span>{{review.review_at | date: 'dd MMM-yyyy'}}</span>
+                                    </div>
+                                    <div class="review-ratings">
+                                        <star-rating [rating]="rating_avg"></star-rating>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="review-text">
+                                        <p>
+                                            {{review.review_speech}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--+++++++++++++++++++++++++ Modal ++++++++++++++++++++++-->
+
+<div bsModal #reviewModal="bs-modal" class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content ">
+            <div class="modal-header login-header ">
+                <button type="button" (click)="reviewModal.hide()" class="close" data-dismiss="modal " aria-label="Close ">
+                    <span aria-hidden="true ">&times;</span>
+                </button>
+                <div class="signin-logo ">
+                    <img src="{{staticImageBaseUrl}}logo_en.png " alt=" " />
+                </div>
+            </div>
+            <div class="modal-body ">
+                <div class="row ">
+                    <div class="col-md-12">
+                        <div class="review-area-full">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img width="80px" src="{{detail_product.image}}" onError="this.src='assets/images/book-no-photo.jpg'" alt=" " />
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="info-review">
+                                        <h3>{{detail_product.name}}</h3>
+                                        <ul>
+                                            <li class="auth-trans" *ngFor="let athr of detail_product.authors">
+                                                <a [routerLink]="['../../'+'author-books',athr.seo_url]">
+                                                    <span style="font-weight: bold;"> {{athr.name}} </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="review">Review Speech: </label>
+                            <textarea class="form-control" [(ngModel)]="review.speech" name="review" id="review" cols="95" rows="5"></textarea>
+                            <h4 style="color: red">{{errorMessage}}</h4>
+                            <div class="clearfix"></div>
+                            <button [disabled]="!review.speech || approved_counter>=10" class="btn btn-default review-button" style="margin-top: 21px; float: right; margin-right: 14px;"
+                                (click)="save()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="!hideRating" class="clo-md-12">
+                        Rating:
+                        <span class="starRating">
+                            <input (click)="rateChosen(5)" id="rating5" type="radio" name="rating" [checked]="star==5" value="5">
+                            <label for="rating5">5</label>
+                            <input (click)="rateChosen(4)" id="rating4" type="radio" name="rating" [checked]="star==4" value="4">
+                            <label for="rating4">4</label>
+                            <input (click)="rateChosen(3)" id="rating3" type="radio" name="rating" [checked]="star==3" value="3">
+                            <label for="rating3">3</label>
+                            <input (click)="rateChosen(2)" id="rating2" type="radio" name="rating" [checked]="star==2" value="2">
+                            <label for="rating2">2</label>
+                            <input (click)="rateChosen(1)" id="rating1" type="radio" name="rating" [checked]="star==1" value="1">
+                            <label for="rating1">1</label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer footer-deafult-modal "></div>
+        </div>
+    </div>
+</div>

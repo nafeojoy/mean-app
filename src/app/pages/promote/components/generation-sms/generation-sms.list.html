@@ -1,0 +1,134 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-12 card-header ">
+            <div class="card-title">
+                <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ba-card title="Search and Filter" baCardClass="with-scroll">
+
+                <form class="row form-inline">
+
+                    <div class="form-group col-sm-3">
+                        <select name="sms_type" style="width: 100%" name="sms_type" class="form-control" [(ngModel)]="selectedStatus" (ngModelChange)="getSelectedPromo($event)">
+                            <option *ngFor="let status of sms_type" [ngValue]="status">{{status}}</option>
+                        </select>
+                    </div>
+                </form>
+            </ba-card>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        SMS List
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>SMS Type</th>
+                                    <th>Reference ID</th>
+                                    <th>Phone Number/s</th>
+                                    <th>Total Numbers</th>
+                                    <th>Generation Time</th>
+                                    <th>Schedule Time</th>
+                                    <th>Sent Time</th>
+                                    <th>Message Text</th>
+                                    <th>Send </th>
+                                    <th>Cancel </th>
+                                    <th>Edit </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let sms of smsList; let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{sms.sms_type}}</td>
+
+                                    <td *ngIf="sms.ref_id" style="color: green">{{sms.ref_id}}</td>
+                                    <td *ngIf="!sms.ref_id" style="color: red">N/A</td>
+
+                                    <td>
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#numberAll" (click)="viewNumbers(sms)">Click to See</button>
+                                    </td>
+                                    <!-- <td *ngIf="!sms.is_bulk">{{sms.phone_numbers}}</td> -->
+                                    <td>{{sms.number_count}}</td>
+                                    <td>{{sms.generation_time | date:'dd MMM-yyyy'}} At {{sms.generation_time | date:'h:mma'}}</td>
+
+                                    <td *ngIf="sms.schedule_time">{{sms.schedule_time | date:'dd MMM-yyyy'}} At {{sms.schedule_time | date:'h:mma'}}</td>
+                                    <td *ngIf="!sms.schedule_time" style="color: red">N/A</td>
+
+                                    <td *ngIf="sms.sent_time">{{sms.sent_time | date:'dd MMM-yyyy'}} At {{sms.sent_time | date:'h:mma'}}</td>
+                                    <td *ngIf="!sms.sent_time" style="color: red">SMS is not Sent yet</td>
+                                    <td>
+                                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#detailsAll" (click)="viewDetails(sms)">View</button>
+                                    </td>
+                                    <td>
+                                        <button [disabled]='sms.sent_time' type="button" class="btn btn-success"  (click)="sendSms(sms)">Send SMS</button>
+                                    </td>
+                                    <td>
+                                        <button [disabled]='sms.sent_time' type="button" class="btn btn-danger"  (click)="cancelSms(sms)">Cancel SMS</button>
+                                    </td>
+                                    <td>
+                                        <button  type="button" class="btn btn-default"  [routerLink]="['edit', sms._id]">Edit SMS</button>
+                                    </td>
+                                   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #numberAll="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideNumbers()">&times;</button>
+                <h4 class="modal-title">Numbers</h4>
+            </div>
+            <div class="modal-body">
+                <div class="horizontal-scroll">
+                    <div *ngFor="let number of numbers">
+                        <!-- <input style="float: left" type="checkbox"> -->
+                        <p > &nbsp;{{number}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div bsModal #detailsAll="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideDetails()">&times;</button>
+                <h4 class="modal-title">Message Text</h4>
+            </div>
+            <div class="modal-body">
+                <div class="horizontal-scroll">
+                    <div>
+                        <p>{{messageText}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

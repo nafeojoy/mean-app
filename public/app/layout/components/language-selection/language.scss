@@ -1,0 +1,22 @@
+@import '../../../../sass/conf';
+
+.language_tab{
+    float: right; margin-bottom: 0px;
+      li{
+        display: block; position: relative; float: left;padding-bottom: 10px;padding-top: 10px;text-align: right; margin-left: 5px;
+          span{
+            border:1px solid #ddd; padding: 5px 15px; border-radius: 5px; font-weight: bold; color: $primary-font-color;
+            &:focus,&.active,&.focus,&:active{
+              &:hover{
+                color: $secondary-color-light;
+              }
+              color: $secondary-color-light ;text-decoration: none;
+            }
+            &:hover{
+              color:#afeede;
+              transition: .10s;
+            }
+          }
+          
+      }
+}

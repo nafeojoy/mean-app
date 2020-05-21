@@ -1,0 +1,22 @@
+
+<!--  breadcrumb start here  -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-tab">
+                    <a class="breadcrumb-item" href="#"><i class="fa fa-home"></i></a>
+                    <span class=""><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                    <a *ngIf="breadcrumbData.url" class="breadcrumb-item" [routerLink]="['../..'+ breadcrumbData.url]">  {{breadcrumbData.type | translate}} </a>
+                  
+                    <span class=""><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                    <a *ngIf="breadcrumbData.url" class="breadcrumb-item" [routerLink]="['../..'+ breadcrumbData.url]"> {{ breadcrumbData.typeName}} </a>
+
+                    <span class=""><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                    <a class="breadcrumb-item"> {{breadcrumbData.productName}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--  breadcrumb end here -->

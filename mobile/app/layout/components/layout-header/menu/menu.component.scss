@@ -1,0 +1,30 @@
+:host {
+    background-color: rgb(255, 255, 255);
+    color: #1361b1;
+    position: fixed;
+    right: 100%;
+    top: 63px;
+    // margin-right: 500px;
+    left: Auto;
+    bottom: 0;
+    width: 50%;
+    min-width: 180px;
+    z-index: 9999;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    padding-right: 5px;
+    overflow-y: scroll;
+  }
+   
+  ul {
+    font-size: 18px;
+    line-height: 2;
+    padding-left: 10px;
+    font-weight: 400;
+    padding-top: 5px;
+    list-style: none;
+  }
+  li{
+    &:hover,&:active,&:visited,&:focus{
+      background-color: lightblue;
+    }
+  }

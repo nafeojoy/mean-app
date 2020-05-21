@@ -1,0 +1,25 @@
+<div class="container-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <bb-cropper [loadNextImage]="loadNextImage" (selectedFileLength)="getFilesLength($event)" (getPageNum)="getSelectedImageIndex($event)"
+                        [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></bb-cropper>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="alert_messages_chart">
+                <div *ngFor="let alert of alerts">
+                    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <button [disabled]="selectedFilesLenth==0 || is_all_uploaded || is_uploading" class="btn btn-default pull-right" (click)="up()">Upload</button>
+            <spinner *ngIf="is_uploading" [tickness]="1" [size]="20"></spinner>
+        </div>
+    </div>
+</div>

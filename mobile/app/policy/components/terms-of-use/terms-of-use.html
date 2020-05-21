@@ -1,0 +1,7 @@
+<section class="margintop30 marginbottm30">
+    <div class="container busy-loading">
+        <div class="default-content" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+            <div [innerHTML]="content_object?.content"></div>
+        </div>
+    </div>
+</section>

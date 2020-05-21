@@ -1,0 +1,13 @@
+<div [hidden]="!authService.isLoggedIn()" class="header_right_45">
+    <div class="shop-menu">
+        <div style="margin-bottom: 5px">
+            <span class="user-images" [routerLink]="['../subscriber/view']">
+                <i class="fa fa-user" style="padding-right: 3px;"></i>
+            
+                <span> {{authService.getUserFirstname()}} </span>
+            </span>
+            &nbsp;
+            <span class="log-out" (click)="logout()"><i class="fa fa-sign-out"></i> {{'Log Out' | translate}} </span>
+        </div>
+    </div>
+</div>

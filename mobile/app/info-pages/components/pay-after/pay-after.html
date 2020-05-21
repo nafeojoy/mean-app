@@ -1,0 +1,28 @@
+<section class="margintop30 marginbottm30">
+    <div *ngIf="!is_success" class="container busy-loading">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="text-align: center;">
+                    <div class="alert alert-danger text-lg">
+                        <i class="fa fa-meh-o" aria-hidden="true"> </i>
+                        <span class="margin-top margin-bottom-lg">&nbsp;&nbsp;Payment has been failed</span>
+                        <br>
+                        <span class="margin-top margin-bottom-lg1">{{message}}</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="is_success" class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" style="text-align: center;">
+            <div class="alert1 alert-danger1 text-lg1">
+                <i class="fa fa-thumbs-up" aria-hidden="true"> </i>
+                <span class="margin-top margin-bottom-lg1">&nbsp;&nbsp; {{message}}. Order#{{order_info.order_no}}.</span>
+                <br>
+                <span class="margin-top margin-bottom-lg1">We will contact with you soon.</span>
+            </div>
+        </div>
+    </div>
+</section>

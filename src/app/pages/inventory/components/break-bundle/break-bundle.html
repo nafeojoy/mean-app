@@ -1,0 +1,36 @@
+<div class="col-md-6">
+    <ba-card title="Break Bundle Using Url or ImportID">
+      <form >
+  
+        <div class="form-group">
+          <label for="message_text">Seo_url / ImportID</label>
+          <input name="template_name" type="text" class="form-control" [(ngModel)]="searchValue" placeholder="Seo_url / ImportID">
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+              <div class="col text-center">
+                <button class="btn btn-default " (click) = "getBundleInfo()">Show</button>
+              </div>
+            </div>
+          </div>
+
+        
+        
+      </form>
+    </ba-card>
+
+    <!-- <ba-card>
+
+        <div>
+          <div [ngSwitch]="orderIdBkash">
+            <div *ngSwitchCase = "orderIdBkash" class="foundOrder">{{orderIdBkash}}</div>
+          </div>
+          
+
+        </div>
+
+    </ba-card> -->
+  </div>
+  

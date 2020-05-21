@@ -1,0 +1,247 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <span>Purchase Requisitions</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="voucher_no" class="control-label">Search Order with Book</label>
+                                <div>
+                                    <search-typeahead [items]="dataList" (dataLoader)="searchProduct$.next($event)" (selectedLoader)="getSelected($event)"></search-typeahead>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="voucher_no" class="control-label">Filter with Status</label>
+                                <div>
+                                    <select class="form-control" name="area" [(ngModel)]="filter.status" (ngModelChange)="getOrderWithStatus()">
+                    <option value="pending">Pending</option>
+                    <option value="partial">Partial</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-warning" (click)="resetSearchFilter()">Reset</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary" [routerLink]="['pending-book-list']">Show All Partials</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id" width="4%">#</th>
+                                    <th>Order Invoice.</th>
+                                    <th>Order At</th>
+                                    <th>Order Cost</th>
+                                    <th>Order Collect </th>
+                                    <th style="text-align: center;">View/Print</th>
+                                    <th style="text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders; let i=index">
+                                    <td>{{(currentPage-1)*10+(i+1)}}</td>
+                                    <td>{{order.order_no}}</td>
+                                    <td>{{order.created_at | date: 'dd MMM-yyyy'}}</td>
+                                    <td>{{order.total_sell_price}} Tk.</td>
+                                    <td>
+                                        <p *ngIf="order.order_assign_to">
+                                            {{order.order_assign_to.name}}({{order.order_assign_to.employee_id}})
+                                        </p>
+                                        <p *ngIf="!order.order_assign_to">
+                                            Not Specified
+                                        </p>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i class="fa fa-print" style="cursor: pointer" (click)="showOrder(order)"></i>
+                                    </td>
+                                    <td>
+                                        <div *ngIf="!order.status.is_completed">
+                                            <div class="status" *ngIf="order.status.is_partialy_processed">
+                                                <p>Partially Purchased</p>
+                                                <a [routerLink]="['/pages/inventory/item-purchase/add']" [queryParams]="{order_no: order.order_no}">Click to
+                          Purchase</a>
+                                            </div>
+                                            <div class="status" *ngIf="!order.status.is_partialy_processed">
+                                                <p>Not Purchased</p>
+                                                <a [routerLink]="['/pages/inventory/item-purchase/add']" [queryParams]="{order_no: order.order_no}">Click to
+                          Purchase</a>
+                                            </div>
+                                        </div>
+                                        <p style="text-align: center;" *ngIf="order.status.is_completed">
+                                            Purchased
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage(currentPage)">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #receiptModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="catDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sz">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row print-view-row" id="print-section">
+                    <table width="100%">
+                        <tr>
+                            <td width="30%">
+                                <img class='custom-image-size1' src="/assets/icon/boibazar-logo-color.png" alt="logo">
+                            </td>
+                            <td width="70%">
+                                <h4>Purchase Order# {{order.order_no}}</h4>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <div class="seocnd-label">
+                        <table width="100%" class="info-table">
+                            <tr>
+                                <td width="35%" align="left">
+                                    <h5><u>Creator:</u></h5>
+                                </td>
+                                <td width="30%" align="center">&nbsp;</td>
+                                <td width="35%" align="left">
+                                    <h5><u>Assignee:</u></h5>
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="margin-top: -15px;">
+                            <tr>
+                                <td width="2%">&nbsp;</td>
+                                <td width="10%" align="left">
+                                    Name:
+                                </td>
+                                <td width="25%" align="left">
+                                    {{order.created_by?.first_name}}
+                                </td>
+                                <td width="20%" align="left">
+                                    &nbsp;
+                                </td>
+                                <td width="10%" align="left">
+                                    Name:
+                                </td>
+                                <td width="25%" align="left">
+                                    {{order.order_assign_to?.name}}
+                                </td>
+                                <td width="3%" align="left">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="2%">&nbsp;</td>
+                                <td width="10%" align="left">
+                                    Date:
+                                </td>
+                                <td width="25%" align="left">
+                                    {{order.created_at | date: 'dd MMM-yyyy'}}
+                                </td>
+                                <td width="20%" align="left">
+                                    &nbsp;
+                                </td>
+                                <td width="10%" align="left">
+                                    Phone:
+                                </td>
+                                <td width="25%" align="left">
+                                    {{order.order_assign_to?.phone}}
+                                </td>
+                                <td width="3%" align="left">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-left: -3px;">
+                        <div class="col-md-12 order-item">
+                            <h5><u>Required Items</u></h5>
+                            <table class="tbl-data product-table">
+                                <thead class="product-head">
+                                    <tr>
+                                        <th width="1%">SL#</th>
+                                        <th width="39%" style="text-align: left;"> Name </th>
+                                        <th width="15%" style="text-align: left;"> Publisher </th>
+                                        <th width="15%" style="text-align: left;"> Supplier </th>
+                                        <th width="15%" style="text-align: left;"> Area </th>
+                                        <th width="5%" style="text-align: left;"> QTY </th>
+                                        <th width="10%" style="text-align: right;"> Last Price </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="product-body">
+                                    <tr *ngFor="let item of required_items; let i=index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{item.product_name}}</td>
+                                        <td>{{item.publisher_name}}</td>
+                                        <td>{{item.supplier_name}}</td>
+                                        <td>{{item.area}}</td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{item.purchase_price}}</td>
+                                    </tr>
+                                    <tr style="background: #8080802e;">
+                                        <td colspan="3">&nbsp;</td>
+                                        <td>Total Qty: {{total_qty}}</td>
+                                        <td colspan="3">Est.Price: {{total_price}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="product-table">
+                                <tbody>
+                                    <tr>
+                                        <td> Total Cost: </td>
+                                        <td>...............................................</td>
+                                    </tr>
+                                    <tr>
+                                        <td> Collection Date </td>
+                                        <td *ngIf="!order.collected_at">...............................................</td>
+                                        <td *ngIf="order.collected_at">{{order.collected_at | date:'dd MMM yyyy'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" style="margin-left: -3px;">
+                        <div class="col-md-12">
+                            <table class="table-print">
+                                <tr>
+                                    <td class="payment-head-img">
+                                        <p>..........................</p>
+                                        <p>Manager</p>
+                                    </td>
+                                    <td class="payment-head-content">
+                                        <p>..........................</p>
+                                        <p>Recieved</p>
+                                    </td>
+                                    <td class="payment-head-content">
+                                        <p>..........................</p>
+                                        <p>Collector</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary confirm-btn" (click)="print()">Print</button>
+            </div>
+        </div>
+    </div>
+</div>

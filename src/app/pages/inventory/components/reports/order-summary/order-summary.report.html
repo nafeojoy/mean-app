@@ -1,0 +1,176 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Purchase History Report" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 type-block">
+                            <div class="form-group row">
+                                <label for="employee" class="control-label col-md-2">Monthly</label>
+                                <div class="col-md-4">
+                                    <ba-checkbox [(ngModel)]="filter.is_monthly" [ngModelOptions]="{standalone: true}" (change)="changeType('is_monthly', 'is_daily')"></ba-checkbox>
+                                </div>
+                                <label for="employee" class="control-label col-md-2">Daily</label>
+                                <div class="col-md-4">
+                                    <ba-checkbox [(ngModel)]="filter.is_daily" [ngModelOptions]="{standalone: true}" (change)="changeType('is_daily', 'is_monthly')"></ba-checkbox>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="repost_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                                <label for="to_date" class="control-label col-md-4">Product</label>
+                                <div class="col-md-8">
+                                    <search-typeahead [clearField]="isClear" [items]="dataList" [image]="show_image" (dataLoader)="itemSearchTerm$.next($event)"
+                                        (selectedLoader)="getSelectedItem($event)"></search-typeahead>
+                                </div>
+                            </div> -->
+                        </div>
+                        <!-- <div class="col-md-1"></div> -->
+                        <!-- <div class="col-md-6 type-block"> -->
+                        <!-- <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="print_disabled" class="btn btn-warning" (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        <!-- </div> -->
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="repost_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row report_header">
+                            <div class="col-md-12">
+                                <table class="table-print">
+                                    <tr>
+                                        <td class="payment-head-img">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                        </td>
+                                        <td>
+                                            <h4>Order Summary</h4>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="1%" class="table-id">SL#</th>
+                                        <th width="19%" style="text-align:left">Date</th>
+                                        <th width="10%">Total Order</th>
+                                        <th width="10%">Pending</th>
+                                        <th width="10%">Confirmed</th>
+                                        <th width="10%">Inshipment</th>
+                                        <th width="10%">Delevered</th>
+                                        <th width="10%">Order Closed</th>
+                                        <th width="10%">Return Request</th>
+                                        <th width="10%">Cancelled</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of repost_data; let j=index">
+                                        <td>{{j+1}}</td>
+                                        <td style="text-align:left">{{item.date}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.total}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.Pending}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.Confirmed}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.Inshipment}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.Delivered}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.OrderClosed}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.ReturnRequest}}</td>
+                                        <td style="text-align:center">{{item.customer_orders.Cancelled}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" class="table table-hover">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th width="1%"></th>
+                                        <th width="19%">Summary</th>
+                                        <th width="10%">{{summary.total}}</th>
+                                        <th width="10%">{{summary.Pending}}</th>
+                                        <th width="10%">{{summary.Confirmed}}</th>
+                                        <th width="10%">{{summary.Inshipment}}</th>
+                                        <th width="10%">{{summary.Delivered}}</th>
+                                        <th width="10%">{{summary.OrderClosed}}</th>
+                                        <th width="10%">{{summary.ReturnRequest}}</th>
+                                        <th width="10%">{{summary.Cancelled}}</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

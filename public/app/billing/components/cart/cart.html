@@ -1,0 +1,251 @@
+<style>
+      #x:hover {
+            font-size: 15px;
+            color: red;
+      }
+</style>
+<section>
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="card-header-system">
+                              <h5 *ngIf='!hasItemInCart'>{{'Your Shopping Cart' | translate}} (0 {{'items' | translate}})</h5>
+                              <h5 *ngIf='hasItemInCart'>{{'Your Shopping Cart' | translate}} ({{cart.products?.length | numberConvert}} {{'items' |
+                                    translate}})
+                              </h5>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>
+<section>
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-12">
+                        <div class="continue-shopping">
+                              <p>
+                                    <i class="fa fa-angle-left"></i>
+                                    <a href="#">{{'Continue Shopping' | translate}} </a>
+                              </p>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>
+<section>
+      <div class="container">
+            <div class="row">
+                  <div class="col-md-9">
+                        <div class="table-responsive busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                              <div class="no-cart" *ngIf='!hasItemInCart'>
+                                    <p>{{'You dont have any item in your cart' | translate}}</p>
+                              </div>
+                              <table *ngIf='hasItemInCart' class="table table-condensed cart_info">
+                                    <thead>
+                                          <tr class="cart_menu">
+                                                <td width="5%"> </td>
+                                                <td class="image" width="13%"> {{'Books' | translate}}</td>
+                                                <td class="description" width="20%"></td>
+                                                <td class="quantity" width="20%">{{'Quantity' | translate}}</td>
+                                                <td class="price" width="20%">{{'Price' | translate}}</td>
+                                                <td width="10%"> {{'Action' | translate}}</td>
+                                          </tr>
+                                    </thead>
+                                    <tbody>
+                                          <tr *ngFor="let product of cart.products; let i=index">
+                                                <td class="item-no"> {{i+1}} </td>
+                                                <td class="cart_product">
+                                                      <a [routerLink]="['/book', product.seo_url]" (click)="getSelectedProduct(product.seo_url)">
+                                                            <div>
+                                                                  <img *ngIf='product.image' style="width: 40px; cursor: pointer" src="{{product.image.replace('250X360', '120X175')}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                                                        alt="" />
+                                                                  <img *ngIf='!product.image' style="width: 40px; cursor: pointer" src="{{product.image}}" onError="this.src='assets/images/book-no-photo.jpg'"
+                                                                        alt="" />
+                                                            </div>
+                                                      </a>
+                                                </td>
+                                                <td class="cart_description">
+                                                      <h4> {{product.name}} </h4>
+                                                </td>
+                                                <td class="cart_quantity">
+                                                      <div class="cart_quantity_button">
+                                                            <input [disabled]="product.quantity<2" type="button" value="-" id="subs" (click)="decreaseQuantity(product, i)" class="btn btn-default pull-left value-sub-obutton"
+                                                            />&nbsp;
+                                                            <input type="text" style="width: 50px;text-align: center; margin: 0px;" class="onlyNumber form-control pull-left value-show-button"
+                                                                  name="noOfBook{{i}}" [value]="product.quantity" (focusout)="focusOutFunction()"
+                                                                  (keyup)="typed($event.target.value,product,i)" />&nbsp;
+
+                                                            <input type="button" value="+" [disabled]="product.quantity>9" id="adds" (click)="increaseQuantity(product, i)" class="btn btn-default value-add-button"
+                                                            />
+                                                      </div>
+                                                </td>
+                                                <td class="cart_price">
+                                                      <p>{{product.price | priceConvert}} x {{product.quantity | numberConvert}}
+                                                            = {{product.price * product.quantity | priceConvert}}</p>
+                                                </td>
+                                                <td class="cart_delete">
+                                                      <button class="btn btn-default details-button-view" (click)="removeItem(i)"> {{'Remove' | translate}} </button>
+                                                </td>
+                                          </tr>
+                                    </tbody>
+                              </table>
+                              <similar-products *ngIf="similar_product?.length > 0" [busy]="busy" [similarProduct]="similar_product" (addCartEvent)="addCart($event)">
+                              </similar-products>
+                        </div>
+                  </div>
+                  <div class="col-md-3">
+                        <div *ngIf='hasItemInCart' class="row">
+                              <div class="col-md-12">
+                                    <div class="borderdefalt">
+                                          <div class="paddingtopbuttom10">
+                                                <div class="discount-coupon-title">
+                                                      <p> {{'Discount' | translate}}/{{'Coupon Code' | translate}} </p>
+                                                </div>
+                                                <div *ngIf='discount_parcent!=0'>
+                                                      <br>
+                                                      <span style="color: green; font-size: 12px">{{'Your Discount percentage is' | translate}} {{discount_parcent |
+                                                            numberConvert}}% </span>
+                                                </div>
+
+                                                <p *ngIf='discount_parcent==0' style="color: red">{{errorMsg | translate}}</p>
+                                                <div *ngIf='discount_parcent==0' class="coupon-search">
+                                                      <div id='search-box-promo' style="width: 100%; z-index: 0">
+                                                            <form (ngSubmit)="discountCheck(promo_code)" action='#' id='search-form-promo' target='_top'>
+
+                                                                  <input class="form-control" id='search-text' name='promo_code' style="color: black;" placeholder="{{'Promo Code' | translate}}"
+                                                                        type='text' [(ngModel)]="promo_code" />
+                                                                  <button id='search-button' type='submit'>
+                                                                        <i class="fa fa-paper-plane"></i>
+                                                                        <span> {{'Apply' | translate}}</span>
+                                                                  </button>
+                                                            </form>
+                                                      </div>
+                                                </div>
+                                                <div class="coupon-gift">
+                                                      <div class="coupon-gift-wrap">
+                                                            <div class="pull-left">
+                                                                  <input type="checkbox" [(ngModel)]="isTrue" (change)="toggle()" id="checkGift" class="check_box">
+                                                            </div>
+                                                            <div class="pull-left">
+                                                                  <span class="gift-boucher"> {{'Gift Wrap' | translate}} : {{15 | priceConvert}} </span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <!--  <order-summary [hidden]='!hasItemInCart' [subTotal]='subTotal'> </order-summary>-->
+
+                        <!-- <order-summary [hidden]='true' [wrapCharge]="getWrappingCharge()" ></order-summary> -->
+
+                        <div *ngIf='hasItemInCart' class="row">
+                              <div class="col-md-12">
+                                    <div class="borderdefalt busy-loading" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, minDuration: 200}">
+                                          <div class="order-summary-title">
+                                                <p> {{'Order Summary' | translate}} </p>
+                                          </div>
+                                          <div class="summarypaddingtopbuttom10">
+                                                <div class="order-summary-price">
+                                                      <div class="order-summary-left">
+                                                            <span>{{'Sub-total' | translate}} </span>
+                                                      </div>
+                                                      <div class="order-summary-right">
+                                                            <span class="price"> {{subTotal | priceConvert}} </span>
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                </div>
+                                                <div class="order-summary-price">
+                                                      <div class="order-summary-left">
+                                                            <span>{{'Discount' | translate}}
+                                                                  <span *ngIf='discount_parcent>0' id="x" (click)="removeDiscount()">
+                                                                        <i class="fa fa-times"></i>
+                                                                  </span>
+                                                            </span>
+                                                      </div>
+                                                      <div class="order-summary-right">
+                                                            <span *ngIf='!discount' class="price">(-) {{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+                                                            <span *ngIf='discount' class="price">(-){{discount | priceConvert}}</span>
+
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                </div>
+                                                <div class="order-summary-price">
+                                                      <div class="order-summary-left">
+                                                            <span> {{'Delivery Charge' | translate}}
+
+                                                            </span>
+                                                      </div>
+                                                      <div class="order-summary-right">
+                                                            <span *ngIf='!deliveryCharge' class="price">(+) {{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+                                                            <span *ngIf='deliveryCharge' class="price">(+) {{deliveryCharge | priceConvert}}</span>
+
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                </div>
+
+                                                <div [hidden]="!isChecked" class="order-summary-price">
+                                                      <!-- [hidden]="!isChecked" -->
+                                                      <div class="order-summary-left">
+                                                            <span> {{'Gift Wrap' | translate}}</span>
+                                                      </div>
+                                                      <div class="order-summary-right">
+                                                            <span class="price">(+) {{wrappingCharge | priceConvert}}</span>
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                </div>
+                                                <div class="order-summary-price">
+                                                      <div class="order-summary-left">
+                                                            <span style="font-weight: bold;"> {{'Total' | translate}}</span>
+                                                      </div>
+                                                      <div class="order-summary-right">
+                                                            <span class="price"> {{subTotal + deliveryCharge - discount + wrappingCharge | priceConvert}}
+                                                            </span>
+                                                      </div>
+                                                      <div class="clearfix"></div>
+                                                </div>
+                                                <div *ngIf='cart.products.length<=10' class="checkout-button">
+                                                      <a [routerLink]="['../shipping']" (click)="storeCart()" class="btn btn-default btn-check-out" style="display: block; width: 100%;">
+                                                            {{'Checkout' | translate}}</a>
+                                                </div>
+                                                <div>
+                                                      <button *ngIf='cart.products.length>10' [disabled]="true" class="btn btn-default details-button-view" style="display: block; width: 100%;">{{'Not More Than 10' | translate}}</button>
+                                                </div>
+
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div class="borderdefalt">
+                                          <div class="paddingtopbuttom10">
+                                                <div class="">
+                                                      <span> {{'Have your say' | translate}}... </span>
+                                                </div>
+                                                <div class="conatct-section">
+                                                      <div class="conatct-section-say">
+                                                            <div class="pull-left">
+                                                                  <img src="{{staticImageBaseUrl}}have-say.jpg" alt="">
+                                                            </div>
+                                                            <div class="pull-left">
+                                                                  <p class="icon-color">
+                                                                        <i class="fa fa-phone"></i> {{'contact_no' | translate}}</p>
+                                                                  <p class="icon-color">
+                                                                        <i class="fa fa-envelope"></i>
+                                                                        <!-- {{'email_address' | translate}} -->
+                                                                        <img src="assets/images/mail-info-cart.png" alt="" />
+                                                                  </p>
+
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</section>

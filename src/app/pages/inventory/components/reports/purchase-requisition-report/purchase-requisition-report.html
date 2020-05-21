@@ -1,0 +1,140 @@
+<div class="widgets">
+    <form style="margin-top: 21px" class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12">
+                <ba-card title="Purchase Requisition Report" baCardClass="with-scroll">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 type-block">
+                            <h4>Create Date:</h4>
+                            <div class="form-group row">
+                                <label for="from_date" class="control-label col-md-1">From</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="from_date" [(ngModel)]="filter.from_date">
+                                </div>
+                                <label for="to_date" class="control-label col-md-1">To</label>
+                                <div class="col-md-5">
+                                    <input type="date" class="form-control" name="to_date" [(ngModel)]="filter.to_date">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row" style="margin-bottom:8px">
+                                <label for="filter" class="col-md-12 control-label">
+                                    <span style="color:red;">{{err_message}}</span>
+                                </label>
+                                <div class="col-md-12">
+                                    <div class="button_all" style="text-align: right; float: right;">
+                                        <span class="filter_button">
+                                            <button *ngIf="report_data.length>0" class="btn btn-warning" (click)="print()">Print</button>
+                                        </span>
+                                        <span class="filter_button">
+                                            <button (click)="submitReportdata()" [disabled]="res_pending" class="btn btn-warning"> Show </button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </span>
+                                        <span>
+                                            <button (click)="reset()" class="btn btn-default">Reset</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div *ngIf="report_data.length>0" baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div class="row  report_header">
+                            <div class="col-md-12">
+                                <table width="100%" tyle="font-size: 10px">
+                                    <tr>
+                                        <td width="33%">
+                                            <img src="assets/icon/boibazar-logo-color.png" alt="logo">
+                                        </td>
+                                        <td width="33%">
+                                            <h4>Purchase Requisition</h4>
+                                        </td>
+                                        <td width="33%">
+                                            ({{other_report_data.date_range.from | date:'dd/MM/yy'}}-{{other_report_data.date_range.to
+                                            | date:'dd/MM/yy'}})
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="horizontal-scroll">
+                            <table width="100%" class="table table-border" style="font-size: 8px;">
+                                <thead>
+                                    <tr class="black-muted-bg">
+                                        <th class="table-id">SL#</th>
+                                        <th class="req-no">Requisition No.</th>
+                                        <th class="req-date">Date</th>
+                                        <th class="req-total">Total Order Value</th>
+                                        <th class="req-order">Customer Orders</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of report_data; let j=index">
+                                        <td class="table-id">{{j+1}}</td>
+                                        <td class="req-no">{{item.requisitiuon_no}}</td>
+                                        <td class="req-date">{{item.created_at | date:'dd MMM-yyyy HH:mm a'}}</td>
+                                        <td class="req-total">{{item.total_sell_price}}</td>
+                                        <td class="req-order">{{item.orders}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="2">Summary: {{total_obj.summary}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table width="100%" style="font-size: 10px;">
+                                <tr>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Printed By</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Accounts</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>Audit</p>
+                                    </td>
+                                    <td width="25%">
+                                        <p>..........................</p>
+                                        <p>&nbsp;</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="divFooter">
+                            <table width="100%" style="font-size: 10px;">
+                                <tr>
+                                    <td width="33%">
+                                        Print Job No. &nbsp; : &nbsp; {{other_report_data.print_job_number}}
+                                    </td>
+                                    <td width="33%">
+                                        Printed By &nbsp; : &nbsp; {{other_report_data.user}}
+                                    </td>
+                                    <td width="33%">
+                                        Print Time &nbsp; : &nbsp; {{other_report_data.print_date | date: 'dd MMM-yyyy hh:mm a'}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

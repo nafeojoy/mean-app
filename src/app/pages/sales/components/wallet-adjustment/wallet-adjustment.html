@@ -1,0 +1,286 @@
+<div class="widgets">
+    <div class="row">
+
+        <div class="col-md-10">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <input id="searchSubscriber" type="text" class="form-control" placeholder="Search by Subscriber Name/Referral Code" (keyup)="searchSubscriber$.next($event.target.value)">
+                    </div>
+
+                    <div class="row" *ngIf='selectedSub._id'>
+                        <br>
+                        <br>
+                        <!-- <div> -->
+                        <div class="col-md-6">
+                            <div class="row" *ngIf='selectedSub._id '>
+                                <div class="col-md-4">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="black-muted-bg">
+
+                                                <th style="text-align: center">Transaction Date</th>
+                                                <th style="text-align: center">Collection Type</th>
+                                                <th style="text-align: center">Transaction Amt </th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let wallet of walletHistory ; let i = index" class="no-top-border">
+
+                                                <td>
+                                                    <p style="text-align: center">
+                                                        {{wallet.applicable_date | date: 'dd MMM-yyyy' }}</p>
+                                                </td>
+
+                                                <td>
+
+                                                    <p *ngIf='wallet.wallet_amount>0' style="text-align: center">Credit
+                                                    </p>
+                                                    <p *ngIf='wallet.wallet_amount<0' style="text-align: center">Debit
+                                                    </p>
+
+                                                </td>
+                                                <td>
+                                                    <p style="text-align: center">{{wallet.wallet_amount}}</p>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Wallet Details
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll info-table">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="text-align:left;">User Name</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{selectedSub?.first_name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left;">Total Available Balance</td>
+                                                        <td>:</td>
+                                                        <td>
+                                                            {{totalWalletAmount}} Tk.
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                                    <div class="card-header clearfix">
+                                        <div class="card-title">
+                                            Wallet Update
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="horizontal-scroll info-table">
+                                            <form>
+                                                <div class="form-group row">
+                                                    <label for="gateway_id" class="col-md-4 control-label"> Operation
+                                                        Type:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <select [(ngModel)]="selectedOperation" class="form-control" name="adjust_type" id="adjust_type">
+                                                            <option *ngFor="let operation of operations"
+                                                                [ngValue]="operation">
+                                                                {{operation}}
+                                                            </option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="selectedOperation == 'Credit'">
+                                                    <label for="gateway_id" class="col-md-4 control-label"> Credit Type:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <select [(ngModel)]="selectedCr_type" class="form-control" name="cr_type" id="cr_type">
+                                                            <option *ngFor="let cr_type of cr_types"
+                                                                [ngValue]="cr_type">
+                                                                {{cr_type}}
+                                                            </option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="selectedOperation == 'Debit' || 
+                                                            (selectedOperation == 'Credit' 
+                                                            && selectedCr_type && (selectedCr_type != 'Online Payment' && selectedCr_type != 'Bonus' && selectedCr_type != 'bKash' && selectedCr_type != 'Wallet Recharge' && selectedCr_type != 'Book Return Cost' && selectedCr_type != 'Customer Expense' && selectedCr_type != 'Others')  
+                                                            && selectedCr_type != 'Voucher Card')">
+                                                    <label for="order_no" class="col-md-4 control-label"> Order No :
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="order_no" [(ngModel)]="wallet_info.order_no" class="form-control" placeholder="Order No">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="(selectedCr_type == 'Online Payment' || selectedCr_type == 'Bonus' || selectedCr_type == 'bKash' || selectedCr_type == 'Wallet Recharge' || selectedCr_type == 'Customer Expense' || selectedCr_type == 'Book Return Cost' || selectedCr_type == 'Others') && selectedOperation == 'Credit'">
+                                                    <label for="comment" class="col-md-4 control-label">Comment</label>
+                                                    <div class="col-md-8">
+                                                        <textarea name="comment" [(ngModel)]="wallet_info.comment" class="form-control" placeholder="Comment">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="selectedOperation == 'Credit' && (selectedCr_type && selectedCr_type == 'Voucher Card')">
+                                                    <label for="card_no" class="col-md-4 control-label"> Card No :
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input name="card_no" [(ngModel)]="wallet_info.card_no" class="form-control" placeholder="Card No">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row" *ngIf="selectedOperation == 'Credit'">
+                                                    <label for="pay_amount" class="col-md-4 control-label"> Credit
+                                                        Amount :
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="pay_amount" min="0" [(ngModel)]="wallet_info.cr_amount" class="form-control" placeholder="Credit Amount">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" *ngIf="selectedOperation == 'Debit'">
+                                                    <label for="pay_amount" class="col-md-4 control-label"> Debit Amount
+                                                        :
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <input type="number" name="pay_amount" min="0" [(ngModel)]="wallet_info.dr_amount" class="form-control" placeholder="Pay Amount">
+                                                    </div>
+                                                </div>
+
+
+                                                <div>
+                                                    <!-- <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner> -->
+                                                    <button [disabled]="res_pending" (click)="walletUpdate()" class="btn btn-default">Submit</button>
+                                                    <br><br> <label id="responseMsg">{{responseMessage}}</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <br>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th style="text-align: center">Subscriber Name</th>
+                                    <th style="text-align: center">Email</th>
+                                    <th style="text-align: center">Phone Number</th>
+                                    <th style="text-align: center">Referral Code</th>
+                                    <th style="text-align: center">Creatiion Source</th>
+                                    <th style="text-align: center"></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let subscriber of subscriberList ; let i = index" class="no-top-border">
+
+                                    <td>
+                                        <p style="text-align: center">{{subscriber?.first_name}}</p>
+                                    </td>
+
+                                    <td>
+                                        <p style="text-align: center">{{subscriber.email}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{subscriber.phone_number}}</p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align: center">{{subscriber.referral_code}}</p>
+                                    </td>
+                                    <td>
+                                        <p *ngIf="subscriber.created_by_admin" style="text-align: center">Customer Care</p>
+                                        <p *ngIf="!subscriber.created_by_admin" style="text-align: center">Site</p>
+                                    </td>
+
+                                    <td class="align-right">
+                                        <button class="btn btn-success" (click)="getSubscriber(subscriber._id)">Select</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <table class="table table-hover">
+            <thead>
+                <tr class="black-muted-bg">
+                    <th width="1%" class="table-id">#</th>
+                    <th style="text-align: center">Transaction Date</th>
+                    <th style="text-align: center">Subscriber Name</th>
+                    <th style="text-align: center">Email</th>
+                    <th style="text-align: center">Phone Number</th>
+                    <th style="text-align: center">Payment Type</th>
+                    <th style="text-align: center">Transaction Amt</th>
+                    <th style="text-align: center">Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let wallet of walletList; let k=index" class="no-top-border">
+                    <td>{{k + 1}}</td>
+                    <td>
+                        <p style="text-align: center">{{wallet?.created_at | date: 'dd/MM/yyyy'}}</p>
+                    </td>
+                    <td style="text-align: center">
+                        {{wallet.subscriber[0]?.first_name}}
+                    </td>
+                    <td>
+                        <p style="text-align: center">{{wallet.subscriber[0]?.email}}</p>
+                    </td>
+                    <td>
+                        <p style="text-align: center">{{wallet.subscriber[0]?.phone_number}}</p>
+                    </td>
+                    <td>
+                        <p style="text-align: center">{{wallet?.payment_type}}</p>
+                    </td>
+                    <td>
+                        <p style="text-align: center">{{wallet?.wallet_amount}}</p>
+                    </td>
+                    <td *ngIf='wallet?.comment'>
+                        <p style="text-align: center">{{wallet?.comment}}</p>
+                    </td>
+                    <td *ngIf='!wallet?.comment'>
+                        <p style="text-align: center">N/A</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

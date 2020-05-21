@@ -1,0 +1,67 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title" *ngIf="authManager.canAdd">
+                        <i [routerLink]="['add']" class="add-icon ion-plus-round"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Name</th>
+                                    <th>Is Featured</th>
+                                    <th>Active</th>
+                                    <th *ngIf="authManager.canEdit">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let attribute of attributes | async; let i=index">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{attribute.name}}</td>
+                                    <td>
+                                        {{attribute.is_featured? "Yes": "No"}}
+                                    </td>
+                                    <td>
+                                        <p *ngIf="attribute.is_enabled">Yes</p>
+                                        <p *ngIf="!attribute.is_enabled">No</p>
+                                    </td>
+                                    <td *ngIf="authManager.canEdit">
+                                        <a (click)="set(attribute)" [routerLink]="['edit',attribute._id]" class="btn btn-success">Edit</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Start Delete Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete attributes</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure to delete?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal" (click)="delete()">Delete</button>
+                <button type="button" class="btn btn-default btn-close" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Delete Modal -->

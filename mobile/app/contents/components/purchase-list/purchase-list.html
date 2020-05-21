@@ -1,0 +1,280 @@
+<style>
+    .cart_menu td {
+        background: #f3f3f3;
+        padding: 5px 10px;
+    }
+</style>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-tab">
+                    <a class="breadcrumb-item" href="#">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    <span class="">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </span>
+                    <a class="breadcrumb-item"> {{'Orders' | translate}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="!isLoggedIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-md-6 col-md-offset-2">
+                <h1 class="text-center login-title">{{'Please Enter "Phone No" or "Order No" to see your Order Status' | translate}}</h1>
+                <div class="account-wall">
+                    <form class="purchase-query">
+                        <ng-input [(inputModel)]="purchaseQuery.phone_number"></ng-input>
+                        <br>
+                        <input type="text" name="order_no" [(ngModel)]="purchaseQuery.order_no" class="form-control" placeholder="{{'Order No' | translate}}">
+                        <br>
+                        <re-captcha (captchaResponse)="handleCorrectCaptcha($event)" site_key="6LfwcD0UAAAAAIR5qwJVXy0ZPPXE0W_26bZb4lva"></re-captcha>
+                        <br>
+                        <button [disabled]="!purchaseQuery.order_no || purchaseQuery.phone_number?.length<11" (click)="getGuestPurchase()" class="btn btn-lg btn-primary btn-block"
+                            type="submit"> {{'Submit' | translate}}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div *ngIf="is_search_submitted && !guest_purchase_info._id" class="row">
+            <div class="col-md-12" style="text-align: center;">
+                <div class="alert alert-danger text-lg">
+                    <i class="fa fa-meh-o" aria-hidden="true"> </i>
+                    <span class="margin-top margin-bottom-lg">&nbsp;&nbsp;{{search_err_message}}</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div *ngIf="guest_purchase_info && guest_purchase_info._id" class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <div class="col-md-12">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td>
+                                        <span> </span>
+                                    </td>
+
+                                    <td style="text-align: center">
+                                        <span style="white-space: nowrap">{{'Order Summary' | translate}}</span>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cart_product">
+                                        <h4 style="white-space: nowrap">{{'Order No' | translate}}: {{guest_purchase_info.order_no | numberConvert}}</h4>
+                                        <h5>{{'Order Status' | translate}}:
+                                            <span [style.color]="getOrderStatus(guest_purchase_info.current_order_status.status_name)">
+                                                {{guest_purchase_info.current_order_status.status_name | translate}}</span>
+                                        </h5>
+                                        <h5>{{'Payment Status' | translate}}:
+                                            <span *ngIf="guest_purchase_info.current_order_status.status_name=='Cancelled '" style="text-decoration: line-through; color: red">
+                                                {{"N/A" | translate}}
+                                            </span>
+                                            <span *ngIf="guest_purchase_info.is_paid" style="color: green">
+                                                {{"Paid" | translate}}
+                                                <i class="fa fa-check-circle"></i>
+                                            </span>
+                                            <span *ngIf="!guest_purchase_info.is_paid && (guest_purchase_info.current_order_status.status_name=='Pending' || guest_purchase_info.current_order_status.status_name=='Confirmed' || guest_purchase_info.current_order_status.status_name=='Inshipment')">
+                                                {{"Not Paid" | translate}}
+                                                <span (click)="paynow(guest_purchase_info)" class="paynow" *ngIf="!res_pending">{{'Pay Now' | translate}}</span>
+                                                <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>&nbsp;&nbsp;
+                                                <span *ngIf="res_pending" style="font-size: 13px;">Please Wait...</span>
+                                            </span>
+                                        </h5>
+                                        <h6>{{'Total Price' | translate}}: {{guest_purchase_info.total_price+ guest_purchase_info.wrapping_charge
+                                            + guest_purchase_info.delivery_charge - guest_purchase_info.discount | priceConvert}}</h6>
+                                        <h6>{{'Mobile No' | translate}}: {{guest_purchase_info.delivery_address.phone_number
+                                            | numberConvert}}</h6>
+                                        <h6>{{'Address' | translate}}: {{guest_purchase_info.delivery_address.address}}, {{guest_purchase_info.delivery_address.area}},
+                                            {{guest_purchase_info.delivery_address.city}}
+                                        </h6>
+                                        <h6>{{'Ordered At' | translate}}: {{guest_purchase_info.order_at | date: 'dd MMM-yyyy'}}</h6>
+                                        <button (click)="showModaldata(guest_purchase_info)" class="details-btn">
+                                            {{showDetails ? 'Hide Details': 'Show Details'}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div *ngIf="!totalItems && isLoggedIn" class="container">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+                <div class="alert alert-danger text-lg">
+                    <i class="fa fa-meh-o" aria-hidden="true"> </i>
+                    <span class="margin-top margin-bottom-lg">&nbsp;&nbsp;{{'You didnt. purchase anything' | translate}}.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="totalItems" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <div class="col-md-12">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td>
+                                        <span> </span>
+                                    </td>
+
+                                    <td style="text-align: center">
+                                        <span style="white-space: nowrap">{{'Order Summary' | translate}}</span>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let purchase of purchases; let i=index">
+                                    <td style="vertical-align: middle;">
+                                        <h4> {{ (currentPage - 1) * itemsPerPage + (i + 1) | numberConvert}}</h4>
+                                    </td>
+                                    <td class="cart_product">
+                                        <h4 style="white-space: nowrap">{{'Order No' | translate}}: {{purchase.order_no | numberConvert}}</h4>
+                                        <h5>{{'Order Status' | translate}}:
+                                            <span [style.color]="getOrderStatus(purchase.current_order_status.status_name)">
+                                                {{purchase.current_order_status.status_name | translate}}</span>
+                                        </h5>
+                                        <h5>{{'Payment Status' | translate}}:
+                                            <span *ngIf="purchase.current_order_status.status_name=='Cancelled'" style="text-decoration: line-through; color: red">
+                                                {{"N/A" | translate}}
+                                            </span>
+                                            <span *ngIf="purchase.is_paid && !(purchase.current_order_status.status_name=='Cancelled')" style="color: green">
+                                                {{"Paid" | translate}}
+                                                <i class="fa fa-check-circle"></i>
+                                            </span>
+                                            <span *ngIf="!purchase.is_paid && (purchase.current_order_status.status_name=='Pending' || purchase.current_order_status.status_name=='Confirmed'  || purchase.current_order_status.status_name=='Delivered' || purchase.current_order_status.status_name=='Inshipment' ||  purchase.current_order_status.status_name=='OrderClosed')">
+                                                {{"Not Paid" | translate}}
+                                                <span (click)="paynow(purchase)" class="paynow" *ngIf="!res_pending">{{'Pay Now' | translate}}</span>
+                                                <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>&nbsp;&nbsp;
+                                                <span *ngIf="res_pending" style="font-size: 13px;">Please Wait...</span>
+                                            </span>
+                                        </h5>
+                                        <h6>{{'Total Price' | translate}}: {{purchase.total_price+ purchase.wrapping_charge +
+                                            purchase.delivery_charge - purchase.discount | priceConvert}}</h6>
+                                        <h6>{{'Mobile No' | translate}}: {{purchase.delivery_address.phone_number | numberConvert}}</h6>
+                                        <h6>{{'Address' | translate}}: {{purchase.delivery_address.address}}, {{purchase.delivery_address.area}},
+                                            {{purchase.delivery_address.city}}
+                                        </h6>
+                                        <span style="display: none">
+                                            {{dateConvert(purchase.order_at)}}
+                                        </span>
+                                        <h6>{{'Ordered At' | translate}}: {{day | numberConvert}}-{{month | numberConvert}}-{{year
+                                            | numberConvert}}</h6>
+                                        <button (click)="showModaldata(purchase)" class="details-btn">
+                                            {{showDetails ? 'Hide Details': 'Show Details' | translate}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="totalItems && isLoggedIn">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="view_more">
+                    <nav aria-label="Page navigation">
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [itemsPerPage]="itemsPerPage" [rotate]="false"
+                            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm"
+                            [boundaryLinks]="true" (click)="setPage()">
+                        </pagination>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div bsModal #termsPolicyModal="bs-modal" (onHidden)="onHidden()" class="modal fade myModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="termsPolicyModal.hide()" data-dismiss="modal">&times;</button>
+                <h4 style="white-space: nowrap; text-align: center">{{'Order No' | translate}}: {{ orderNo | numberConvert}}</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding-bottom: 10px;">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{'S/L' | translate}}</th>
+                                <th>{{'Book Name' | translate}}</th>
+                                <th style="width: 100px">{{'Quantity' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of productList; let j=index">
+                                <td>{{j+1 | numberConvert}}.</td>
+                                <td>
+                                    <span style="width: 100px; white-space: normal; overflow: hidden; text-align: justify">{{product.name}}</span>
+                                </td>
+                                <td style="width: 30px">x {{product.quantity | numberConvert}} = {{product.price * product.quantity | priceConvert}}
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <h6 style="border-bottom: 2px solid #000000;"></h6>
+
+                <div>
+
+                    <h6>{{'Book Total' | translate}}:
+                        <span style="float: right">{{bookTotal | priceConvert}}</span>
+                    </h6>
+                    <h6 *ngIf='discount>0'>{{'Discount' | translate}} (-):
+                        <span style="float: right">{{discount | priceConvert}}</span>
+                    </h6>
+                    <h6 *ngIf='discount==0'>{{'Discount' | translate}} (-):
+                        <span style="float: right">{{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+                    </h6>
+
+                    <h6 *ngIf='deliveryCharge>0'>{{'Delivery Charge' | translate}} (+):
+                        <span style="float: right">{{deliveryCharge | priceConvert}}</span>
+                    </h6>
+                    <h6 *ngIf='deliveryCharge==0'>{{'Delivery Charge' | translate}} (+):
+                        <span style="float: right">{{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+                    </h6>
+                    <h6 *ngIf='wrappingCharge>0'>{{'Wrapping Charge' | translate}} (+):
+                        <span style="float: right">{{wrappingCharge | priceConvert}}</span>
+                    </h6>
+                    <h6 *ngIf='wrappingCharge==0'>{{'Wrapping Charge' | translate}} (+):
+                        <span style="float: right">{{'Tk.' | translate}} {{'0' | numberConvert}}</span>
+                    </h6>
+
+                    <h6 style="border-bottom: 1px solid #000000"></h6>
+                    <h6>{{'Grand Total' | translate}}:
+                        <span style="float: right">{{bookTotal + wrappingCharge + deliveryCharge - discount | priceConvert}}</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

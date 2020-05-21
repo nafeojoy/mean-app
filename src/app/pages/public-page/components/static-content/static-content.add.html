@@ -1,0 +1,36 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-md-12">
+      <ba-card title="Add Content" baCardClass="with-scroll">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input name="name" type="text" class="form-control" [(ngModel)]="staticContent.content_url" placeholder="Content Url">
+        </div>
+        <div *ngFor="let lang of languages">
+          <hr>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input name="title" type="text" class="form-control" [(ngModel)]="staticContent[lang.code].title" placeholder="Title({{lang.name}})">
+          </div>
+          <div class="form-group">
+            <label for="meta_tag_title">Meta Tag Title</label>
+            <input name="meta_tag_title" type="text" class="form-control" [(ngModel)]="staticContent[lang.code].meta_tag_title" placeholder="Meta Tag Title({{lang.name}})">
+          </div>
+          <div class="form-group">
+            <label for="meta_tag_description">Meta Tag Description</label>
+            <input name="meta_tag_description" type="text" class="form-control" [(ngModel)]="staticContent[lang.code].meta_tag_description"
+              placeholder="Meta Tag Description({{lang.name}})">
+          </div>
+          <div class="form-group">
+            <label for="meta_tag_keywords">Meta Tag Keywords</label>
+            <input name="meta_tag_keywords" type="text" class="form-control" [(ngModel)]="staticContent[lang.code].meta_tag_keywords"
+              placeholder="Meta Tag Keywords({{lang.name}})">
+          </div>
+          <label>Content({{lang.name}})</label>
+          <ckeditor [(ngModel)]="staticContent[lang.code].content" [config]="config" debounce="500"></ckeditor>
+        </div>
+        <button class="btn btn-warning" style="margin-top: 28px; float: right;" (click)="save()">Save Content</button>
+      </ba-card>
+    </div>
+  </div>
+</div>

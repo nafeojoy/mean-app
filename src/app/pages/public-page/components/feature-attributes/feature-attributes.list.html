@@ -1,0 +1,65 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>attribute List</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="horizontal-scroll">
+            <table class="table table-hover">
+              <thead>
+                <tr class="black-muted-bg">
+                  <th class="table-id">#</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr dnd-draggable [dragEnabled]="true" *ngFor="let attribute of attributes; let i=index" [dragData]="attribute">
+                  <td>{{i + 1}}</td>
+                  <td>{{attribute.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+        <div class="card-header clearfix">
+          <div class="card-title">
+            <h5>Featured attributes</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="panel panel-info" dnd-droppable class="panel panel-info" (onDropSuccess)="addToFeatured($event)" class="panel panel-info">
+            <div class="panel-body scroll-list">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="black-muted-bg">
+                    <th class="table-id">#</th>
+                    <th>Name</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody dnd-sortable-container [sortableData]="droppedAttributes">
+                  <tr *ngFor="let attribute of droppedAttributes; let i=index" dnd-sortable [sortableIndex]="i">
+                    <td>{{i + 1}}</td>
+                    <td>{{attribute.name}}</td>
+                    <td style="float: right;" (click)="remove(attribute, i)">x</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngFor="let alert of alerts">
+            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+          </div>
+          <button class="btn btn-default btn-pos" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

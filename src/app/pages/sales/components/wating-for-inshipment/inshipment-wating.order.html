@@ -1,0 +1,627 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-header clearfix">
+                    <div class="card-title">
+                        <h3>Orders</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="order_no">Order No.:</label>
+                                <input name="order_no" type="text" [(ngModel)]="searchObj.order_no" class="form-control" placeholder="Order No.">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" (click)="search()">Search</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-warning" (click)="reset()">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="order_no">Date Range:</label>
+                            <br>
+                            <i class="fa fa-calendar range-calender" (click)="vst.toggle()" [attr.aria-expanded]="vst.isOpen"></i>
+                            <input type="text" placeholder="Choose Date Range" class="form-control date-picker" [(ngModel)]="dtRange" (ngModelChange)="dateChanged()" #vst="bsDaterangepicker" bsDaterangepicker>
+                        </div>
+                        <div class="col-md-4" *ngIf="courier_sts.length>0">
+                            <div class="row">
+                                <button *ngFor="let courier of courier_sts" type="button" class="btn btn-default col-md-6" (click)="getOrdersByCourier(courier._id)">
+									{{courier.carriar}} <span class="badge badge-light">{{courier.order_count}}</span>
+								</button>
+                                <button type="button" class="btn btn-default col-md-6" (click)="getOrdersByCourier(undefined)">
+									All
+								</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="horizontal-scroll" *ngIf="orders.length>0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="black-muted-bg">
+                                    <th class="table-id">#</th>
+                                    <th>Order at</th>
+                                    <th>Order No</th>
+                                    <th>Courier</th>
+                                    <th>Payable Amount</th>
+                                    <th>Paid</th>
+                                    <th>Due Amount</th>
+                                    <th>Book Count</th>
+                                    <th>Shipping</th>
+                                    <th>Print</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of orders; let i=index">
+                                    <td>
+                                        {{i+1}}
+                                    </td>
+                                    <td>
+                                        {{order.order_at | date:'dd MMM-yyyy'}} At {{order.order_at | date:'h:mma'}}
+                                    </td>
+                                    <td>
+                                        {{order.order_no}}
+                                    </td>
+                                    <td>
+                                        {{order.carrier?.name}}
+                                    </td>
+                                    <td>{{order.payable_amount}}</td>
+                                    <td>{{order.payment_collection?.total_paid}}</td>
+                                    <td>{{order.payable_amount-order.payment_collection.total_paid}}</td>
+                                    <td>
+                                        {{order.total_book}}
+                                    </td>
+                                    <td>
+                                        <button (click)="showOrder(order, i)" class="btn btn-success">Shipping</button>
+                                    </td>
+                                    <td>
+                                        <button (click)="printEnvelop(order)" class="btn btn-default">Envelop &
+											Receipt</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [maxSize]="maxSize" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" class="pagination-sm" [boundaryLinks]="true" (click)="setPage(currentPage)">
+                        </pagination>
+                    </div>
+                    <div *ngIf="waiting">
+                        <h3>Please wait, loading...</h3>
+                    </div>
+                    <div *ngIf="!waiting && orders.length==0">
+                        <h3>No data found.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div bsModal #orderViewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="oredrViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" (click)="cancel()">&times;</button>
+                <h4 class="modal-title">Order No. {{selectedOrder.order_no}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Shipping
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form (ngSubmit)="save()">
+                                    <div class="form-group row" *ngIf="selectedOrder.carrier">
+                                        <label for="recommended_carrier" class="col-md-4 control-label"> Recommended
+											Carrier: </label>
+                                        <div class="col-md-8">
+                                            <span class="carrier-style">{{selectedOrder.carrier?.name}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="shipping_charge" class="col-md-4 control-label"> Select Carrier:
+										</label>
+                                        <div class="col-md-8">
+                                            <select [(ngModel)]="carrier.carrier_id" class="form-control" name="carrier_name" id="carrier_name">
+												<option *ngFor="let carry of carriers" [ngValue]="carry._id">
+													{{carry.name}}
+												</option>
+											</select>
+                                            <span *ngIf="(isSubmitted && !carrier.carrier_id)" style="color: red">Carrier Name is required!</span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="selectedOrder.weight_sum>0" class="form-group row">
+                                        <label for="discount" class="col-md-4 control-label"> Estimated Wight(gm): </label>
+                                        <div class="col-md-8">
+                                            <label>{{selectedOrder.weight_sum}}</label>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="discount" class="col-md-4 control-label"> Parcel Wight(gm)*: </label>
+                                        <div class="col-md-8">
+                                            <input type="number" [(ngModel)]="carrier.parcel_wight" class="form-control" name="wight" placeholder="Parcel Wight">
+                                            <span *ngIf="(isSubmitted && (!carrier.parcel_wight || carrier.parcel_wight<1) )" style="color: red">Valid Parcel Wight is required!</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" *ngIf="carrier.carrier_id=='5aa62f630d801d722ba8e3ed'">
+                                        <label for="shipping_charge" class="col-md-4 control-label"> Payment method :
+										</label>
+                                        <div class="col-md-8">
+                                            <select [(ngModel)]="selected_payment_method" class="form-control" name="payment_method_name" id="payment_method">
+												<option *ngFor="let paymentMethod of payment_methods" [ngValue]="paymentMethod._id">
+													{{paymentMethod.name}}
+												</option>
+											</select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <h4 style="color:#1361b1">{{resMessage}}</h4>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button [disabled]="res_pending" type="submit" class="btn btn-primary pull-right">Send Inshipment</button>
+                                            <spinner *ngIf="res_pending" [tickness]="1" [size]="20"></spinner>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                                <h4>Shipping Address</h4>
+                                <hr>
+                                <div class="horizontal-scroll info-table">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.contact_name}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mobile</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.phone_number}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td>:</td>
+                                                <td>
+                                                    {{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                            <div class="card-header clearfix">
+                                <div class="card-title">
+                                    Order Items
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="horizontal-scroll">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SL#</th>
+                                                <th> Product Name </th>
+                                                <th> Publisher Name </th>
+                                                <th> QTY </th>
+                                                <th> Unit Price </th>
+                                                <th>Total Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="product-body">
+                                            <tr *ngFor="let item of selectedOrder.products; let i=index">
+                                                <hr>
+                                                <td>{{i+1}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.publisher}}</td>
+                                                <td>{{item.quantity}}</td>
+                                                <td>{{item.price}}</td>
+                                                <td>BDT {{item.price * item.quantity}}</td>
+                                                <hr>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none" class="widgets" *ngIf="selectedOrder.products && selectedOrder.products.length>0">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div baCardBlur class="animated fadeIn card with-scroll" zoom-in>
+                <div class="card-body">
+                    <div id="print-section">
+                        <div id="page_1">
+                            <p class="copy-for">Courier Copy</p>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="t111">
+                                            <div class="logo-image">
+                                                <img src="assets/icon/boibazar-logo-color.png">
+                                            </div>
+                                        </td>
+                                        <td class="t112">
+                                            <div class="vl"></div>
+                                        </td>
+                                        <td class="t113">
+                                            <p class="p1 p112">30/A, VIP Road, Naya Paltan, Dhaka-1000.</p>
+                                            <p class="p1 p112">Phone: 09611 262020</p>
+                                        </td>
+                                        <td class="t114">
+                                            <p class="p114">
+                                                {{selectedOrder.carrier?.name}}</p>
+                                            <p class="p3 p114">
+                                                {{current_date | date:'dd MMM-yyyy, hh:mm a'}} ({{current_user.name}})
+                                            </p>
+                                            <p class="p4 p114">Payment Mode: <span class="s4">{{selectedOrder.is_paid? 'Online,Paid': 'Not Paid'}}</span></p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="main-info">
+                                <tbody>
+                                    <tr>
+                                        <td class="order-details">
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="t2h">Order Details</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Order No.</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.order_no}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Order Date</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.order_at | date: 'dd MMM-yyyy'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Total Items</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.total_book}} Item (s)</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td class="qr-code">
+
+                                        </td>
+                                        <td class="delivery-details">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="t2h">Delivery Info</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Name</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.delivery_address?.contact_name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Mobile</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">
+                                                            {{selectedOrder.delivery_address?.phone_number}}, {{selectedOrder.delivery_address?.alter_phone}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Address</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="product-table">
+                                <thead class="item-head">
+                                    <tr>
+                                        <th class="ih0">SL</th>
+                                        <th class="ih1">Name</th>
+                                        <th class="ihp">Publisher</th>
+                                        <th class="ih2">Price</th>
+                                        <th class="ih3">QTY</th>
+                                        <th class="ih4">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="item-body">
+                                    <tr *ngFor="let item of selectedOrder.products; let j=index">
+                                        <td class="id0">{{j+1}}</td>
+                                        <td class="id1">{{item.name}}({{item.product_id?.import_id}})</td>
+                                        <td class="idp">{{item.publisher}}</td>
+                                        <td class="id2">{{item.price}}</td>
+                                        <td class="id3">{{item.quantity}}</td>
+                                        <td class="id4">{{item.price*item.quantity}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="summary-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="si0">
+                                            <div class="decliration01">
+                                                <p>-----------------------------------</p>
+                                                <p>Boibazar Authority</p>
+                                            </div>
+                                        </td>
+                                        <td class="si1">
+                                            <div class="decliration02">
+                                                <p>------------------------------------</p>
+                                                <p>Customer</p>
+                                            </div>
+                                        </td>
+                                        <td class="si2">
+                                            <table class="summary-data">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="sd0">Subtotal</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.total_price}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Delivery Charge</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.delivery_charge}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Wrapping Charge</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.wrapping_charge}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Discount</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.discount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Total Payable</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.payable_amount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Paid</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Due</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">
+                                                            {{selectedOrder.payable_amount - selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr style="height:1px;border:none;color:#333;background-color:#333;">
+                            <p class="copy-for">Customer Copy</p>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="t111">
+                                            <div class="logo-image">
+                                                <img src="assets/icon/boibazar-logo-color.png">
+                                            </div>
+                                        </td>
+                                        <td class="t112">
+                                            <div class="vl"></div>
+                                        </td>
+                                        <td class="t113">
+                                            <p class="p1 p112">30/A, VIP Road, Naya Paltan, Dhaka-1000.</p>
+                                            <p class="p1 p112">Phone: 09611 262020</p>
+                                        </td>
+                                        <td class="t114">
+                                            <p class="p3 p114">{{current_date | date:'dd MMM-yyyy, hh:mm a'}} ({{current_user.name}})
+                                            </p>
+                                            <p class="p4 p114">Payment Mode: <span class="s4">{{selectedOrder.is_paid? 'Online, Paid': 'Not Paid'}}</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="main-info">
+                                <tbody>
+                                    <tr>
+                                        <td class="order-details">
+                                            <table width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="t2h">Order Details</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Order No.</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.order_no}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Order Date</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.order_at | date: 'dd MMM-yyyy'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Total Items</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.total_book}} Item (s)</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td class="qr-code">
+
+                                        </td>
+                                        <td class="delivery-details">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="t2h">Delivery Info</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Name</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.delivery_address?.contact_name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Mobile</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">
+                                                            {{selectedOrder.delivery_address?.phone_number}}, {{selectedOrder.delivery_address?.alter_phone}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="t2h">Address</td>
+                                                        <td class="t2c">:</td>
+                                                        <td class="t2i">{{selectedOrder.delivery_address?.address}}, {{selectedOrder.delivery_address?.thana}}, {{selectedOrder.delivery_address?.district}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="product-table">
+                                <thead class="item-head">
+                                    <tr>
+                                        <th class="ih0">SL</th>
+                                        <th class="ih1">Name</th>
+                                        <th class="ihp">Publisher</th>
+                                        <th class="ih2">Price</th>
+                                        <th class="ih3">Qty</th>
+                                        <th class="ih4">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="item-body">
+                                    <tr *ngFor="let item of selectedOrder.products; let j=index">
+                                        <td class="id0">{{j+1}}</td>
+                                        <td class="id1">{{item.name}}({{item.product_id?.import_id}})</td>
+                                        <td class="idp">{{item.publisher}}</td>
+                                        <td class="id2">{{item.price}}</td>
+                                        <td class="id3">{{item.quantity}}</td>
+                                        <td class="id4">{{item.price*item.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="summary-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="si0">
+                                            <div class="decliration01">
+                                                <p>-----------------------------------</p>
+                                                <p>Boibazar Authority</p>
+                                            </div>
+                                        </td>
+                                        <td class="si1">
+                                            <div class="decliration02">
+                                                <p>------------------------------------</p>
+                                                <p>Courier</p>
+                                            </div>
+                                        </td>
+                                        <td class="si2">
+                                            <table class="summary-data">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="sd0">Subtotal</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.total_price}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Delivery Charge</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.delivery_charge}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Wrapping Charge</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.wrapping_charge}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Discount</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.discount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Total Payable</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.payable_amount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Paid</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">{{selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sd0">Due</td>
+                                                        <td class="sd1">:</td>
+                                                        <td class="sd2">
+                                                            {{selectedOrder.payable_amount - selectedOrder.payment_collection?.total_paid}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

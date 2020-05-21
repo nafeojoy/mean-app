@@ -1,0 +1,216 @@
+<style>
+    .align {
+        float: left;
+        width: 20%;
+    }
+
+    .filter {
+        float: left;
+        width: 15%;
+        text-align: center;
+        padding-top: 4px;
+    }
+
+    .product-filter-tabset .nav-tabs {
+        border-bottom: none !important;
+        margin-bottom: 0px !important;
+    }
+
+    .product-filter-tabset .nav-tabs .nav-item {
+        width: 25% !important;
+        font-size: 12px;
+        font-weight: normal !important;
+        height: 32px;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        display: inline-block !important;
+        text-decoration: none;
+        white-space: nowrap;
+        /* display: inline-block; */
+        margin: 0 !important;
+        margin-left: -1px !important;
+        position: relative;
+        z-index: 1;
+        line-height: 22px;
+        background-color: #f6f7f9;
+        /* color: #4b4f56; */
+        border-radius: 2px 0 0 2px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 2px;
+        border-color: #ced0d4;
+        border: 1px solid;
+        border-top-style: solid;
+        border-top-width: 1px;
+        border-right-style: solid;
+        border-right-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-left-style: solid;
+        border-left-width: 1px;
+        border-image-source: initial;
+        border-image-slice: initial;
+        border-image-width: initial;
+        border-image-outset: initial;
+        border-image-repeat: initial;
+        border-top-color: rgb(206, 208, 212);
+        border-right-color: rgb(206, 208, 212);
+        border-bottom-color: rgb(206, 208, 212);
+        border-left-color: rgb(206, 208, 212);
+    }
+
+    .product-filter-tabset .nav-tabs .active {
+        border-bottom: none !important;
+        background-color: #1361b1;
+        border-color: #bec2c9;
+        transition: none;
+        border-style: double;
+    }
+
+    .product-filter-tabset .nav-tabs .nav-item .nav-link span p {
+        color: black !important;
+        /* font-weight: bold; */
+    }
+
+    .product-filter-tabset .nav-tabs .nav-item .active span p {
+        color: white !important;
+    }
+
+    .list-group-category label {
+        color: black;
+    }
+
+    .list-group-category-prod-det {
+        height: auto !important;
+        overflow-y: auto !important;
+    }
+
+    .filter i {
+        font-size: 22px;
+        box-shadow: rgba(2, 1, 2, 0.75) 0px 0px 1px 0px;
+    }
+
+    .fa-color {
+        color: #1361b1 !important;
+    }
+
+    .styled {
+        width: 100%;
+        position: absolute;
+    }
+
+    .check-line-color {
+        background-color: #0230601a;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 1px;
+        border-radius: 2px;
+    }
+
+    .check-line-color ::after {
+        background-color: #0b8315de;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 1px;
+        border-radius: 2px;
+    }
+
+</style>
+<div>
+    <div class="filter" (click)="show = !show">
+        <i *ngIf="show" class="fa fa-filter fa-color" aria-hidden="true"></i>
+        <i *ngIf="!show" class="fa fa-filter" aria-hidden="true"></i>
+    </div>
+    <div *ngIf="show" [@enterAnimation]>
+        <tabset class="product-filter-tabset">
+            <tab *ngIf="state != 'category'"  class="align">
+                <span (click)="change('Category')" *tabHeading>
+                    <p> {{'Category' | translate}}&nbsp;</p>
+                    <br>
+                </span>
+                <div  [style.opacity]="!categorySwitch ? '0' : '1'" [style.visibility]="!categorySwitch ? 'hidden' : 'visible'"  class="left-category-area detItems col-md-8">
+                    <div class="list-group-category-prod-det">
+                        <div class="checkbox checkbox-primary check-line-color" *ngFor="let category of categories; let i = index">
+                            <input type="checkbox" class="styled" id="checkbox_category_{{i}}" [attr.name]="categories" [value]="category" [checked]="(checkBoxData.type == 'categories') && (checkBoxData.typeId == category._id)  ? true:false"
+                                (change)="search('categories',category, $event)" />
+                            <label [attr.for]="'checkbox_category_'+i"> &nbsp;{{category?.name | truncate : 15 : '.'}} </label>
+                            <span [attr.for]="'checkbox_category_'+i" class="count-item">({{category?.total_items}})</span>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab *ngIf="state != 'author'"  class="align">
+                <span (click)="change('Author')" *tabHeading>
+                    <p> {{'Author' | translate}}&nbsp;</p>
+                    <br>
+                </span>
+                <div [style.opacity]="!authorSwitch ? '0' : '1'" [style.visibility]="!authorSwitch ? 'hidden' : 'visible'" class="left-category-area detItems col-md-8">
+                    <div class="list-group-category-prod-det">
+                        <div class="checkbox checkbox-primary check-line-color" *ngFor="let author of authors; let i = index">
+                            <input type="checkbox" class="styled" id="checkbox_author_{{i}}" [attr.name]="authors" [value]="author" [checked]="(checkBoxData.type == 'authors') && (checkBoxData.typeId == author._id)  ? true:false"
+                                (change)="search('authors',author, $event)">
+                            <label [attr.for]="'checkbox_author_'+i">&nbsp; {{author?.name | truncate : 15 : '.'}}</label>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab *ngIf="state != 'publisher'"  class="align">
+                <span (click)="change('Publisher')" *tabHeading>
+                    <p> {{'Publisher' | translate}}&nbsp;</p>
+                    <!-- <i *ngIf='publisherSwitch' class="fa fa-sort-down fa-style" aria-hidden="true"></i>
+                    <i *ngIf='!publisherSwitch' class="fa fa-sort-up fa-style" aria-hidden="true"></i> -->
+                    <br>
+                </span>
+                <div [style.opacity]="!publisherSwitch ? '0' : '1'" [style.visibility]="!publisherSwitch ? 'hidden' : 'visible'" class="left-category-area detItems col-md-8">
+                    <div class="list-group-category-prod-det">
+                        <div class="checkbox checkbox-primary check-line-color" *ngFor="let publisher of publishers; let i = index">
+                            <input type="checkbox" class="styled" id="checkbox_publisher_{{i}}" [attr.name]="publishers" [value]="publisher" [checked]="(checkBoxData.type == 'publishers') && (checkBoxData.typeId == publisher._id)  ? true:false"
+                                (change)="search('publishers', publisher, $event)">
+                            <label [attr.for]="'checkbox_publisher_'+i">&nbsp;{{publisher?.name | truncate : 15 : '.'}}</label>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab *ngIf="state != 'price'"  class="align" >
+                <span (click)="change('price')" *tabHeading>
+                    <p> {{'price' | translate}}&nbsp;</p>
+                    <!-- <i *ngIf='priceSwitch' class="fa fa-sort-down fa-style" aria-hidden="true"></i>
+                    <i *ngIf='!priceSwitch' class="fa fa-sort-up fa-style" aria-hidden="true"></i> -->
+                    <br>
+
+                </span>
+                <div *ngIf='priceSwitch' [@expandDown] class="left-category-area detItems" style="padding-left: 20px;">
+
+                    <div class="list-group-category-prod-det">
+                        <div class="price-range" style="margin-left:2px; margin-top: 10px">
+                            <input type="radio" id="color-2" name="prices" [value]="'first'" (change)="priceChange(0, 100)">
+                            <label for="prices1">&nbsp;Tk. 0 - 100</label>
+                        </div>
+                        <div class="price-range" style="margin-left:2px">
+                            <input type="radio" name="prices" [value]="'second'" (change)="priceChange(100, 250)">
+                            <label for="prices2">&nbsp;Tk. 100 - 250</label>
+                        </div>
+                        <div class="price-range" style="margin-left:2px">
+                            <input type="radio" name="prices" [value]="'third'" (change)="priceChange(250, 500)">
+                            <label for="prices">&nbsp;Tk. 250 - 500</label>
+                        </div>
+                        <div class="price-range" style="margin-left:2px">
+                            <input type="radio" name="prices" [value]="'forth'" (change)="priceChange(500, 1000)">
+                            <label>&nbsp;Tk. 500 - 1000</label>
+                        </div>
+                        <div class="price-range" style="margin-left:2px">
+                            <input type="radio" name="prices" [value]="'fifth'" (change)="priceChange(1000, 1500)">
+                            <label>&nbsp;Tk. 1000 - 1500 + </label>
+                        </div>
+                        <div class="price-range" style="margin-left:2px">
+                            <input type="radio" name="prices" [value]="'none'" (change)="priceChange(0, 0)">
+                            <label style="color: rgb(74, 74, 238)">&nbsp;Clear Search ... </label>
+                        </div>
+                    </div>
+
+                </div>
+            </tab>
+
+        </tabset>
+    </div>
+
+</div>

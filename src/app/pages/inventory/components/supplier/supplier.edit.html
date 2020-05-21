@@ -1,0 +1,108 @@
+<div class="alert_messages_chart">
+    <div *ngFor="let alert of alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+</div>
+<div class="widgets">
+    <div class="row">
+        <form style="margin-top: 21px" (ngSubmit)="updateSupplier()" class="form-horizontal">
+            <div class="col-md-6">
+                <ba-card title="Edit Supplier" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-4 control-label">Supplier Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" [(ngModel)]="supplier.name" class="form-control" id="name"
+                                placeholder="Supplier Name" required>
+                            <span *ngIf="isSubmited && !supplier.name" style="color: red;">Supplier name is
+                                required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-4 control-label">Address</label>
+                        <div class="col-sm-8">
+                            <textarea type="text" name="address" [(ngModel)]="supplier.address" class="form-control"
+                                id="name" placeholder="Address"></textarea>
+                            <span *ngIf="isSubmited && !supplier.address" style="color: red;">Supplier Address is
+                                required</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-4 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" name="email" [(ngModel)]="supplier.email" class="form-control"
+                                id="email" placeholder="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cell" class="col-sm-4 control-label">Cell</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="cell" [(ngModel)]="supplier.cell" class="form-control" id="cell"
+                                placeholder="Cell">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="area" class="col-sm-4 control-label">Area</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="area" [(ngModel)]="supplier.area" required>
+                                <option *ngFor="let area of areas" [value]="area._id">
+                                    {{area.name}}
+                                </option>
+                            </select>
+                            <span *ngIf="isSubmited && !supplier.area" style="color: red;">Supplier area is
+                                required</span>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+            <div class="col-md-6">
+                <ba-card title="More Info" baCardClass="with-scroll">
+                    <div class="form-group row">
+                        <label for="fax" class="col-sm-4 control-label">Fax</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="fax" [(ngModel)]="supplier.fax" class="form-control" id="fax"
+                                placeholder="Fax">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="website" class="col-sm-4 control-label">Website</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="website" [(ngModel)]="supplier.website" class="form-control"
+                                id="website" placeholder="Website">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="contact_persion" class="col-sm-4 control-label">Contact Persion</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="contact_persion" [(ngModel)]="supplier.contact_persion"
+                                class="form-control" id="contact_persion" placeholder="Contact Persion">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="account_code" class="col-sm-4 control-label">Account Code</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="account_code" [(ngModel)]="supplier.account_code"
+                                class="form-control" id="account_code" placeholder="Account Code">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="is_enabled" class="col-sm-4 control-label">Is Enabled</label>
+                        <div class="col-sm-8">
+                            <ui-switch name="is_enabled" class="form-control" [(ngModel)]="supplier.is_enabled">
+                            </ui-switch>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <button [disabled]="isDisabled" type="submit" class="btn btn-warning">Save</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <a (click)="back()" style="text-align: right; display: block; padding-top: 11px;">
+                                <i class="fa fa-reply"></i> Back To List </a>
+                        </div>
+                    </div>
+                </ba-card>
+            </div>
+        </form>
+    </div>
+</div>
