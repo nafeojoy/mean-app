@@ -81,7 +81,7 @@
         "leaflet": "0.7.7",
         "leaflet-map": "0.2.1",
         "lodash": "4.17.0",
-        "log4js": "2.3.12",
+        "log4js": "6.4.0",
         "md5": "2.2.1",
         "method-override": "2.3.6",
         "moment": "2.21.0",
